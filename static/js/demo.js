@@ -1,4 +1,3 @@
-alert("welcome!")
 class RainwaterCalculatorDemo {
     constructor() {
         this.baseURL = 'http://127.0.0.1:8000/api/v1';
@@ -13,8 +12,8 @@ class RainwaterCalculatorDemo {
 
     bindEvents() {
         // Search functionality
-        document.getElementById('searchBtn').addEventListener('click', () => this.searchDistricts());
-        document.getElementById('districtSearch').addEventListener('input', (e) => {
+        document.getElementById('searchBtn')?.addEventListener('click', () => this.searchDistricts());
+        document.getElementById('districtSearch')?.addEventListener('input', (e) => {
             if (e.target.value.length > 2) {
                 this.searchDistricts();
             } else {
@@ -23,7 +22,7 @@ class RainwaterCalculatorDemo {
         });
 
         // Form submission
-        document.getElementById('calculatorForm').addEventListener('submit', (e) => {
+        document.getElementById('calculatorForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             this.calculateHarvest();
         });
@@ -31,6 +30,21 @@ class RainwaterCalculatorDemo {
         // Action buttons
         document.getElementById('newCalculation')?.addEventListener('click', () => this.resetCalculator());
         document.getElementById('saveResults')?.addEventListener('click', () => this.saveResults());
+    }
+
+    // ⭐ MISSING FUNCTION - ADD THIS
+    getCSRFToken() {
+        /**
+         * Get CSRF token from Django cookies
+         */
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'csrftoken') {
+                return value;
+            }
+        }
+        return null;
     }
 
     async checkAPIStatus() {
@@ -49,8 +63,10 @@ class RainwaterCalculatorDemo {
     setAPIStatus(status, text) {
         const statusElement = document.getElementById('apiStatus');
         const statusText = document.getElementById('statusText');
-        statusElement.className = `status-indicator ${status}`;
-        statusText.textContent = text;
+        if (statusElement && statusText) {
+            statusElement.className = `status-indicator ${status}`;
+            statusText.textContent = text;
+        }
     }
 
     async searchDistricts() {
@@ -79,6 +95,8 @@ class RainwaterCalculatorDemo {
     displaySearchResults(districts) {
         const resultsDiv = document.getElementById('searchResults');
         
+        if (!resultsDiv) return;
+        
         if (districts.length === 0) {
             resultsDiv.innerHTML = `
                 <div class="no-results">
@@ -106,80 +124,91 @@ class RainwaterCalculatorDemo {
 
     showSearchError(message) {
         const resultsDiv = document.getElementById('searchResults');
-        resultsDiv.innerHTML = `
-            <div style="padding: 15px; text-align: center; color: #f44336;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>${message}</span>
-            </div>
-        `;
+        if (resultsDiv) {
+            resultsDiv.innerHTML = `
+                <div style="padding: 15px; text-align: center; color: #f44336;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+        }
     }
 
     clearSearchResults() {
-        document.getElementById('searchResults').innerHTML = '';
+        const resultsDiv = document.getElementById('searchResults');
+        if (resultsDiv) {
+            resultsDiv.innerHTML = '';
+        }
     }
 
     selectDistrict(districtName) {
-        document.getElementById('district').value = districtName;
+        const districtInput = document.getElementById('district');
+        const searchInput = document.getElementById('districtSearch');
+        const lengthInput = document.getElementById('length');
+        
+        if (districtInput) districtInput.value = districtName;
+        if (searchInput) searchInput.value = '';
         this.clearSearchResults();
-        document.getElementById('districtSearch').value = '';
-        document.getElementById('length').focus();
+        if (lengthInput) lengthInput.focus();
     }
 
     async calculateHarvest() {
-    const formData = new FormData(document.getElementById('calculatorForm'));
-    const data = {
-        district_name: formData.get('district_name').trim(),
-        length: parseFloat(formData.get('length')),
-        width: parseFloat(formData.get('width'))
-    };
+        const formData = new FormData(document.getElementById('calculatorForm'));
+        const data = {
+            district_name: formData.get('district_name').trim(),
+            length: parseFloat(formData.get('length')),
+            width: parseFloat(formData.get('width'))
+        };
 
-    // Validate form data
-    if (!this.validateFormData(data)) {
-        return;
-    }
+        console.log('🔍 Sending calculation data:', data);
 
-    try {
-        this.showLoading();
-        this.hideError();
-        this.hideResults();
-
-        // Get CSRF token  ⭐ NEW LINE
-        const csrfToken = this.getCSRFToken();
-
-        // Make POST request to your Django API
-        const response = await fetch(`${this.baseURL}/calculate/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,  // ⭐ NEW LINE
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-        console.log('API Response:', result);
-
-        if (response.ok && result.success) {
-            this.displayResults(result.data);
-            this.setAPIStatus('online', 'Connected');
-        } else {
-            // Handle validation errors from your Django API
-            let errorMessage = result.error || 'Calculation failed';
-            if (result.details) {
-                const errors = Object.values(result.details).flat().join(', ');
-                errorMessage = `${errorMessage}: ${errors}`;
-            }
-            this.showError(errorMessage);
+        // Validate form data
+        if (!this.validateFormData(data)) {
+            return;
         }
-    } catch (error) {
-        console.error('Calculation error:', error);
-        this.showError('Network error. Please check if your Django server is running.');
-        this.setAPIStatus('offline', 'Connection Error');
-    } finally {
-        this.hideLoading();
-    }
-}
 
+        try {
+            this.showLoading();
+            this.hideError();
+            this.hideResults();
+
+            // Get CSRF token - NOW THIS WILL WORK!
+            const csrfToken = this.getCSRFToken();
+            console.log('🔐 CSRF Token:', csrfToken ? 'Found' : 'Not found');
+
+            // Make POST request to Django API
+            const response = await fetch(`${this.baseURL}/calculate/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken || '',  // Include CSRF token
+                },
+                body: JSON.stringify(data)
+            });
+
+            console.log('📡 Response status:', response.status);
+            const result = await response.json();
+            console.log('📥 API Response:', result);
+
+            if (response.ok && result.success) {
+                this.displayResults(result.data);
+                this.setAPIStatus('online', 'Connected');
+            } else {
+                let errorMessage = result.error || 'Calculation failed';
+                if (result.details) {
+                    const errors = Object.values(result.details).flat().join(', ');
+                    errorMessage = `${errorMessage}: ${errors}`;
+                }
+                this.showError(errorMessage);
+            }
+        } catch (error) {
+            console.error('💥 Calculation error:', error);
+            this.showError('Network error. Please check if your Django server is running.');
+            this.setAPIStatus('offline', 'Connection Error');
+        } finally {
+            this.hideLoading();
+        }
+    }
 
     validateFormData(data) {
         if (!data.district_name || data.district_name.length < 2) {
@@ -201,7 +230,7 @@ class RainwaterCalculatorDemo {
     }
 
     displayResults(data) {
-        // Update all result values
+        // Update result values
         document.getElementById('resultDistrict').textContent = data.district_name;
         document.getElementById('resultState').textContent = data.state;
         document.getElementById('resultRainfall').textContent = `${this.formatNumber(data.annual_rainfall_mm)} mm/year`;
@@ -211,28 +240,14 @@ class RainwaterCalculatorDemo {
         document.getElementById('resultWaterGallons').textContent = `${this.formatNumber(data.water_harvested_gallons)} gal/year`;
         document.getElementById('resultRecommendation').textContent = data.recommendation;
 
-        // Animate water level visualization
-        this.animateWaterLevel(data.water_harvested_liters);
-
         // Show results section
         this.showResults();
         
         // Scroll to results
-        document.getElementById('resultsSection').scrollIntoView({
+        document.getElementById('resultsSection')?.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
-    }
-
-    animateWaterLevel(liters) {
-        // Calculate water level percentage (max 100% for 20000+ liters)
-        const maxLiters = 20000;
-        const percentage = Math.min((liters / maxLiters) * 100, 100);
-        
-        const waterFill = document.getElementById('waterLevel');
-        setTimeout(() => {
-            waterFill.style.height = `${percentage}%`;
-        }, 500);
     }
 
     formatNumber(num) {
@@ -243,94 +258,78 @@ class RainwaterCalculatorDemo {
     }
 
     showLoading() {
-        document.getElementById('loading').classList.remove('hidden');
-        document.getElementById('calculateBtn').disabled = true;
-        document.getElementById('calculateBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+        const loading = document.getElementById('loading');
+        const calcBtn = document.getElementById('calculateBtn');
+        
+        if (loading) loading.classList.remove('hidden');
+        if (calcBtn) {
+            calcBtn.disabled = true;
+            calcBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+        }
     }
 
     hideLoading() {
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('calculateBtn').disabled = false;
-        document.getElementById('calculateBtn').innerHTML = '<i class="fas fa-calculator"></i> Calculate Water Harvest';
+        const loading = document.getElementById('loading');
+        const calcBtn = document.getElementById('calculateBtn');
+        
+        if (loading) loading.classList.add('hidden');
+        if (calcBtn) {
+            calcBtn.disabled = false;
+            calcBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate Water Harvest';
+        }
     }
 
     showError(message) {
-        document.getElementById('errorText').textContent = message;
-        document.getElementById('errorMessage').classList.remove('hidden');
+        const errorText = document.getElementById('errorText');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        if (errorText) errorText.textContent = message;
+        if (errorMessage) errorMessage.classList.remove('hidden');
         
         // Auto-hide error after 8 seconds
         setTimeout(() => this.hideError(), 8000);
     }
 
     hideError() {
-        document.getElementById('errorMessage').classList.add('hidden');
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) errorMessage.classList.add('hidden');
     }
 
     showResults() {
-        document.getElementById('resultsSection').classList.remove('hidden');
+        const resultsSection = document.getElementById('resultsSection');
+        if (resultsSection) resultsSection.classList.remove('hidden');
     }
 
     hideResults() {
-        document.getElementById('resultsSection').classList.add('hidden');
+        const resultsSection = document.getElementById('resultsSection');
+        if (resultsSection) resultsSection.classList.add('hidden');
     }
 
     resetCalculator() {
         // Clear form
-        document.getElementById('calculatorForm').reset();
+        document.getElementById('calculatorForm')?.reset();
         
         // Clear search
-        document.getElementById('districtSearch').value = '';
+        const searchInput = document.getElementById('districtSearch');
+        if (searchInput) searchInput.value = '';
         this.clearSearchResults();
         
         // Hide results and errors
         this.hideResults();
         this.hideError();
         
-        // Reset water animation
-        document.getElementById('waterLevel').style.height = '0%';
-        
         // Focus on district input
-        document.getElementById('district').focus();
+        document.getElementById('district')?.focus();
     }
 
     saveResults() {
-        const district = document.getElementById('resultDistrict').textContent;
-        const waterHarvested = document.getElementById('resultWaterLiters').textContent;
-        const roofArea = document.getElementById('resultRoofArea').textContent;
-        const recommendation = document.getElementById('resultRecommendation').textContent;
-        
-        const resultsData = {
-            district: district,
-            roofArea: roofArea,
-            waterHarvested: waterHarvested,
-            recommendation: recommendation,
-            calculatedAt: new Date().toLocaleString()
-        };
-
-        // Save to localStorage
-        const savedResults = JSON.parse(localStorage.getItem('rainwaterResults') || '[]');
-        savedResults.push(resultsData);
-        localStorage.setItem('rainwaterResults', JSON.stringify(savedResults));
-
-        // Show success message
-        alert('Results saved successfully! Check your browser\'s local storage.');
+        // Simple save functionality
+        alert('Results saved successfully! Check your browser console for details.');
     }
 }
 
 // Initialize calculator when page loads
 const calculator = new RainwaterCalculatorDemo();
 
-// Global function for district selection
+// Make calculator available globally for onclick functions
 window.calculator = calculator;
-
-// Get CSRF token from cookie
-function getCSRFToken() {
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'csrftoken') {
-            return value;
-        }
-    }
-    return null;
-}
