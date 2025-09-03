@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jaljeevan.AI – Smart RTRWH & Artificial Recharge Advisor</title>
+  <meta name="description" content="Jaljeevan.AI – AI + AR powered rooftop rainwater harvesting and artificial recharge advisor. Multilingual, gamified, AR-ready frontend." />
+  <style>
+    :root{
+      --bg-a:#e8fbff; /* pale aqua */
+      --bg-b:#eafaf0; /* pale mint */
+      --card-bg:rgba(255,255,255,0.72);
+      --glass:rgba(255,255,255,0.4);
+      --accent:#0b9f88;
+      --accent-2:#2fb6ff;
+      --muted:#3b5a57;
+      --radius:18px;
+      --shadow:0 10px 24px rgba(12,34,36,0.08);
+    }
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;color:var(--muted)}
+    body{background: linear-gradient(135deg,var(--bg-a), var(--bg-b));overflow-y:auto;position:relative;}
+    .rain-wrap{pointer-events:none;position:fixed;inset:0;z-index:0;opacity:.55}
+    .raindrop{position:absolute;top:-10vh;width:2px;height:18vh;background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.15));transform:skewX(-10deg);opacity:.8;border-radius:2px;filter:blur(.2px)}
+    .rainbow{position:fixed;left:-20%;top:10%;width:140%;height:40vh;background:linear-gradient(90deg, rgba(255,0,128,0.06), rgba(255,200,0,0.06), rgba(0,200,255,0.06));mix-blend-mode:screen;filter:blur(28px);animation:rainbowShift 12s linear infinite;pointer-events:none;z-index:0}
+    @keyframes rainbowShift{0%{transform:translateX(0)}50%{transform:translateX(6%)}100%{transform:translateX(0)}}
+    .wrap{max-width:1200px;margin:0 auto;padding:18px;position:relative;z-index:5}
+    header{display:flex;align-items:center;gap:12px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6));backdrop-filter:blur(6px) saturate(120%);border-radius:14px;box-shadow:var(--shadow);}
+    .logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+    .logo svg{width:48px;height:48px}
+    .logo .title{font-weight:800;color:var(--muted);font-size:1.15rem}
+    nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+    nav button, select{background:transparent;border:1px solid rgba(11,159,136,0.12);padding:8px 12px;border-radius:12px;color:var(--muted);cursor:pointer}
+    nav button:hover, select:hover{background:rgba(11,159,136,0.06)}
+    main{margin-top:20px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    .tab{background:var(--card-bg);padding:10px 12px;border-radius:12px;cursor:pointer;border:1px solid rgba(11,159,136,0.08)}
+    .tab.active{box-shadow:0 6px 18px rgba(11,159,136,0.08);border-color:var(--accent); position:relative}
+    .tab.active::after{content:'';position:absolute;left:10%;right:10%;bottom:-8px;height:4px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 6px 16px rgba(47,182,255,0.12);transform:scaleX(1);transition:transform .25s ease}
+    section{display:none;background:var(--card-bg);padding:20px;border-radius:14px;box-shadow:var(--shadow);border:1px solid rgba(10,20,20,0.03);transition:opacity .36s ease,transform .36s ease}
+    section.active{display:block;opacity:1;transform:translateY(0)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}
+    .tag{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(11,159,136,0.08), rgba(47,182,255,0.06));font-weight:700;color:var(--accent)}
+    h1{margin:10px 0;color:#063b35}
+    p.muted{color:rgba(3,48,42,0.7)}
+    .grid{display:grid;gap:12px}
+    .grid.cols-2{grid-template-columns:repeat(2,1fr)}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    input,select,textarea{padding:12px;border-radius:10px;border:1px solid rgba(5,40,36,0.06);background:rgba(255,255,255,0.9)}
+    button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;color:#04271f;padding:10px 14px;border-radius:12px;font-weight:800}
+    button.ghost{background:transparent;border:1px dashed rgba(3,48,42,0.06)}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:10px;border-bottom:1px solid rgba(10,20,20,0.04);text-align:left}
+    .badge{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(47,182,255,0.12), rgba(11,159,136,0.08));font-weight:700;color:var(--accent)}
+    footer{margin-top:18px;padding:18px;text-align:center;color:rgba(3,48,42,0.7)}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="rain-wrap" id="rainWrap"></div>
+  <div class="rainbow" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="logo" id="logoBtn" title="Click for a rain-positive message">
+        <svg viewBox="0 0 64 64" aria-hidden="true" role="img">
+          <defs>
+            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0b9f88"/><stop offset="100%" stop-color="#2fb6ff"/></linearGradient>
+          </defs>
+          <path d="M32 6 C24 18 14 27 14 40 a18 18 0 0 0 36 0 C50 27 40 18 32 6z" fill="url(#g2)" stroke="#8ff3db" stroke-opacity=".5" stroke-width="1"/>
+        </svg>
+        <div>
+          <div class="title">Jaljeevan.<small>AI</small></div>
+          <div style="font-size:12px;color:rgba(3,48,42,0.5)">Smart rainwater advisor</div>
+        </div>
+      </div>
+      <nav>
+        <div class="tabs" id="tabs">
+          <div class="tab active" data-tab="home">Home</div>
+          <div class="tab" data-tab="about">About</div>
+          <div class="tab" data-tab="signin">Sign‑in</div>
+          <div class="tab" data-tab="leaderboard">Leaderboard</div>
+          <div class="tab" data-tab="members">Members</div>
+        </div>
+        <select id="langSelect" aria-label="Choose language"></select>
+      </nav>
+    </header>
+    <main>
+      <section id="home" class="active">
+        <div class="hero">
+          <div class="card">
+            <div class="tag" data-i18n="hero.tag">AI + AR for Water‑Smart India</div>
+            <h1 data-i18n="hero.title">Harvest every drop. Recharge the future.</h1>
+            <p class="muted" data-i18n="hero.desc">A citizen‑first advisor to assess rooftop rainwater harvesting & artificial recharge with live data, AR visualization, and gamified water credits.</p>
+            <div class="grid cols-2" style="margin-top:12px">
+              <button id="getStarted" class="primary" data-i18n="cta.getStarted">Get Started</button>
+              <button class="ghost" id="demoCalc" data-i18n="cta.demo">Run Demo Calculation</button>
+            </div>
+          </div>
+          <div class="card">
+            <h2 data-i18n="form.title">Quick Feasibility Check</h2>
+            <form id="feasForm" class="grid cols-2">
+              <input id="name" placeholder="Name" required />
+              <div class="row" style="gap:8px">
+                <input id="location" placeholder="Location (manual)" />
+                <button type="button" id="gps" title="Use GPS" aria-label="Use GPS" class="ghost">📍</button>
+              </div>
+              <input id="roof" placeholder="Roof area (m²)" type="number" min="1" required />
+              <input id="dwellers" placeholder="No. of dwellers" type="number" min="1" required />
+              <input id="openSpace" placeholder="Open space (m²)" type="number" min="0" />
+              <div class="row" style="gap:8px">
+                <select id="voicePref">
+                  <option value="none">No Voice</option>
+                  <option value="mic">🎙️ Voice Input</option>
+                </select>
+                <button type="button" id="voiceBtn" class="ghost">🎤</button>
+                <button type="button" id="arBtn" class="ghost" title="AR Scan placeholder">🧱 AR Preview</button>
+              </div>
+              <div class="grid" style="grid-column:1 / -1">
+                <button type="submit" id="calcBtn" class="primary" data-i18n="form.calculate">Calculate Potential</button>
+              </div>
+            </form>
+            <div id="result" class="muted" style="margin-top:10px"></div>
+          </div>
+        </div>
+      </section>
+      <section id="about" hidden>
+        <div class="card">
+          <h2 data-i18n="about.title">System Architecture</h2>
+          <p class="muted" data-i18n="about.desc">End‑to‑end pipeline from user inputs to AI + GIS processing, AR visualization, and community gamification.</p>
+          <div class="diagram">
+            <div class="stage"><div class="title">User (Web/Mobile)</div>Inputs → Location, Roof area, Dwellers, Open space, Voice/Language</div>
+            <div class="arrow"></div>
+            <div class="stage"><div class="title">Application Backend</div>
+            <ul>
+              <li><b>Data Layer</b>: IMD rainfall, CGWB groundwater, Aquifer/soil DB</li>
+              <li><b>Processing</b>: AI rainwater calculator, GIS runoff, Cost‑Benefit, Structure recommender</li>
+              <li><b>AR/Visualization</b>: 3D models & overlays</li>
+              <li><b>Gamification</b>: Credits, Leaderboards, Challenges</li>
+              <li><b>Marketplace</b>: Vendors, Subsidies, RTRWH kits</li>
+            </ul>
+            </div>
+            <div class="arrow"></div>
+            <div class="stage"><div class="title">User Output</div>Feasibility PDF, Recommended structure, 3D/AR preview, Cost & ROI, Water Credits</div>
+          </div>
+      </section>
+      <section id="signin" hidden>
+        <div class="card">
+          <h2>Sign‑in</h2>
+          <div class="grid cols-2">
+            <input placeholder="Email" type="email" />
+            <input placeholder="Password" type="password" />
+            <button class="primary">Sign‑in</button>
+            <button class="ghost">Create Account</button>
+          </div>
+        </div>
+      </section>
+      <section id="leaderboard" hidden>
+        <div class="card">
+          <h2>Water Credits Leaderboard</h2>
+          <p class="muted">Earn badges at 100 / 200 / 500 / 1000 credits. Share your impact!</p>
+          <table id="lb">
+            <thead><tr><th>#</th><th>Name</th><th>Credits</th><th>Badge</th><th>Share</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+      <section id="members" hidden>
+        <div class="card">
+          <h2>Team Members</h2>
+          <div class="grid cols-3" id="membersGrid"></div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      © <span id="year"></span> Jaljeevan.AI • Smart automation • Sustainable development • Green energy
+    </footer>
+  </div>
+  <dialog id="logoModal">
+    <h2>हर बूंद मायने रखती है • Every drop counts</h2>
+    <p>Rainwater harvested on a 100 m² roof in a 900 mm rainfall zone can recharge ~90,000 liters a year (assuming 1.0 runoff coefficient & basic losses). Imagine your street doing this together.</p>
+    <div class="row" style="justify-content:flex-end; gap:10px"><button class="ghost" id="closeModal">Close</button></div>
+  </dialog>
+  <script>
+    const rainWrap = document.getElementById('rainWrap');
+    for(let i=0;i<40;i++){const d=document.createElement('div');d.className='raindrop';d.style.left=(Math.random()*100)+'%';d.style.animation=`fall ${3+Math.random()*3}s linear ${Math.random()*-3}s infinite`;d.style.opacity=0.5+Math.random()*0.5;d.style.height= (12+Math.random()*30)+'vh';d.style.width=(1+Math.random()*2)+'px';rainWrap.appendChild(d)}
+    const style=document.createElement('style');style.innerHTML='@keyframes fall{0%{transform:translateY(-120vh)}100%{transform:translateY(120vh)}}';document.head.appendChild(style);
+    const tabs = document.querySelectorAll('.tab');
+    const panes = document.querySelectorAll('main section');
+    tabs.forEach(t=>t.addEventListener('click',()=>activateTab(t.dataset.tab)));
+    function activateTab(id){tabs.forEach(t=>t.classList.toggle('active', t.dataset.tab===id));panes.forEach(p=>p.hidden = p.id!==id);location.hash = id;}
+    if(location.hash){activateTab(location.hash.replace('#',''));}
+    const logoBtn = document.getElementById('logoBtn');const logoModal = document.getElementById('logoModal');logoBtn.addEventListener('click',()=>logoModal.showModal());document.getElementById('closeModal').addEventListener('click',()=>logoModal.close());
+    const i18n = { en:{ 'hero.tag':'AI + AR for Water‑Smart India','hero.title':'Harvest every drop. Recharge the future.','hero.desc':'A citizen‑first advisor to assess rooftop rainwater harvesting & artificial recharge with live data, AR visualization, and gamified water credits.','cta.getStarted':'Get Started','cta.demo':'Run Demo Calculation','form.title':'Quick Feasibility Check','form.calculate':'Calculate Potential','about.title':'System Architecture','about.desc':'End‑to‑end pipeline from user inputs to AI + GIS processing, AR visualization, and community gamification.' }, hi:{ 'hero.tag':'एआई + एआर आधारित जल‑स्मार्ट इंडिया','hero.title':'हर बूंद बचाएँ, भविष्य रिचार्ज करें।','hero.desc':'लाइव डेटा, एआर विज़ुअलाइज़ेशन और गेमिफाइड क्रेडिट्स के साथ छत वर्षा‑जल संचयन व कृत्रिम रिचार्ज का सरल आकलन।','cta.getStarted':'शुरू करें','cta.demo':'डेमो कैलकुलेशन','form.title':'त्वरित व्यवहार्यता जाँच','form.calculate':'क्षमता गणना करें','about.title':'सिस्टम आर्किटेक्चर','about.desc':'यूज़र इनपुट से AI + GIS प्रोसेसिंग, AR विज़ुअाइज़ेशन और कम्युनिटी गेमिफिकेशन तक की पूरी पाइपलाइन।' }, bn:{ 'hero.tag':'AI + AR ট্রান্সফর্মিং জলের ব্যবহার','hero.title':'প্রতিটি জলবিন্দু সংরক্ষণ করুন। ভবিষ্যতকে রিচার্জ করুন।','hero.desc':'লাইভ ডেটা, AR ভিজ্যুয়ালাইজেশন এবং গেমিফাইড ওয়াটার ক্রেডিট সহ ছাদ বৃষ্টির জল সংগ্রহ ও আর্টিফিশিয়াল রিচার্জ মূল্যায়নকারী।','cta.getStarted':'শুরু করুন','cta.demo':'ডেমো ক্যালকুলেশন','form.title':'দ্রুত সুবিধা পরীক্ষা','form.calculate':'সম্ভাব্যতা গণনা','about.title':'সিস্টেম স্থাপত্য','about.desc':'ব্যবহারকারীর ইনপুট থেকে AI + GIS প্রক্রিয়া, AR ভিজ্যুয়ালাইজেশন এবং কমিউনিটি গেমিফিকেশন পর্যন্ত।' }, mr:{ 'hero.tag':'AI + AR द्वारा जल‑स्मार्ट इंडिया','hero.title':'प्रत्येक थेंब जतन करा. भविष्यात पुनर्भरण करा.','hero.desc':'लाइव डेटा, AR व्हिज्युअलायझेशन आणि गेमिफाइड वॉटर क्रेडिटसह छतावरील वर्षावापर आणि कृत्रिम रिचार्जचे मूल्यांकन.','cta.getStarted':'सुरू करा','cta.demo':'डेमो गणना','form.title':'द्रुत व्यवहार्यता तपासणी','form.calculate':'संभाव्यता गणना','about.title':'सिस्टम आर्किटेक्चर','about.desc':'वापरकर्ता इनपुटपासून AI + GIS प्रक्रिया, AR दृश्य आणि समुदाय गेमिफिकेशनपर्यंत.' }, gu:{ 'hero.tag':'AI + AR દ્વારા જલ‑સ્માર્ટ ભારત','hero.title':'દર એક ટપ્પુ સાચવો. ભવિષ્ય રીચાર્જ કરો.','hero.desc':'લાઇવ ડેટા, AR વિઝ્યુઅલાઇઝેશન અને ગેમિફાઇડ વોટર ક્રેડિટ્સ સાથે છત ઉપર રેઇનવોટર હાર્વેસ્ટિંગ અને કૃતિમ રિચાર્જનું મૂલ્યાંકન.', 'cta.getStarted':'શરૂ કરો','cta.demo':'ડેમો ગણતરી','form.title':'તાત્કાલિક શક્યતા ચકાસણું','form.calculate':'સંભાવના ગણવું','about.title':'સિસ્ટમ સ્થાપત્ય','about.desc':'વપરાશકર્તા ઇનપુટથી AI + GIS પ્રોસેસિંગ, AR વિઝ્યુઅલ અને સમુદાય ગેમિફિકેશન.' }, ta:{ 'hero.tag':'AI + AR மூலம் நீர்‑சமூகம்','hero.title':'ஒவ்வொரு துளியையும் சேமிக்கவும். எதிர்காலத்தை ரீசார்ஜ் செய்யவும்.','hero.desc':'நேரடி தரவு, AR காட்சிப்படுத்தல் மற்றும் கேமிஃபை செய்யப்பட்ட நீர் கிரெடிட்களுடன் கூடிய கூரை மழைநீர்த் திரட்டலும் செயற்கை ரீசார்ஜ் மதிப்பீடுகள்.','cta.getStarted':'தொடங்கு','cta.demo':'டெமோ கணக்கீடு','form.title':'எளிய சோதனை','form.calculate':'சாத்தியக்கூறுகளை கணக்கிடு','about.title':'கணினி தொகுப்பு','about.desc':'பயனர் உள்ளீடுகளிலிருந்து AI + GIS செயலாக்கம், AR காட்சி மற்றும் சமூக கேமிபிகேஷன் வரை.' }, te:{ 'hero.tag':'AI + AR నీటి పరిష్కారాలు','hero.title':'ప్రతి చుక్కను రక్షించండి. భవిష్యత్తును రీచార్జ్ చేయండి.','hero.desc':'లైవ్ డేటా, AR విజువలైజేషన్ మరియు గేమిఫైഡ് వాటర్ క్రెడిట్లతో రూఫ్‌టాప్ వర్షపు నీటి అవకాశాలను అంచనా వేయండి.','cta.getStarted':'ప్రారంభించండి','cta.demo':'డెమో లెక్కింపు','form.title':'త్వరిత పరీక్ష','form.calculate':'సంభావ్యత లెక్కించు','about.title':'సిస్టమ్ నిర్మాణం','about.desc':'వినియోగదారి ఇన్‌పుట్ నుండి AI + GIS ప్రాసెసింగ్, AR విజువలైజేషన్ మరియు కమ్యునిటీ గేమిఫికేషన్ వరకు.' }, kn:{ 'hero.tag':'AI + AR ನೀರು‑ಸುರಕ್ಷಿತ','hero.title':'ಪ್ರತಿ ಹನಿಯನ್ನು ಉಳಿಸಿ. ಭವಿಷ್ಯವನ್ನು ರೀಚಾರ್ಜ್ ಮಾಡಿ.','hero.desc':'ನೇರ ಡೇಟಾ, AR ದೃಶ್ಯೀಕರಣ ಮತ್ತು ಗೇಮಿಫೈಡ್ ವಾಟರ್ ಕ್ರೆಡಿಟ್ಗಳೊಂದಿಗೆ ಚಾವಣಿ ಮಳೆ ನೀರಿನ ಸಂಗ್ರಹ ಮತ್ತು ಕೃತಕ ರೀಚಾರ್ಜ್ ಅಂದಾಜು.' , 'cta.getStarted':'ಪ್ರಾರಂಭಿಸಿ','cta.demo':'ಡೆಮೊ ಲೆಕ್ಕಾಚಾರ','form.title':'ತ್ವರಿತ ಸಾಧ್ಯತೆ ಪರಿಶೀಲನೆ','form.calculate':'ಸಂಭಾವ್ಯತೆ ಗಣನೆ','about.title':'ಸಿಸ್ಟಂ ಆರ್ಕಿಟೆಕ್ಚರ್','about.desc':'ಬಳಕೆದಾರ ಇನ್‌ಪುಟ್‌ಗಳಿಂದ AI + GIS ಪ್ರೊಸೆಸಿಂಗ್, AR ದೃಶ್ಯೀಕರಣ ಮತ್ತು ಸಮುದಾಯ ಗೇಮಿಫಿಕೇಶನ್‌ಗಳವರೆಗೆ.' }, pa:{ 'hero.tag':'AI + AR ਨਾਲ ਪਾਣੀ ਦਿੰਦੀ ਸਹੂਲਤ','hero.title':'ਹਰ ਇਕ ਬੂੰਦ ਨੂੰ ਬਚਾਓ। ਭਵਿੱਖ ਨੂੰ ਰੀਚਾਰਜ ਕਰੋ।','hero.desc':'ਲਾਈਵ ਡੇਟਾ, AR ਵਿਜ਼ੁਅਲਾਈਜ਼ੇਸ਼ਨ ਅਤੇ ਗੇਮਿਫਾਈਡ ਵਾਟਰ ਕਰੈਡਿਟਸ ਨਾਲ ਛੱਤ ਵਰਗੀ ਬਰਸਾਤ ਦੇ ਪਾਣੀ ਦੀ ਸੰਭਾਵਨਾ ਦਾ ਮੁਲਾਂਕਣ।','cta.getStarted':'ਸ਼ੁਰੂ ਕਰੋ','cta.demo':'ਡੈਮੋ ਗਣਨਾ','form.title':'ਤੁਰੰਤ ਸਮਰੱਥਾ ਜਾਂਚ','form.calculate':'ਸੰਭਾਵਨਾ ਗਿਣੋ','about.title':'ਸਿਸਟਮ ਆਰਕੀਟੈਕਚਰ','about.desc':'ਯੂਜ਼ਰ ਇਨਪੁਟ ਤੋਂ AI + GIS ਪ੍ਰੋਸੈਸਿੰਗ, AR ਵਿਜ਼ੂਅਲਾਈਜ਼ੇਸ਼ਨ ਅਤੇ ਕਮਿਊਨਿਟੀ ਗੇਮਿਫਿਕੇਸ਼ਨ ਤੱਕ.' }, ml:{ 'hero.tag':'AI + AR വെള്ളം സംരക്ഷണതിന്','hero.title':'ഓരോ തുള്ളിയും സംരക്ഷിക്കുക. ഭാവി റീചാർജ് ചെയ്യുക.','hero.desc':'ലൈവ് ഡേറ്റയും AR ദൃശ്യമെന്നും ഗെയിഫൈഡ് വാട്ടർ ക്രെഡിറ്റുമുള്ള റൂഫ് ടോപ്പ് മഴവെള്ള സ്രോതസ്സും കൃത്രിമ റീചാർജ് സാധ്യതയും വിലയിരുത്താൻ ഈ പ്ലാറ്റ്ഫോം സഹായിക്കുന്നു.','cta.getStarted':'ആരംഭിക്കുക','cta.demo':'ഡെമോ കണക്ക്','form.title':'ദ്രുത സാധ്യതാ പരിശോധന','form.calculate':'സാധ്യത കണക്കാക്കുക','about.title':'സിസ്റ്റം ആർക്കിടെക്ചർ','about.desc':'ഉപയോക്തൃ ഇൻ‌പുട്ടുകൾ മുതൽ AI + GIS പ്രോസസ്സ്, AR ദൃശ്യമാകൽ, കമ്മ്യൂണിറ്റി ഗെയിമിഫിക്കേഷൻ വരെയ്ന്നുള്ള മുഴുവൻ പൈപ്പ്‌ലൈൻ.' } };
+    const languages = { en:'🇬🇧 English', hi:'🇮🇳 हिंदी', bn:'🇧🇩 বাংলা', mr:'🇮🇳 मराठी', gu:'🇮🇳 ગુજરાતી', ta:'🇮🇳 தமிழ்', te:'🇮🇳 తెలుగు', kn:'🇮🇳 ಕನ್ನಡ', pa:'🇮🇳 ਪੰਜਾਬੀ', ml:'🇮🇳 മലയാളം' };
+    const langSelect = document.getElementById('langSelect');
+    Object.entries(languages).forEach(([code,label])=>{const o=document.createElement('option');o.value=code;o.text=label;langSelect.appendChild(o)});
+    function applyLang(lang){document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');el.textContent = (i18n[lang] && i18n[lang][k]) || (i18n['en'][k]) || el.textContent});document.documentElement.lang = lang;}
+    const navLang = navigator.language ? navigator.language.slice(0,2) : 'en';
+    const pick = Object.keys(languages).includes(navLang) ? navLang : 'en';
+    langSelect.value = pick; applyLang(pick);
+    langSelect.addEventListener('change', ()=>applyLang(langSelect.value));
+    const res = document.getElementById('result');
+    document.getElementById('feasForm').addEventListener('submit', (e)=>{e.preventDefault();const roof = +document.getElementById('roof').value || 0;const dwellers = +document.getElementById('dwellers').value || 1;const open = +document.getElementById('openSpace').value || 0;const annualRain_mm = 900; const runoffCoeff = 0.9;const harvestLiters = roof * (annualRain_mm/1000) * runoffCoeff * 1000;const perCapitaNeed = 135 * 365; const coverage = Math.min(100, Math.round((harvestLiters/(dwellers*perCapitaNeed))*100));const pitVol = Math.min(harvestLiters*0.15/1000, open*1.2);res.innerHTML = `Potential harvest: <b>${Math.round(harvestLiters).toLocaleString()} L/yr</b> · Household demand coverage: <b>${coverage}%</b><br>Suggested recharge pit volume: <b>${pitVol.toFixed(1)} m³</b> (tune with site soil/percolation).`;const credits = Math.min(1000, Math.round(harvestLiters/500)); addOrUpdatePlayer(document.getElementById('name').value || 'You', credits);});
+    document.getElementById('gps').addEventListener('click', async ()=>{if(!navigator.geolocation){alert('Geolocation not supported');return}navigator.geolocation.getCurrentPosition(pos=>{const {latitude, longitude} = pos.coords;document.getElementById('location').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;}, err=>alert('GPS error: '+err.message));});
+    const voiceBtn = document.getElementById('voiceBtn');
+    voiceBtn.addEventListener('click', ()=>{const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if(!SR){alert('Speech Recognition not supported');return}const r = new SR(); r.lang = (langSelect.value==='hi'?'hi-IN':'en-IN'); r.onresult = (e)=>{const t = e.results[0][0].transcript; document.getElementById('location').value = t}; r.start();});
+    document.getElementById('arBtn').addEventListener('click',()=>{alert('AR preview placeholder – hook to WebXR/ARCore later.');});
+    document.getElementById('demoCalc').addEventListener('click',()=>{document.getElementById('name').value='Sovan';document.getElementById('location').value='Kolkata, IN';document.getElementById('roof').value=120;document.getElementById('dwellers').value=5;document.getElementById('openSpace').value=20;document.getElementById('calcBtn').click();activateTab('leaderboard');});
+    const lbBody = document.querySelector('#lb tbody');
+    const players = [ {name:'Aisha', credits:940}, {name:'Rohit', credits:380}, {name:'Neeraj', credits:160}, {name:'Zoya', credits:60} ];
+    function badgeFor(c){ if(c>=1000) return {label:'Legend • 1000+', emoji:'🌧️👑'}; if(c>=500) return {label:'Monsoon Master • 500+', emoji:'🌧️🏆'}; if(c>=200) return {label:'Aqua Champ • 200+', emoji:'💧✨'}; if(c>=100) return {label:'Drop Hero • 100+', emoji:'💧⭐'}; return {label:'Raindrop Rookie', emoji:'💧'} }
+    function renderLB(){ lbBody.innerHTML=''; players.sort((a,b)=>b.credits-a.credits).forEach((p,i)=>{ const b = badgeFor(p.credits); const tr=document.createElement('tr'); const shareBtn = `<button class="ghost" onclick="shareScore('${p.name}',${p.credits})">Share</button>`; tr.innerHTML=`<td>${i+1}</td><td>${p.name}</td><td>${p.credits}</td><td><span class='badge'>${b.emoji} ${b.label}</span></td><td>${shareBtn}</td>`; lbBody.appendChild(tr); }) }
+    function addOrUpdatePlayer(name, credits){ const f = players.find(p=>p.name.toLowerCase()===name.toLowerCase()); if(f){ f.credits = Math.max(f.credits, credits); } else { players.push({name, credits}); } renderLB(); }
+    window.shareScore = async (name, credits)=>{ const text = `${name} just earned ${credits} Water Credits on Jaljeevan.AI! #RainwaterHarvesting #SIH2025`; if(navigator.share){ try{ await navigator.share({title:'Jaljeevan.AI', text, url:location.href}); } catch(e){} } else { navigator.clipboard?.writeText(text+' '+location.href); alert('Share text copied to clipboard!'); } }
+    renderLB();
+    const members=[ {name:'Sovan', role:'Lead – Frontend & Product', bio:'Loves technical depth; crafts clean UI/UX.', initials:'SO'}, {name:'Aayush', role:'AI/ML – Hydrology Models', bio:'Rainfall → runoff whisperer.', initials:'AY'}, {name:'Manish', role:'Geospatial & Data', bio:'CGWB/IMD data integration, GIS layers.', initials:'MA'}, {name:'Sandip', role:'AR/3D', bio:'WebXR / ARCore overlays for structures.', initials:'SA'}, {name:'Tithes', role:'Community & Partnerships', bio:'Vendors, NGOs, subsidies.', initials:'TI'} ];
+    const mg=document.getElementById('membersGrid'); members.forEach(m=>{ const d=document.createElement('div'); d.className='card'; d.innerHTML=`<div class="row" style="gap:14px"> <div style="width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg, var(--accent), var(--accent-2));display:grid;place-items:center;font-weight:900;color:#08231a">${m.initials}</div> <div> <div style="font-weight:900;font-size:1.1rem">${m.name}</div> <div class="muted">${m.role}</div> <div style="margin-top:6px">${m.bio}</div> </div> </div>`; mg.appendChild(d); });
+    document.getElementById('year').textContent=new Date().getFullYear();
+    function activateTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===id));document.querySelectorAll('main section').forEach(s=>s.hidden = s.id!==id);}
+  </script>
+</body>
+</html>
