@@ -92,5 +92,5 @@ coverage/
 local_settings.py
 
 # Collected static files
-/static/
+
 /staticfiles/
