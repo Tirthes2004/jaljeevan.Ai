@@ -1,0 +1,542 @@
+[
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 1,
+    "fields": {
+      "district_name": "A & N ISLAND",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 2,
+    "fields": {
+      "district_name": "NICOBAR",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 3,
+    "fields": {
+      "district_name": "NORTH & MIDDLE ANDAMAN",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 4,
+    "fields": {
+      "district_name": "SOUTH ANDAMAN",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 5,
+    "fields": {
+      "district_name": "ARUNACHAL PRADESH",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 6,
+    "fields": {
+      "district_name": "ANJAW",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 7,
+    "fields": {
+      "district_name": "CHANGLANG",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 8,
+    "fields": {
+      "district_name": "DIBANG VALLEY",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 9,
+    "fields": {
+      "district_name": "EAST KAMENG",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 10,
+    "fields": {
+      "district_name": "EAST SIANG",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 11,
+    "fields": {
+      "district_name": "KURUNG KUMEY",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 12,
+    "fields": {
+      "district_name": "LOHIT",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 13,
+    "fields": {
+      "district_name": "LOWER DIBANG VALLEY",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 14,
+    "fields": {
+      "district_name": "LOWER SUBANSIRI",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 15,
+    "fields": {
+      "district_name": "PAPUMPARA",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 16,
+    "fields": {
+      "district_name": "TAWANG",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 17,
+    "fields": {
+      "district_name": "TIRAP",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 18,
+    "fields": {
+      "district_name": "UPPER SIANG",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 19,
+    "fields": {
+      "district_name": "UPPER SUBANSIRI",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 20,
+    "fields": {
+      "district_name": "WEST KAMENG",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 21,
+    "fields": {
+      "district_name": "WEST SIANG",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 22,
+    "fields": {
+      "district_name": "ASSAM & MEGHALAYA",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 23,
+    "fields": {
+      "district_name": "ASSAM",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 24,
+    "fields": {
+      "district_name": "BAJALI",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 25,
+    "fields": {
+      "district_name": "BAKSA",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 26,
+    "fields": {
+      "district_name": "BARPETA",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 27,
+    "fields": {
+      "district_name": "BISWANATH",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 28,
+    "fields": {
+      "district_name": "BONGAIGAON",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 29,
+    "fields": {
+      "district_name": "CACHAR",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 30,
+    "fields": {
+      "district_name": "CHARAIDEO",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 31,
+    "fields": {
+      "district_name": "CHIRANG",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 32,
+    "fields": {
+      "district_name": "DARRANG",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 33,
+    "fields": {
+      "district_name": "DHEMAJI",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 34,
+    "fields": {
+      "district_name": "DHUBRI",
+      "state": "Day :",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 35,
+    "fields": {
+      "district_name": "DIBRUGARH",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  },
+  {
+    "model": "calculator.rainfalldata",
+    "pk": 36,
+    "fields": {
+      "district_name": "DIMA HASAO",
+      "state": "To",
+      "country": "India",
+      "is_active": true,
+      "latitude": null,
+      "longitude": null,
+      "annual_rainfall_mm": "2025.00",
+      "created_at": "2025-08-31T00:00:00Z",
+      "updated_at": "2025-08-31T00:00:00Z"
+    }
+  }
+]
