@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('calculator.urls')),
     path('', include('calculator.urls')),  # For root URL handling
+    path('', include('accounts.urls')),  
+    
 ]
 
 if settings.DEBUG:
