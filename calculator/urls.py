@@ -10,4 +10,9 @@ urlpatterns = [
     # Map root and demo to existing listing view (no demo_view in views.py)
     path('', views.demo_view, name='root_districts'),
     path('demo/', views.list_districts, name='demo_page'),
+
+    path('registerUser',views.registerUser,name = 'registerUser'),
+    path('loginUser',views.loginUser,name = 'loginUser'),
+    path('logoutUser',views.logoutUser,name = 'logoutUser'),
+    path('',views.demo,name = 'demo'),
 ]

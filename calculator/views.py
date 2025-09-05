@@ -5,14 +5,27 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from .models import RainfallData, CalculationLog
 import logging
+from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+
 
 logger = logging.getLogger(__name__)
+
+def demo(request):
+    return render(request,'demo.html')
+
 
 @api_view(['POST'])
 def calculate_rainwater_harvest(request):
     """
     Calculate rainwater harvesting potential and save to database.
     """
+    # if not request.user.is_authenticated:
+    #     return redirect('loginUser') 
+
     try:
         # ✅ Use request.data (DRF parsed data)
         data = request.data
@@ -183,3 +196,61 @@ def get_district_info(request, district_name):
 def demo_view(request):
     from django.shortcuts import render
     return render(request, 'demo.html')
+
+
+# Register user
+def registerUser(request):  
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if not username or not email or not password or not confirm_password:
+            messages.error(request,"All fields required!")
+            return redirect('registerUser')
+        
+        elif(password == confirm_password):
+            if(User.objects.filter(email=email).exists()):
+                messages.info(request,"Email already exist, Try with another")
+                return redirect('registerUser')
+            elif(User.objects.filter(username=username).exists()):
+                messages.info(request,'Username already exist, Try with another')
+                return redirect('registerUser')
+            else:
+                user = User.objects.create_user(username=username,email=email,password=password)
+                user.save()
+                login(request,user)
+                messages.info(request,'Account Created')
+                return redirect('loginUser')
+        else:
+            messages.info(request,"Password Mismatched")
+            return redirect('registerUser')
+
+    else:
+        return render(request,'registerUser.html')
+
+#  Login
+def loginUser(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username,password=password)
+        if user is not None:
+            messages.success(request,"Succesfully Logged In")
+            login(request,user)
+            return redirect('demo')
+        else:
+            messages.error(request,"Credential Mismatched!!!")
+            return redirect('loginUser')
+        
+    return render(request,'loginUser.html')
+
+#  LogOut
+def logoutUser(request):
+    logout(request)
+    messages.error(request,"Successfully Logged Out!!!")
+    return redirect('demo')
+
+
+
