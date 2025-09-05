@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -33,7 +33,7 @@ def registerUser(request):
                 user = User.objects.create_user(username=username,email=email,password=password)
                 user.save()
                 login(request,user)
-                messages.info(request,'Account Created')
+                messages.success(request,'Account Created Succesfully')
                 return redirect('loginUser')
         else:
             messages.info(request,"Password Mismatched")
@@ -49,8 +49,8 @@ def loginUser(request):
         password = request.POST.get('password')
         user = authenticate(username=username,password=password)
         if user is not None:
-            messages.success(request,"Succesfully Logged In")
             login(request,user)
+            messages.success(request,"Succesfully Logged In")
             return redirect('demo')
         else:
             messages.error(request,"Credential Mismatched!!!")
@@ -61,5 +61,5 @@ def loginUser(request):
 #  LogOut
 def logoutUser(request):
     logout(request)
-    messages.error(request,"Successfully Logged Out!!!")
+    messages.success(request,"Successfully Logged Out!!!")
     return redirect('demo')
