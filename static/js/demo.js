@@ -32,11 +32,7 @@ class RainwaterCalculatorDemo {
         document.getElementById('saveResults')?.addEventListener('click', () => this.saveResults());
     }
 
-    // ⭐ MISSING FUNCTION - ADD THIS
     getCSRFToken() {
-        /**
-         * Get CSRF token from Django cookies
-         */
         const cookies = document.cookie.split(';');
         for (let cookie of cookies) {
             const [name, value] = cookie.trim().split('=');
@@ -44,7 +40,10 @@ class RainwaterCalculatorDemo {
                 return value;
             }
         }
-        return null;
+        
+        // Try meta tag fallback
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? meta.getAttribute('content') : null;
     }
 
     async checkAPIStatus() {
@@ -172,7 +171,6 @@ class RainwaterCalculatorDemo {
             this.hideError();
             this.hideResults();
 
-            // Get CSRF token - NOW THIS WILL WORK!
             const csrfToken = this.getCSRFToken();
             console.log('🔐 CSRF Token:', csrfToken ? 'Found' : 'Not found');
 
@@ -181,8 +179,9 @@ class RainwaterCalculatorDemo {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken || '',  // Include CSRF token
+                    'X-CSRFToken': csrfToken || '',
                 },
+                credentials: 'same-origin',  // Include cookies for authentication
                 body: JSON.stringify(data)
             });
 
@@ -191,6 +190,19 @@ class RainwaterCalculatorDemo {
             console.log('📥 API Response:', result);
 
             if (response.ok && result.success) {
+                // Check if calculation was saved with user info
+                if (result.data.calculation_id) {
+                    console.log(`✅ Calculation saved to database with ID: ${result.data.calculation_id}`);
+                    if (result.data.user) {
+                        console.log(`✅ Linked to user: ${result.data.user}`);
+                        this.showNotification(`Calculation saved for ${result.data.user}! 🎉`, 'success');
+                    } else {
+                        this.showNotification('Calculation saved successfully! 📊', 'success');
+                    }
+                } else {
+                    console.warn('⚠️ Calculation succeeded but no database ID returned');
+                }
+
                 this.displayResults(result.data);
                 this.setAPIStatus('online', 'Connected');
             } else {
@@ -240,6 +252,25 @@ class RainwaterCalculatorDemo {
         document.getElementById('resultWaterGallons').textContent = `${this.formatNumber(data.water_harvested_gallons)} gal/year`;
         document.getElementById('resultRecommendation').textContent = data.recommendation;
 
+        // Show user info if available
+        const userInfoDiv = document.getElementById('resultUserInfo');
+        if (userInfoDiv && data.user) {
+            userInfoDiv.innerHTML = `
+                <div class="calculation-meta">
+                    <div class="user-badge">
+                        <i class="fas fa-user"></i>
+                        <span>Calculated by: <strong>${data.user}</strong></span>
+                    </div>
+                    ${data.calculation_id ? `
+                        <div class="calculation-id">
+                            <i class="fas fa-database"></i>
+                            <span>Saved as ID: <strong>${data.calculation_id}</strong></span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
         // Show results section
         this.showResults();
         
@@ -255,6 +286,39 @@ class RainwaterCalculatorDemo {
             minimumFractionDigits: 0,
             maximumFractionDigits: 2
         }).format(num);
+    }
+
+    // Show notification without forcing login
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        Object.assign(notification.style, {
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            padding: '15px 20px',
+            borderRadius: '10px',
+            color: 'white',
+            fontWeight: 'bold',
+            zIndex: '10000',
+            maxWidth: '400px',
+            background: type === 'success' ? '#4CAF50' : type === 'warning' ? '#FF9800' : '#2196F3',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            animation: 'slideIn 0.3s ease'
+        });
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
     }
 
     showLoading() {
@@ -324,7 +388,16 @@ class RainwaterCalculatorDemo {
 
     saveResults() {
         // Simple save functionality
-        alert('Results saved successfully! Check your browser console for details.');
+        const resultData = {
+            district: document.getElementById('resultDistrict')?.textContent,
+            water_harvest: document.getElementById('resultWaterLiters')?.textContent,
+            timestamp: new Date().toISOString()
+        };
+        
+        console.log('💾 Saving results:', resultData);
+        localStorage.setItem('jaljeevai_last_calculation', JSON.stringify(resultData));
+        
+        this.showNotification('Results saved to local storage! 📁', 'success');
     }
 }
 
@@ -333,3 +406,37 @@ const calculator = new RainwaterCalculatorDemo();
 
 // Make calculator available globally for onclick functions
 window.calculator = calculator;
+
+// Add CSS for animations and styling
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    .hidden { display: none; }
+    .error { color: red; font-weight: bold; }
+    .status-indicator.online { background-color: #4caf50; }
+    .status-indicator.offline { background-color: #f44336; }
+    
+    .calculation-meta {
+        background: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    
+    .user-badge, .calculation-id {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9em;
+    }
+`;
+document.head.appendChild(style);
+
+console.log('🌧️ RainwaterCalculatorDemo loaded (without login status checks)');

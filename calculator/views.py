@@ -15,20 +15,14 @@ logger = logging.getLogger(__name__)
 
 @api_view(['POST'])
 def calculate_rainwater_harvest(request):
-    """
-    Calculate rainwater harvesting potential and save to database.
-    """
-    # if not request.user.is_authenticated:
-    #     return redirect('loginUser') 
-
     try:
-        # ✅ Use request.data (DRF parsed data)
         data = request.data
         district_name = data.get('district_name', '').strip()
         length = float(data.get('length', 0))
         width = float(data.get('width', 0))
         
         print(f"🔍 Received: {district_name}, {length}x{width}")
+        print(f"👤 User: {request.user}, Authenticated: {request.user.is_authenticated}")
         
         # Validation
         if not district_name or length <= 0 or width <= 0:
@@ -67,9 +61,10 @@ def calculate_rainwater_harvest(request):
         
         print(f"✅ Result: {water_harvested_liters:.0f} liters")
         
-        # ⭐ NEW: Save calculation to database
+        # ✅ FIXED: Save calculation to database WITH USER
         try:
             calculation_log = CalculationLog.objects.create(
+                user=request.user if request.user.is_authenticated else None,  # ✅ ADD THIS LINE
                 district=district,
                 roof_length=length,
                 roof_width=width,
@@ -81,12 +76,17 @@ def calculate_rainwater_harvest(request):
                 session_id=request.session.session_key
             )
             print(f"💾 Saved calculation log ID: {calculation_log.id}")
+            print(f"👤 Saved with user: {calculation_log.user}")
+            
         except Exception as e:
             print(f"⚠️ Failed to save calculation log: {str(e)}")
-            # Don't fail the response if logging fails
+            import traceback
+            print(traceback.format_exc())
         
         # Response data
         response_data = {
+            'calculation_id': calculation_log.id if 'calculation_log' in locals() else None,  # ✅ ADD THIS
+            'user': request.user.username if request.user.is_authenticated else None,  # ✅ ADD THIS
             'district_name': district.district_name,
             'state': district.state or 'Not specified',
             'annual_rainfall_mm': annual_rainfall_mm,
@@ -103,13 +103,10 @@ def calculate_rainwater_harvest(request):
             'data': response_data
         }, status=status.HTTP_200_OK)
         
-    except ValueError as e:
-        return Response({
-            'error': f'Invalid number format: {str(e)}'
-        }, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         print(f"❌ Calculate error: {e}")
-        logger.error(f"Calculation error: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
         return Response({
             'error': 'Internal server error'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

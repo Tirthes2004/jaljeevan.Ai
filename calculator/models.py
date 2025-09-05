@@ -64,6 +64,14 @@ class RainfallData(models.Model):
         return f"{self.district_name}, {self.state} - {self.annual_rainfall_mm}mm"
 
 class CalculationLog(models.Model):
+
+    user = models.ForeignKey(
+        'auth.User', 
+        on_delete=models.SET_NULL, 
+        blank=True, 
+        null=True,
+        related_name='calculation_logs'
+    )
     """Log calculations for analytics and usage tracking"""
     district = models.ForeignKey(
         RainfallData, 
@@ -94,7 +102,8 @@ class CalculationLog(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.district.district_name} - {self.water_harvested_liters}L - {self.calculated_at.strftime('%Y-%m-%d %H:%M')}"
+        username = self.user.username if self.user else "Anonymous"
+        return f"{username} - {self.district.district_name} - {self.water_harvested_liters}L - {self.calculated_at.strftime('%Y-%m-%d %H:%M')}"
 
 class SystemConfiguration(models.Model):
     """System-wide configuration settings"""

@@ -11,9 +11,14 @@ class RainfallDataAdmin(admin.ModelAdmin):
 
 @admin.register(CalculationLog)
 class CalculationLogAdmin(admin.ModelAdmin):
-    # Use the actual model field name for harvested water
-    list_display = ['district', 'roof_area', 'water_harvested_liters', 'calculated_at']
+    list_display = ['get_username', 'district', 'roof_area', 'water_harvested_liters', 'calculated_at']
     list_filter = ['calculated_at', 'district__state']
-    search_fields = ['district__district_name']
+    search_fields = ['district__district_name', 'user__username']
     readonly_fields = ['calculated_at']
     date_hierarchy = 'calculated_at'
+    
+    # ✅ Method to display username safely
+    def get_username(self, obj):
+        return obj.user.username if obj.user else "Anonymous"
+    get_username.short_description = "User"
+    get_username.admin_order_field = 'user__username'
