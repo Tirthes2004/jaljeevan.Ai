@@ -1,4 +1,4 @@
-:root {
+  :root {
             --primary-dark: #0a1929;
             --primary-medium: #0d2337;
             --primary-light: #143d66;
@@ -23,15 +23,18 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
-            padding-top: 80px;
         }
 
+        body ::-webkit-scrollbar{
+            background-attachment: none;
+        }
         
         /* Contact page specific styles */
         .contact-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            padding-top: 100px;
         }
 
         .page-header {
@@ -48,6 +51,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation:  fadeInUp 1.2s ease;
         }
 
         .page-header p {
@@ -55,6 +59,7 @@
             font-size: 1.2rem;
             max-width: 600px;
             margin: 0 auto;
+            animation: fadeInUp 1.4s ease;
         }
 
         /* Team grid */
@@ -70,6 +75,8 @@
             height: 400px;
             perspective: 1000px;
             animation: fadeIn 1s ease;
+            cursor: pointer;
+            transition: transform 0.5s ease; /* Added transition for scaling */
         }
 
         .team-card-inner {
@@ -83,13 +90,20 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        .team-card:hover .team-card-inner {
+        /* Fixed hover effect - apply scale to the card, not the inner element */
+        .team-card:hover:not(.flipped) {
             transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            z-index: 10; /* Ensure scaled card appears above others */
         }
 
-        .team-card.flipped .team-card-inner {
+        .team-card:hover .team-card-inner:not(.flipped) {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            animation: none; /* Stop float animation on hover */
+        }
+
+        .team-card-inner.flipped {
             transform: rotateY(180deg);
+            animation: none;
         }
 
         .team-card-front, .team-card-back {
@@ -130,6 +144,14 @@
             border: 3px solid var(--accent-teal);
             margin-bottom: 1.5rem;
             box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            transition: all 0.5s ease;
+            filter: grayscale(30%);
+        }
+
+        .team-card:hover .member-image {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.8);
+            filter: grayscale(0%);
         }
 
         .member-name {
@@ -137,12 +159,35 @@
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover .member-name {
+            color: var(--accent-teal);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
         }
 
         .member-role {
             color: var(--accent-teal);
             font-size: 1.1rem;
             margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .member-role::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-teal);
+            transition: width 0.5s ease;
+        }
+
+        .team-card:hover .member-role::after {
+            width: 100%;
         }
 
         .member-desc {
@@ -150,6 +195,14 @@
             margin-bottom: 1.5rem;
             font-size: 0.95rem;
             line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.2s;
+        }
+
+        .team-card-back .member-desc {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .social-links {
@@ -168,12 +221,23 @@
             background: rgba(179, 224, 255, 0.1);
             color: var(--text-primary);
             transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
         }
+
+        .team-card-back .social-links a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .social-links a:nth-child(1) { transition-delay: 0.3s; }
+        .social-links a:nth-child(2) { transition-delay: 0.4s; }
+        .social-links a:nth-child(3) { transition-delay: 0.5s; }
 
         .social-links a:hover {
             background: var(--accent-teal);
             color: var(--primary-dark);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.1);
         }
 
         /* Staggered animation for cards */
@@ -184,7 +248,16 @@
         .team-card:nth-child(5) { animation-delay: 0.5s; }
         .team-card:nth-child(6) { animation-delay: 0.6s; }
 
-        
+        /* Water drop animation */
+        .water-drop {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(0, 229, 255, 0.5);
+            border-radius: 50%;
+            animation: drop 7s infinite linear;
+            z-index: -1;
+        }
 
         /* Animations */
         @keyframes fadeIn {
@@ -207,6 +280,31 @@
             0% { text-shadow: 0 0 10px var(--glow-color); }
             50% { text-shadow: 0 0 20px var(--accent-teal), 0 0 30px var(--glow-color); }
             100% { text-shadow: 0 0 10px var(--glow-color); }
+        }
+
+        @keyframes floatAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, 15px) rotate(5deg); }
+            50% { transform: translate(0, 30px) rotate(0deg); }
+            75% { transform: translate(-20px, 15px) rotate(-5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes drop {
+            0% {
+                top: -50px;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 0.5;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
         }
 
         /* Responsive styles */
