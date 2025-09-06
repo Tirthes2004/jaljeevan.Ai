@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team - JALJEEVAN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/sidebar.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="/static/css/contact.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+
+</head>
+<body>
+    <!-- Navbar Component -->
+    <div id="navbar-container"></div>
+    
+    <!-- Sidebar Component -->
+    <div id="sidebar-container"></div>
+
+    <!-- Contact Content -->
+    <div class="contact-container">
+        <div class="page-header">
+            <h1>Meet Our Team</h1>
+            <p>The passionate individuals behind JALJEEVAN who are working to revolutionize rainwater harvesting</p>
+        </div>
+
+        <div class="team-grid">
+            <!-- Team Member 1 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">Alex Johnson</h3>
+                        <p class="member-role">Lead Developer</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">Alex Johnson</h3>
+                        <p class="member-role">Lead Developer</p>
+                        <p class="member-desc">Alex is a full-stack developer with 8 years of experience in building scalable web applications. He specializes in AI integration and data visualization.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">Sarah Williams</h3>
+                        <p class="member-role">UI/UX Designer</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">Sarah Williams</h3>
+                        <p class="member-role">UI/UX Designer</p>
+                        <p class="member-desc">Sarah creates intuitive and beautiful user interfaces. With a background in environmental science, she ensures our solutions are both user-friendly and effective.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">Michael Chen</h3>
+                        <p class="member-role">Data Scientist</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">Michael Chen</h3>
+                        <p class="member-role">Data Scientist</p>
+                        <p class="member-desc">Michael develops the AI algorithms that power our rainwater assessment system. He holds a PhD in Environmental Data Science from Stanford.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-medium"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">Priya Sharma</h3>
+                        <p class="member-role">Hydrology Expert</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">Priya Sharma</h3>
+                        <p class="member-role">Hydrology Expert</p>
+                        <p class="member-desc">Priya brings 10 years of experience in water resource management. She ensures our algorithms are scientifically accurate and environmentally sound.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-researchgate"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 5 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1590086782792-42dd2350140d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">David Kim</h3>
+                        <p class="member-role">Project Manager</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">David Kim</h3>
+                        <p class="member-role">Project Manager</p>
+                        <p class="member-desc">David keeps our projects on track and ensures we deliver high-quality solutions on time. He's certified in Agile and Lean methodologies.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-blog"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 6 -->
+            <div class="team-card" onclick="flipCard(this)">
+                <div class="team-card-inner">
+                    <div class="team-card-front">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Team Member" class="member-image">
+                        <h3 class="member-name">Emma Rodriguez</h3>
+                        <p class="member-role">Sustainability Advocate</p>
+                        <p>Click to learn more</p>
+                    </div>
+                    <div class="team-card-back">
+                        <h3 class="member-name">Emma Rodriguez</h3>
+                        <p class="member-role">Sustainability Advocate</p>
+                        <p class="member-desc">Emma connects with communities and promotes sustainable water practices. She has a background in environmental education and community outreach.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Auth Modals Container -->
+    <div id="auth-modals-container"></div>
+
+    <!-- Component Loader -->
+    <script src="/static/js/componentLoader.js"></script>
+    
+    <!-- Component JS -->
+    <script src="/static/js/navbar.js"></script>
+    <script src="/static/js/sidebar.js"></script>
+    
+    <!-- Page-specific JS -->
+    <script src="/static/js/contact.js"></script>
+    <script src="/static/js/auth.js"></script>
+
+    
+</body>
+</html>
