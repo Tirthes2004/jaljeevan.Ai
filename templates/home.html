@@ -18,13 +18,73 @@
 <body>
     <!-- Rain animation container -->
     <div class="rain-container"></div>
-    
+    {% block navbar %}
     <!-- Navbar Component -->
-    <div id="navbar-container"></div>
+    <nav class="navbar">
+    <div class="left-sidebar-toggle"> <i class="fas fa-bars"></i> </div>
+    <div class="logo">
+    <div class="logo-icon"><i class="fas fa-droplet"></i></div>
+    <div class="logo-text">JALJEEVAN</div>
+</div>
+
+<ul class="nav-links">
+    <li><a href="/templates/home.html">Home</a></li>
+    <li><a href="#">Features</a></li>
+    <li><a href="#">Technology</a></li>
+    <li><a href="#">LeaderBoard</a></li>
+    <li><a href="/templates/contact.html">Contact</a></li>
+</ul>
+
+<div class="nav-right">
+    <div class="language-selector">
+        <button class="language-btn">
+            English <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="language-dropdown">
+            <a href="#">Hindi</a>
+            <a href="#">Spanish</a>
+            <a href="#">French</a>
+            <a href="#">German</a>
+        </div>
+    </div>
     
+    <div class="auth-buttons">
+        {% if user.is_authenticated %}
+        <a class="btn btn-danger" href="{% url 'logoutUser' %}">Logout</a>
+        {% else %}
+        <a class="btn btn-primary me-2" href="{% url 'loginUser' %}">Log In</a>
+        {% endif %}
+    </div>
+</div>
+</nav>
+   {% endblock %}
+    {% block sidebar %}
     <!-- Sidebar Component -->
-    <div id="sidebar-container"></div>
+    <div class="sidebar">
+    <div class="sidebar-close">
+        <i class="fas fa-times"></i>
+    </div>
     
+    <ul class="sidebar-links">
+        <li><a href="/templates/home.html">Home</a></li>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">LeaderBoard</a></li>
+        <li><a href="/templates/contact.html">Contact</a></li>
+    </ul>
+    
+    <div class="sidebar-auth">
+        <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
+        <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
+    </div>
+    
+    <div class="sidebar-language">
+        <button class="language-btn" style="width: 100%;">
+            English <i class="fas fa-chevron-down"></i>
+        </button>
+    </div>
+</div>
+    {% endblock %}
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -53,10 +113,136 @@
     </section>
     
     <!-- Auth Modals Container -->
-    <div id="auth-modals-container"></div>
+     <!-- Sign Up Modal -->
+    <div id="signup-modal" class="auth-modal">
+        <div class="modal-backdrop" onclick="closeModal('signup-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close" onclick="closeModal('signup-modal')">
+                    <i class="fas fa-times"></i>
+                </div>
+                
+                <div class="modal-header">
+                    <h2>Create Account</h2>
+                    <p>Join us to start your rainwater harvesting journey</p>
+                </div>
+                
+                <form class="auth-form" id="signup-form">
+                    <div class="form-group">
+                        <input type="text" id="signup-name" required>
+                        <label for="signup-name">Full Name</label>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" id="signup-email" required>
+                        <label for="signup-email">Email Address</label>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    
+                    <div class="form-group password-group">
+                        <div class="password-input-section">
+                            <input type="password" id="signup-password" required>
+                            <label for="signup-password">Password</label>
+                            <div class="password-strength">
+                                <div class="strength-bar" id="bar-1"></div>
+                                <div class="strength-bar" id="bar-2"></div>
+                                <div class="strength-bar" id="bar-3"></div>
+                                <div class="strength-bar" id="bar-4"></div>
+                            </div>
+                            
+                            <div class="strength-text">
+                                <i class="strength-icon fas fa-lock"></i>
+                                Password strength: <span id="strength-value">None</span>
+                            </div>
+                             <div class="form-group">
+                                <input type="password" id="signup-confirm-password" required>
+                                <label for="signup-confirm-password">Confirm Password</label>
+                            </div>
+                        </div>
+                        
+                        <div class="strength-requirements">
+                            <h4>Password Requirements:</h4>
+                            <div class="requirement" id="req-length">
+                                <i class="fas fa-circle"></i>
+                                <span>At least 8 characters</span>
+                            </div>
+                            <div class="requirement" id="req-lowercase">
+                                <i class="fas fa-circle"></i>
+                                <span>Contains lowercase letters</span>
+                            </div>
+                            <div class="requirement" id="req-uppercase">
+                                <i class="fas fa-circle"></i>
+                                <span>Contains uppercase letters</span>
+                            </div>
+                            <div class="requirement" id="req-number">
+                                <i class="fas fa-circle"></i>
+                                <span>Contains numbers</span>
+                            </div>
+                            <div class="requirement" id="req-special">
+                                <i class="fas fa-circle"></i>
+                                <span>Contains special characters</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                    
+                    <button type="submit" class="btn-auth">
+                        <span>Create Account</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                
+                <div class="auth-switch">
+                    Already have an account? <a href="#" onclick="switchAuthModal('login-modal')">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Component Loader -->
-    <script src="/static/js/componentLoader.js"></script>
+    <!-- Login Modal -->
+    <div id="login-modal" class="auth-modal">
+        <div class="modal-backdrop" onclick="closeModal('login-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close" onclick="closeModal('login-modal')">
+                    <i class="fas fa-times"></i>
+                </div>
+                
+                <div class="modal-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to continue your rainwater harvesting journey</p>
+                </div>
+                
+                <form class="auth-form" id="login-form">
+                    <div class="form-group">
+                        <input type="email" id="login-email" required>
+                        <label for="login-email">Email Address</label>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">Password</label>
+                    </div>
+                    
+                    <div class="form-options">
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-auth">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+                
+                <div class="auth-switch">
+                    Don't have an account? <a href="#" onclick="switchAuthModal('signup-modal')">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Component JS -->
     <script src="/static/js/navbar.js"></script>
