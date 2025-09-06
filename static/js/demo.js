@@ -8,6 +8,34 @@ class RainwaterCalculatorDemo {
         this.bindEvents();
         this.checkAPIStatus();
         console.log('🚀 Rainwater Calculator Demo initialized');
+        // Inside bindEvents() or init() instead of searchDistricts()
+const searchInput = document.getElementById('districtSearch');
+if (searchInput) {
+    searchInput.addEventListener('input', async () => {
+        const searchTerm = searchInput.value.trim();
+
+        // show results starting from first character
+        if (searchTerm.length < 1) {
+            this.clearSearchResults();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                this.displaySearchResults(data.districts);
+            } else {
+                this.showSearchError('No districts found matching your search.');
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            this.showSearchError('Error searching districts. Please check your connection.');
+        }
+    });
+}
+
     }
 
     bindEvents() {
@@ -40,7 +68,7 @@ class RainwaterCalculatorDemo {
                 return value;
             }
         }
-        
+
         // Try meta tag fallback
         const meta = document.querySelector('meta[name="csrf-token"]');
         return meta ? meta.getAttribute('content') : null;
@@ -68,34 +96,62 @@ class RainwaterCalculatorDemo {
         }
     }
 
-    async searchDistricts() {
-        const searchTerm = document.getElementById('districtSearch').value.trim();
-        
-        if (searchTerm.length < 2) {
-            this.clearSearchResults();
-            return;
-        }
+    // async searchDistricts() {
+    //     const searchTerm = document.getElementById('districtSearch').value.trim();
 
-        try {
-            const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
-            const data = await response.json();
+    //     if (searchTerm.length < 1) {
+    //         this.clearSearchResults();
+    //         return;
+    //     }
 
-            if (response.ok && data.success) {
-                this.displaySearchResults(data.districts);
-            } else {
-                this.showSearchError('No districts found matching your search.');
-            }
-        } catch (error) {
-            console.error('Search error:', error);
-            this.showSearchError('Error searching districts. Please check your connection.');
-        }
-    }
+    //     try {
+    //         const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
+    //         const data = await response.json();
+
+    //         if (response.ok && data.success) {
+    //             this.displaySearchResults(data.districts);
+    //         } else {
+    //             this.showSearchError('No districts found matching your search.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Search error:', error);
+    //         this.showSearchError('Error searching districts. Please check your connection.');
+    //     }
+    // }
+
+    // async searchDistricts() {
+    //     // Attach event listener so API calls happen on typing
+    //     document.getElementById('districtSearch').addEventListener('input', async () => {
+    //         const searchTerm = document.getElementById('districtSearch').value.trim();
+
+    //         // show results starting from first character
+    //         if (searchTerm.length < 1) {
+    //             this.clearSearchResults();
+    //             return;
+    //         }
+
+    //         try {
+    //             const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
+    //             const data = await response.json();
+
+    //             if (response.ok && data.success) {
+    //                 this.displaySearchResults(data.districts);
+    //             } else {
+    //                 this.showSearchError('No districts found matching your search.');
+    //             }
+    //         } catch (error) {
+    //             console.error('Search error:', error);
+    //             this.showSearchError('Error searching districts. Please check your connection.');
+    //         }
+    //     });
+
+    // }
 
     displaySearchResults(districts) {
         const resultsDiv = document.getElementById('searchResults');
-        
+
         if (!resultsDiv) return;
-        
+
         if (districts.length === 0) {
             resultsDiv.innerHTML = `
                 <div class="no-results">
@@ -144,7 +200,7 @@ class RainwaterCalculatorDemo {
         const districtInput = document.getElementById('district');
         const searchInput = document.getElementById('districtSearch');
         const lengthInput = document.getElementById('length');
-        
+
         if (districtInput) districtInput.value = districtName;
         if (searchInput) searchInput.value = '';
         this.clearSearchResults();
@@ -273,7 +329,7 @@ class RainwaterCalculatorDemo {
 
         // Show results section
         this.showResults();
-        
+
         // Scroll to results
         document.getElementById('resultsSection')?.scrollIntoView({
             behavior: 'smooth',
@@ -298,7 +354,7 @@ class RainwaterCalculatorDemo {
                 <span>${message}</span>
             </div>
         `;
-        
+
         Object.assign(notification.style, {
             position: 'fixed',
             top: '20px',
@@ -313,9 +369,9 @@ class RainwaterCalculatorDemo {
             boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
             animation: 'slideIn 0.3s ease'
         });
-        
+
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.remove();
         }, 5000);
@@ -324,7 +380,7 @@ class RainwaterCalculatorDemo {
     showLoading() {
         const loading = document.getElementById('loading');
         const calcBtn = document.getElementById('calculateBtn');
-        
+
         if (loading) loading.classList.remove('hidden');
         if (calcBtn) {
             calcBtn.disabled = true;
@@ -335,7 +391,7 @@ class RainwaterCalculatorDemo {
     hideLoading() {
         const loading = document.getElementById('loading');
         const calcBtn = document.getElementById('calculateBtn');
-        
+
         if (loading) loading.classList.add('hidden');
         if (calcBtn) {
             calcBtn.disabled = false;
@@ -346,10 +402,10 @@ class RainwaterCalculatorDemo {
     showError(message) {
         const errorText = document.getElementById('errorText');
         const errorMessage = document.getElementById('errorMessage');
-        
+
         if (errorText) errorText.textContent = message;
         if (errorMessage) errorMessage.classList.remove('hidden');
-        
+
         // Auto-hide error after 8 seconds
         setTimeout(() => this.hideError(), 8000);
     }
@@ -372,16 +428,16 @@ class RainwaterCalculatorDemo {
     resetCalculator() {
         // Clear form
         document.getElementById('calculatorForm')?.reset();
-        
+
         // Clear search
         const searchInput = document.getElementById('districtSearch');
         if (searchInput) searchInput.value = '';
         this.clearSearchResults();
-        
+
         // Hide results and errors
         this.hideResults();
         this.hideError();
-        
+
         // Focus on district input
         document.getElementById('district')?.focus();
     }
@@ -393,10 +449,10 @@ class RainwaterCalculatorDemo {
             water_harvest: document.getElementById('resultWaterLiters')?.textContent,
             timestamp: new Date().toISOString()
         };
-        
+
         console.log('💾 Saving results:', resultData);
         localStorage.setItem('jaljeevai_last_calculation', JSON.stringify(resultData));
-        
+
         this.showNotification('Results saved to local storage! 📁', 'success');
     }
 }
