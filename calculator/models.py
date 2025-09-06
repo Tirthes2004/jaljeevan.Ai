@@ -5,7 +5,6 @@ from django.utils import timezone
 class RainfallData(models.Model):
     district_name = models.CharField(
         max_length=100, 
-        unique=True,
         db_index=True,  # Add database index for faster queries
         help_text="Name of the district"
     )

@@ -1,0 +1,3532 @@
+[
+ {
+  "state": "A & N ISLAND",
+  "district_name": "NICOBAR",
+  "annual_rainfall_mm": 184.6583333333333
+ },
+ {
+  "state": "A & N ISLAND",
+  "district_name": "NORTH & MIDDLE ANDAMAN",
+  "annual_rainfall_mm": 220.0916666666666
+ },
+ {
+  "state": "A & N ISLAND",
+  "district_name": "SOUTH ANDAMAN",
+  "annual_rainfall_mm": 276.575
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "ANJAW",
+  "annual_rainfall_mm": 153.08333333333331
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "CHANGLANG",
+  "annual_rainfall_mm": 175.50833333333333
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "DIBANG VALLEY",
+  "annual_rainfall_mm": 182.52500000000006
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "EAST KAMENG",
+  "annual_rainfall_mm": 117.54166666666664
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "EAST SIANG",
+  "annual_rainfall_mm": 229.5666666666667
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "KURUNG KUMEY",
+  "annual_rainfall_mm": 100.95833333333333
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "LOHIT",
+  "annual_rainfall_mm": 207.0916666666667
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "LOWER DIBANG VALLEY",
+  "annual_rainfall_mm": 224.16666666666666
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "LOWER SUBANSIRI",
+  "annual_rainfall_mm": 118.49166666666667
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "PAPUM PARE",
+  "annual_rainfall_mm": 143.07500000000002
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "TAWANG",
+  "annual_rainfall_mm": 199.83333333333337
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "TIRAP",
+  "annual_rainfall_mm": 188.75
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "UPPER SIANG",
+  "annual_rainfall_mm": 187.88333333333335
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "UPPER SUBANSIRI",
+  "annual_rainfall_mm": 131.575
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "WEST KAMENG",
+  "annual_rainfall_mm": 132.95000000000002
+ },
+ {
+  "state": "ARUNACHAL PRADESH",
+  "district_name": "WEST SIANG",
+  "annual_rainfall_mm": 175.70000000000002
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "BAKSA",
+  "annual_rainfall_mm": 143.08333333333331
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "BARPETA",
+  "annual_rainfall_mm": 127.97500000000001
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "BONGAIGAON",
+  "annual_rainfall_mm": 107.80833333333335
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "CACHAR",
+  "annual_rainfall_mm": 208.57500000000005
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "CHIRANG",
+  "annual_rainfall_mm": 125.10000000000001
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "DARRANG",
+  "annual_rainfall_mm": 150.38333333333335
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "DHEMAJI",
+  "annual_rainfall_mm": 205.9083333333333
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "DHUBRI",
+  "annual_rainfall_mm": 99.45
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "DIBRUGARH",
+  "annual_rainfall_mm": 217.0666666666667
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "DIMA HASAO",
+  "annual_rainfall_mm": 205.21666666666667
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "GOALPARA",
+  "annual_rainfall_mm": 103.63333333333334
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "GOLAGHAT",
+  "annual_rainfall_mm": 180.5416666666667
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "HAILAKANDI",
+  "annual_rainfall_mm": 209.4083333333333
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "JORHAT",
+  "annual_rainfall_mm": 197.35833333333335
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "KAMRUP",
+  "annual_rainfall_mm": 146.78333333333333
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "KAMRUP METRO",
+  "annual_rainfall_mm": 151.95833333333334
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "KARBI ANGLONG",
+  "annual_rainfall_mm": 161.94166666666663
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "KARIMGANJ",
+  "annual_rainfall_mm": 218.77499999999998
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "KOKRAJHAR",
+  "annual_rainfall_mm": 116.39999999999999
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "LAKHIMPUR",
+  "annual_rainfall_mm": 201.5666666666667
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "MORIGAON",
+  "annual_rainfall_mm": 163.375
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "NAGAON",
+  "annual_rainfall_mm": 165.41666666666669
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "NALBARI",
+  "annual_rainfall_mm": 140.90833333333336
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "SIVASAGAR",
+  "annual_rainfall_mm": 208.875
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "SONITPUR",
+  "annual_rainfall_mm": 181.66666666666666
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "TINSUKIA",
+  "annual_rainfall_mm": 224.89999999999998
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "UDALGURI",
+  "annual_rainfall_mm": 169.58333333333334
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "EAST GARO HILLS",
+  "annual_rainfall_mm": 132.75
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "EAST JAINTIA HILLS",
+  "annual_rainfall_mm": 242.13333333333335
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "EAST KHASI HILLS",
+  "annual_rainfall_mm": 213.49166666666667
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "RI-BHOI",
+  "annual_rainfall_mm": 183.16666666666666
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "SOUTH GARO HILLS",
+  "annual_rainfall_mm": 152.54166666666666
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "SOUTH WEST GARO HILLS",
+  "annual_rainfall_mm": 109.60833333333333
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "SOUTH WEST KHASI HIL",
+  "annual_rainfall_mm": 200.67499999999995
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "WEST GARO HILLS",
+  "annual_rainfall_mm": 121.65833333333332
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "WEST JAINTIA HILLS",
+  "annual_rainfall_mm": 234.58333333333334
+ },
+ {
+  "state": "ASSAM & MEGHALAYA",
+  "district_name": "WEST KHASI HILLS",
+  "annual_rainfall_mm": 206.80000000000004
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "DIMAPUR",
+  "annual_rainfall_mm": 170.83333333333334
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "KIPHIRE",
+  "annual_rainfall_mm": 185.52499999999998
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "KOHIMA",
+  "annual_rainfall_mm": 178.90833333333333
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "LONGLENG",
+  "annual_rainfall_mm": 191
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "MOKOKCHUNG",
+  "annual_rainfall_mm": 188.07500000000002
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "MON",
+  "annual_rainfall_mm": 194.62500000000003
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "PEREN",
+  "annual_rainfall_mm": 175.975
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "PHEK",
+  "annual_rainfall_mm": 182.41666666666663
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "TUENSANG",
+  "annual_rainfall_mm": 190.11666666666667
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "WOKHA",
+  "annual_rainfall_mm": 184.475
+ },
+ {
+  "state": "NAGALAND",
+  "district_name": "ZUNHEBOTO",
+  "annual_rainfall_mm": 186.41666666666666
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "BISHNUPUR",
+  "annual_rainfall_mm": 159.35
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "CHANDEL",
+  "annual_rainfall_mm": 178.89166666666668
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "CHURACHANDPUR",
+  "annual_rainfall_mm": 175.9583333333333
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "IMPHAL EAST",
+  "annual_rainfall_mm": 163.79166666666669
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "IMPHAL WEST",
+  "annual_rainfall_mm": 166.49166666666667
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "SENAPATI",
+  "annual_rainfall_mm": 180.60833333333335
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "TAMENGLONG",
+  "annual_rainfall_mm": 177.98333333333335
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "THOUBAL",
+  "annual_rainfall_mm": 168.1833333333333
+ },
+ {
+  "state": "MANIPUR",
+  "district_name": "UKHRUL",
+  "annual_rainfall_mm": 184.6833333333333
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "AIZAWL",
+  "annual_rainfall_mm": 178.90833333333333
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "CHAMPHAI",
+  "annual_rainfall_mm": 185.52499999999998
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "KOLASIB",
+  "annual_rainfall_mm": 175.975
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "LAWNGTLAI",
+  "annual_rainfall_mm": 182.41666666666663
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "LUNGLEI",
+  "annual_rainfall_mm": 184.475
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "MAMIT",
+  "annual_rainfall_mm": 177.98333333333335
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "SAIHA",
+  "annual_rainfall_mm": 185.0333333333333
+ },
+ {
+  "state": "MIZORAM",
+  "district_name": "SERCHHIP",
+  "annual_rainfall_mm": 180.65
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "DHALAI",
+  "annual_rainfall_mm": 212.49166666666665
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "GOMATI",
+  "annual_rainfall_mm": 206.00833333333333
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "KHOWAI",
+  "annual_rainfall_mm": 209.35
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "NORTH TRIPURA",
+  "annual_rainfall_mm": 215.95833333333334
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "SEPAHIJALA",
+  "annual_rainfall_mm": 207.4083333333334
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "SOUTH TRIPURA",
+  "annual_rainfall_mm": 205.06666666666672
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "UNAKOTI",
+  "annual_rainfall_mm": 213.88333333333333
+ },
+ {
+  "state": "TRIPURA",
+  "district_name": "WEST TRIPURA",
+  "annual_rainfall_mm": 211.5916666666666
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "ALIPURDUAR",
+  "annual_rainfall_mm": 194.06666666666663
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "COOCHBEHAR",
+  "annual_rainfall_mm": 193.18333333333337
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "DARJEELING",
+  "annual_rainfall_mm": 219.3416666666666
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "JALPAIGURI",
+  "annual_rainfall_mm": 197.30000000000004
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "KALIMPONG",
+  "annual_rainfall_mm": 213.13333333333333
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "NORTH DINAJPUR",
+  "annual_rainfall_mm": 175.475
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "SOUTH DINAJPUR",
+  "annual_rainfall_mm": 174.6666666666667
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "GYALSHING",
+  "annual_rainfall_mm": 225.5416666666666
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "MANGAN",
+  "annual_rainfall_mm": 233.00833333333333
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "NAMCHI",
+  "annual_rainfall_mm": 223.27499999999998
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "PAKYONG",
+  "annual_rainfall_mm": 229.9166666666667
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "SORENG",
+  "annual_rainfall_mm": 227.27499999999998
+ },
+ {
+  "state": "SUB-HIMALAYAN WEST BENGAL & SIKKIM",
+  "district_name": "GANGTOK",
+  "annual_rainfall_mm": 232.11666666666667
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "BANKURA",
+  "annual_rainfall_mm": 93.87499999999999
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "BIRBHUM",
+  "annual_rainfall_mm": 92.99166666666667
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "BURDWAN",
+  "annual_rainfall_mm": 95.19166666666666
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "EAST MIDNAPORE",
+  "annual_rainfall_mm": 97.19166666666666
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "HOOGHLY",
+  "annual_rainfall_mm": 95.86666666666666
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "HOWRAH",
+  "annual_rainfall_mm": 96.075
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "JHARGRAM",
+  "annual_rainfall_mm": 94.65
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "KOLKATA",
+  "annual_rainfall_mm": 96.50833333333333
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "MALDA",
+  "annual_rainfall_mm": 172.41666666666666
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "MURSHIDABAD",
+  "annual_rainfall_mm": 174.6666666666667
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "NADIA",
+  "annual_rainfall_mm": 93.87499999999999
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "NORTH 24 PARGANAS",
+  "annual_rainfall_mm": 96.78333333333335
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "PASCHIM MIDNAPORE",
+  "annual_rainfall_mm": 95.25833333333333
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "PURULIA",
+  "annual_rainfall_mm": 90.68333333333332
+ },
+ {
+  "state": "GANGETIC WEST BENGAL",
+  "district_name": "SOUTH 24 PARGANAS",
+  "annual_rainfall_mm": 97.60833333333333
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "ANGUL",
+  "annual_rainfall_mm": 78.37500000000001
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "BALASORE",
+  "annual_rainfall_mm": 81.71666666666667
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "BARGARH",
+  "annual_rainfall_mm": 77.44999999999999
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "BHADRAK",
+  "annual_rainfall_mm": 80.5
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "BOLANGIR",
+  "annual_rainfall_mm": 75.125
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "BOUDH",
+  "annual_rainfall_mm": 77.66666666666667
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "CUTTACK",
+  "annual_rainfall_mm": 79.71666666666667
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "DEOGARH",
+  "annual_rainfall_mm": 77.73333333333332
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "DHENKANAL",
+  "annual_rainfall_mm": 79.075
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "GAJAPATI",
+  "annual_rainfall_mm": 84.78333333333335
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "GANJAM",
+  "annual_rainfall_mm": 83.95833333333333
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "JAGATSINGHPUR",
+  "annual_rainfall_mm": 81.025
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "JAJPUR",
+  "annual_rainfall_mm": 80.10833333333332
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "JHARSUGUDA",
+  "annual_rainfall_mm": 76.78333333333333
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KALAHANDI",
+  "annual_rainfall_mm": 73.25833333333334
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KANDHAMAL",
+  "annual_rainfall_mm": 78.09166666666665
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KENDRAPARA",
+  "annual_rainfall_mm": 81.30833333333334
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KEONJHAR",
+  "annual_rainfall_mm": 77.94166666666668
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KHURDA",
+  "annual_rainfall_mm": 80.15833333333333
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "KORAPUT",
+  "annual_rainfall_mm": 80.375
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "MALKANGIRI",
+  "annual_rainfall_mm": 81.72500000000001
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "MAYURBHANJ",
+  "annual_rainfall_mm": 78.36666666666667
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "NAYAGARH",
+  "annual_rainfall_mm": 79.425
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "NABARANGPUR",
+  "annual_rainfall_mm": 77.38333333333333
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "NUAPADA",
+  "annual_rainfall_mm": 73.87500000000001
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "PURI",
+  "annual_rainfall_mm": 82.375
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "RAYAGADA",
+  "annual_rainfall_mm": 80.775
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "SAMBALPUR",
+  "annual_rainfall_mm": 76.10000000000001
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "SONEPUR",
+  "annual_rainfall_mm": 74.49166666666666
+ },
+ {
+  "state": "ORISSA",
+  "district_name": "SUNDARGARH",
+  "annual_rainfall_mm": 77.39999999999999
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "BOKARO",
+  "annual_rainfall_mm": 72.54166666666667
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "CHATRA",
+  "annual_rainfall_mm": 71.61666666666666
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "DEOGHAR",
+  "annual_rainfall_mm": 74.66666666666667
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "DHANBAD",
+  "annual_rainfall_mm": 73.88333333333334
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "DUMKA",
+  "annual_rainfall_mm": 74.27499999999999
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "EAST SINGBHUM",
+  "annual_rainfall_mm": 75.19166666666668
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "GARHWA",
+  "annual_rainfall_mm": 69.29166666666667
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "GIRIDIH",
+  "annual_rainfall_mm": 73.24166666666667
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "GODDA",
+  "annual_rainfall_mm": 74.1
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "GUMLA",
+  "annual_rainfall_mm": 71.83333333333333
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "HAZARIBAGH",
+  "annual_rainfall_mm": 72.25833333333333
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "JAMTARA",
+  "annual_rainfall_mm": 73.59166666666665
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "KHUNTI",
+  "annual_rainfall_mm": 72.53333333333335
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "KODERMA",
+  "annual_rainfall_mm": 72.10833333333333
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "LATEHAR",
+  "annual_rainfall_mm": 70.95
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "LOHARDAGA",
+  "annual_rainfall_mm": 71.55
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "PAKUR",
+  "annual_rainfall_mm": 73.625
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "PALAMU",
+  "annual_rainfall_mm": 70.26666666666668
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "RAMGARH",
+  "annual_rainfall_mm": 72.93333333333334
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "RANCHI",
+  "annual_rainfall_mm": 72.40833333333333
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "SAHIBGANJ",
+  "annual_rainfall_mm": 74.54166666666667
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "SERAIKELA-KHARSAWAN",
+  "annual_rainfall_mm": 74.85
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "SIMDEGA",
+  "annual_rainfall_mm": 72.125
+ },
+ {
+  "state": "JHARKHAND",
+  "district_name": "WEST SINGHBHUM",
+  "annual_rainfall_mm": 74.21666666666665
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "ARARIA",
+  "annual_rainfall_mm": 152.01666666666668
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "ARWAL",
+  "annual_rainfall_mm": 145.3
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "AURANGABAD",
+  "annual_rainfall_mm": 143.05833333333334
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "BANKA",
+  "annual_rainfall_mm": 149.34166666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "BEGUSARAI",
+  "annual_rainfall_mm": 147.49166666666665
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "BHAGALPUR",
+  "annual_rainfall_mm": 150.04166666666666
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "BHOJPUR",
+  "annual_rainfall_mm": 145.86666666666665
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "BUXAR",
+  "annual_rainfall_mm": 145.46666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "DARBHANGA",
+  "annual_rainfall_mm": 148.20000000000002
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "EAST CHAMPARAN",
+  "annual_rainfall_mm": 151.15
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "GAYA",
+  "annual_rainfall_mm": 141.29999999999998
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "GOPALGANJ",
+  "annual_rainfall_mm": 149.025
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "JAMUI",
+  "annual_rainfall_mm": 146.23333333333332
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "JAHANABAD",
+  "annual_rainfall_mm": 144.675
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "KAIMUR",
+  "annual_rainfall_mm": 141.85
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "KATIHAR",
+  "annual_rainfall_mm": 152.4
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "KHAGARIA",
+  "annual_rainfall_mm": 148.73333333333332
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "KISHANGANJ",
+  "annual_rainfall_mm": 155.46666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "LAKHISARAI",
+  "annual_rainfall_mm": 147.21666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "MADHEPURA",
+  "annual_rainfall_mm": 151.14166666666668
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "MADHUBANI",
+  "annual_rainfall_mm": 149.325
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "MUNGER",
+  "annual_rainfall_mm": 147.85
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "MUZAFFARPUR",
+  "annual_rainfall_mm": 148.59166666666664
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "NALANDA",
+  "annual_rainfall_mm": 145.74999999999997
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "NAWADA",
+  "annual_rainfall_mm": 144.05
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "PATNA",
+  "annual_rainfall_mm": 146.15
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "PURNEA",
+  "annual_rainfall_mm": 153.6833333333333
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "ROHTAS",
+  "annual_rainfall_mm": 142.46666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SAHARSA",
+  "annual_rainfall_mm": 151.79166666666666
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SAMASTIPUR",
+  "annual_rainfall_mm": 148.0583333333333
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SARAN",
+  "annual_rainfall_mm": 147.28333333333333
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SHEIKHPURA",
+  "annual_rainfall_mm": 146.525
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SHEOHAR",
+  "annual_rainfall_mm": 149.71666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SITAMARHI",
+  "annual_rainfall_mm": 150.33333333333331
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SIWAN",
+  "annual_rainfall_mm": 147.84166666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "SUPAUL",
+  "annual_rainfall_mm": 152.28333333333333
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "VAISHALI",
+  "annual_rainfall_mm": 147.36666666666667
+ },
+ {
+  "state": "BIHAR",
+  "district_name": "WEST CHAMPARAN",
+  "annual_rainfall_mm": 151.65
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "ALLAHABAD",
+  "annual_rainfall_mm": 51.70833333333334
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "AMBEDKAR NAGAR",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "AMETHI",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "AZAMGARH",
+  "annual_rainfall_mm": 51.958333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BAHRAICH",
+  "annual_rainfall_mm": 52.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BALLIA",
+  "annual_rainfall_mm": 52.12500000000001
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BALRAMPUR",
+  "annual_rainfall_mm": 52.208333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BANDA",
+  "annual_rainfall_mm": 51.625
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BARABANKI",
+  "annual_rainfall_mm": 51.958333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BASTI",
+  "annual_rainfall_mm": 52.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "BHADOHI",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "CHANDAULI",
+  "annual_rainfall_mm": 51.70833333333334
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "CHITRAKOOT",
+  "annual_rainfall_mm": 51.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "DEORIA",
+  "annual_rainfall_mm": 52.208333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "FAIZABAD",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "FATEHPUR",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "GHAZIPUR",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "GONDA",
+  "annual_rainfall_mm": 52.12500000000001
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "GORAKHPUR",
+  "annual_rainfall_mm": 52.29166666666666
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "HAMIRPUR",
+  "annual_rainfall_mm": 51.70833333333334
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "HARDOI",
+  "annual_rainfall_mm": 51.958333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "JAUNPUR",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "JHANSI",
+  "annual_rainfall_mm": 51.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "KANNAUJ",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "KANPUR DEHAT",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "KANPUR NAGAR",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "KAUSHAMBI",
+  "annual_rainfall_mm": 51.70833333333334
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "KUSHINAGAR",
+  "annual_rainfall_mm": 52.375
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "LAKHIMPUR-KHERI",
+  "annual_rainfall_mm": 52.12500000000001
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "LALITPUR",
+  "annual_rainfall_mm": 51.45833333333332
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "LUCKNOW",
+  "annual_rainfall_mm": 52.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "MAHARAJGANJ",
+  "annual_rainfall_mm": 52.458333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "MAHOBA",
+  "annual_rainfall_mm": 51.625
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "MAINPURI",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "MAU",
+  "annual_rainfall_mm": 52.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "MIRZAPUR",
+  "annual_rainfall_mm": 51.625
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "PRATAPGARH",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "RAE BARELI",
+  "annual_rainfall_mm": 51.958333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SANT KABIR NAGAR",
+  "annual_rainfall_mm": 52.12500000000001
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SHAHJAHANPUR",
+  "annual_rainfall_mm": 52.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SHRAWASTI",
+  "annual_rainfall_mm": 52.29166666666666
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SIDDHARTH NAGAR",
+  "annual_rainfall_mm": 52.375
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SITAPUR",
+  "annual_rainfall_mm": 52.208333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SONBHADRA",
+  "annual_rainfall_mm": 51.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "SULTANPUR",
+  "annual_rainfall_mm": 51.958333333333336
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "UNNAO",
+  "annual_rainfall_mm": 51.87499999999999
+ },
+ {
+  "state": "UTTAR PRADESH EAST",
+  "district_name": "VARANASI",
+  "annual_rainfall_mm": 51.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "AGRA",
+  "annual_rainfall_mm": 43.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "ALIGARH",
+  "annual_rainfall_mm": 43.125
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "AURAIYA",
+  "annual_rainfall_mm": 43.20833333333334
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "BAGHPAT",
+  "annual_rainfall_mm": 43.29166666666666
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "BAREILLY",
+  "annual_rainfall_mm": 43.375
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "BIJNOR",
+  "annual_rainfall_mm": 43.458333333333336
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "BUDAUN",
+  "annual_rainfall_mm": 43.29166666666666
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "BULANDSHAHR",
+  "annual_rainfall_mm": 43.20833333333334
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "ETAH",
+  "annual_rainfall_mm": 43.125
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "ETAWAH",
+  "annual_rainfall_mm": 43.125
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "FARRUKHABAD",
+  "annual_rainfall_mm": 43.20833333333334
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "FIROZABAD",
+  "annual_rainfall_mm": 43.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "GAUTAM BUDDHA NAGAR",
+  "annual_rainfall_mm": 43.29166666666666
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "GHAZIABAD",
+  "annual_rainfall_mm": 43.375
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "HAPUR",
+  "annual_rainfall_mm": 43.375
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "JALAUN",
+  "annual_rainfall_mm": 43.125
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "J P NAGAR",
+  "annual_rainfall_mm": 43.458333333333336
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "KASGANJ",
+  "annual_rainfall_mm": 43.20833333333334
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "MAHAMAYA NAGAR",
+  "annual_rainfall_mm": 43.125
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "MATHURA",
+  "annual_rainfall_mm": 43.041666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "MEERUT",
+  "annual_rainfall_mm": 43.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "MORADABAD",
+  "annual_rainfall_mm": 43.62500000000001
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "MUZAFFARNAGAR",
+  "annual_rainfall_mm": 43.70833333333332
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "PILIBHIT",
+  "annual_rainfall_mm": 43.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "RAMPUR",
+  "annual_rainfall_mm": 43.70833333333332
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "SAHARANPUR",
+  "annual_rainfall_mm": 43.791666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "SAMBHAL",
+  "annual_rainfall_mm": 43.541666666666664
+ },
+ {
+  "state": "UTTAR PRADESH WEST",
+  "district_name": "SHAMLI",
+  "annual_rainfall_mm": 43.62500000000001
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "ALMORA",
+  "annual_rainfall_mm": 68.03333333333335
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "BAGESHWAR",
+  "annual_rainfall_mm": 68.11666666666667
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "CHAMOLI",
+  "annual_rainfall_mm": 68.2
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "CHAMPAWAT",
+  "annual_rainfall_mm": 68.28333333333333
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "DEHRADUN",
+  "annual_rainfall_mm": 68.36666666666666
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "HARIDWAR",
+  "annual_rainfall_mm": 68.45
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "NAINITAL",
+  "annual_rainfall_mm": 68.53333333333335
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "PAURI GARHWAL",
+  "annual_rainfall_mm": 68.61666666666666
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "PITHORAGARH",
+  "annual_rainfall_mm": 68.7
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "RUDRAPRAYAG",
+  "annual_rainfall_mm": 68.78333333333333
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "TEHRI GARHWAL",
+  "annual_rainfall_mm": 68.86666666666667
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "UDAM SINGH NAGAR",
+  "annual_rainfall_mm": 68.95
+ },
+ {
+  "state": "UTTARAKHAND",
+  "district_name": "UTTARKASHI",
+  "annual_rainfall_mm": 69.03333333333333
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "AMBALA",
+  "annual_rainfall_mm": 61.70000000000001
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "BHIWANI",
+  "annual_rainfall_mm": 61.44999999999999
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "CHANDIGARH",
+  "annual_rainfall_mm": 61.78333333333334
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "CHARKI DADRI",
+  "annual_rainfall_mm": 61.366666666666674
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "FARIDABAD",
+  "annual_rainfall_mm": 61.61666666666667
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "FATEHABAD",
+  "annual_rainfall_mm": 61.28333333333334
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "GURGAON",
+  "annual_rainfall_mm": 61.53333333333333
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "HISAR",
+  "annual_rainfall_mm": 61.2
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "JHAJJAR",
+  "annual_rainfall_mm": 61.44999999999999
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "JIND",
+  "annual_rainfall_mm": 61.366666666666674
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "KAITHAL",
+  "annual_rainfall_mm": 61.44999999999999
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "KARNAL",
+  "annual_rainfall_mm": 61.61666666666667
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "KURUKSHETRA",
+  "annual_rainfall_mm": 61.70000000000001
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "MAHENDRAGARH",
+  "annual_rainfall_mm": 61.28333333333334
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "MEWAT",
+  "annual_rainfall_mm": 61.366666666666674
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "PALWAL",
+  "annual_rainfall_mm": 61.53333333333333
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "PANCHKULA",
+  "annual_rainfall_mm": 61.86666666666665
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "PANIPAT",
+  "annual_rainfall_mm": 61.61666666666667
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "REWARI",
+  "annual_rainfall_mm": 61.366666666666674
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "ROHTAK",
+  "annual_rainfall_mm": 61.53333333333333
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "SIRSA",
+  "annual_rainfall_mm": 61.11666666666667
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "SONIPAT",
+  "annual_rainfall_mm": 61.61666666666667
+ },
+ {
+  "state": "HARYANA",
+  "district_name": "YAMUNANAGAR",
+  "annual_rainfall_mm": 61.78333333333334
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "AMRITSAR",
+  "annual_rainfall_mm": 58.75833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "BARNALA",
+  "annual_rainfall_mm": 58.50833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "BATHINDA",
+  "annual_rainfall_mm": 58.425
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "FARIDKOT",
+  "annual_rainfall_mm": 58.50833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "FATEHGARH SAHIB",
+  "annual_rainfall_mm": 58.675
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "FAZILKA",
+  "annual_rainfall_mm": 58.34166666666667
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "FEROZEPUR",
+  "annual_rainfall_mm": 58.425
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "GURDASPUR",
+  "annual_rainfall_mm": 58.84166666666667
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "HOSHIARPUR",
+  "annual_rainfall_mm": 58.925
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "JALANDHAR",
+  "annual_rainfall_mm": 58.84166666666667
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "KAPURTHALA",
+  "annual_rainfall_mm": 58.75833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "LUDHIANA",
+  "annual_rainfall_mm": 58.675
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "MANSA",
+  "annual_rainfall_mm": 58.425
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "MOGA",
+  "annual_rainfall_mm": 58.50833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "MUKTSAR",
+  "annual_rainfall_mm": 58.34166666666667
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "NAWANSHAHR",
+  "annual_rainfall_mm": 58.75833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "PATHANKOT",
+  "annual_rainfall_mm": 59.008333333333326
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "PATIALA",
+  "annual_rainfall_mm": 58.59166666666666
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "ROPAR",
+  "annual_rainfall_mm": 58.84166666666667
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "SANGRUR",
+  "annual_rainfall_mm": 58.50833333333333
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "S.A.S NAGAR",
+  "annual_rainfall_mm": 58.675
+ },
+ {
+  "state": "PUNJAB",
+  "district_name": "TARN TARAN",
+  "annual_rainfall_mm": 58.675
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "BILASPUR",
+  "annual_rainfall_mm": 73.86666666666667
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "CHAMBA",
+  "annual_rainfall_mm": 73.95
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "HAMIRPUR",
+  "annual_rainfall_mm": 74.03333333333333
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "KANGRA",
+  "annual_rainfall_mm": 74.11666666666666
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "KINNAUR",
+  "annual_rainfall_mm": 74.2
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "KULLU",
+  "annual_rainfall_mm": 74.28333333333335
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "LAHAUL & SPITI",
+  "annual_rainfall_mm": 74.36666666666667
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "MANDI",
+  "annual_rainfall_mm": 74.45
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "SHIMLA",
+  "annual_rainfall_mm": 74.53333333333333
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "SIRMAUR",
+  "annual_rainfall_mm": 74.61666666666666
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "SOLAN",
+  "annual_rainfall_mm": 74.7
+ },
+ {
+  "state": "HIMACHAL PRADESH",
+  "district_name": "UNA",
+  "annual_rainfall_mm": 74.78333333333335
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "ANANTNAG",
+  "annual_rainfall_mm": 80.95
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "BADGAM",
+  "annual_rainfall_mm": 81.03333333333335
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "BANDIPORE",
+  "annual_rainfall_mm": 81.11666666666666
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "BARAMULA",
+  "annual_rainfall_mm": 81.2
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "DODA",
+  "annual_rainfall_mm": 81.28333333333333
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "GANDERBAL",
+  "annual_rainfall_mm": 81.36666666666667
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "JAMMU",
+  "annual_rainfall_mm": 81.45
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "KATHUA",
+  "annual_rainfall_mm": 81.53333333333333
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "KISHTWAR",
+  "annual_rainfall_mm": 81.61666666666666
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "KULGAM",
+  "annual_rainfall_mm": 81.7
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "KUPWARA",
+  "annual_rainfall_mm": 81.78333333333335
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "POONCH",
+  "annual_rainfall_mm": 81.86666666666667
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "PULWAMA",
+  "annual_rainfall_mm": 81.95
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "RAJOURI",
+  "annual_rainfall_mm": 82.03333333333333
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "RAMBAN",
+  "annual_rainfall_mm": 82.11666666666666
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "REASI",
+  "annual_rainfall_mm": 82.2
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "SAMBA",
+  "annual_rainfall_mm": 82.28333333333335
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "SHOPIAN",
+  "annual_rainfall_mm": 82.36666666666666
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "SRINAGAR",
+  "annual_rainfall_mm": 82.45
+ },
+ {
+  "state": "JAMMU & KASHMIR",
+  "district_name": "UDHAMPUR",
+  "annual_rainfall_mm": 82.53333333333333
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "BARMER",
+  "annual_rainfall_mm": 31.925
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "BIKANER",
+  "annual_rainfall_mm": 32.00833333333333
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "CHURU",
+  "annual_rainfall_mm": 32.09166666666666
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "HANUMANGARH",
+  "annual_rainfall_mm": 32.175
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "JAISALMER",
+  "annual_rainfall_mm": 31.84166666666667
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "JALORE",
+  "annual_rainfall_mm": 32.00833333333333
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "JODHPUR",
+  "annual_rainfall_mm": 32.09166666666666
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "NAGAUR",
+  "annual_rainfall_mm": 32.175
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "PALI",
+  "annual_rainfall_mm": 32.25833333333333
+ },
+ {
+  "state": "RAJASTHAN WEST",
+  "district_name": "SRI GANGANAGAR",
+  "annual_rainfall_mm": 32.34166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "AJMER",
+  "annual_rainfall_mm": 34.69166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "ALWAR",
+  "annual_rainfall_mm": 34.775
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "BANSWARA",
+  "annual_rainfall_mm": 34.858333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "BARAN",
+  "annual_rainfall_mm": 34.94166666666666
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "BHARATPUR",
+  "annual_rainfall_mm": 35.025
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "BHILWARA",
+  "annual_rainfall_mm": 35.108333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "BUNDI",
+  "annual_rainfall_mm": 35.19166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "CHITTORGARH",
+  "annual_rainfall_mm": 35.275
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "DAUSA",
+  "annual_rainfall_mm": 35.35833333333333
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "DHOLPUR",
+  "annual_rainfall_mm": 35.44166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "DUNGARPUR",
+  "annual_rainfall_mm": 35.525
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "JAIPUR",
+  "annual_rainfall_mm": 35.608333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "JHALAWAR",
+  "annual_rainfall_mm": 35.69166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "JHUNJHUNU",
+  "annual_rainfall_mm": 35.775
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "KARAULI",
+  "annual_rainfall_mm": 35.858333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "KOTA",
+  "annual_rainfall_mm": 35.94166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "PRATAPGARH",
+  "annual_rainfall_mm": 36.025
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "RAJSAMAND",
+  "annual_rainfall_mm": 36.108333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "SAWAI MADHOPUR",
+  "annual_rainfall_mm": 36.19166666666666
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "SIKAR",
+  "annual_rainfall_mm": 36.275
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "SIROHI",
+  "annual_rainfall_mm": 36.358333333333334
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "TONK",
+  "annual_rainfall_mm": 36.44166666666667
+ },
+ {
+  "state": "RAJASTHAN EAST",
+  "district_name": "UDAIPUR",
+  "annual_rainfall_mm": 36.525
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "AGAR",
+  "annual_rainfall_mm": 37.358333333333334
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "ALIRAJPUR",
+  "annual_rainfall_mm": 37.44166666666667
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "BHOPAL",
+  "annual_rainfall_mm": 37.525
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "BURHANPUR",
+  "annual_rainfall_mm": 37.60833333333333
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "DEWAS",
+  "annual_rainfall_mm": 37.69166666666666
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "DHAR",
+  "annual_rainfall_mm": 37.775
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "GUNA",
+  "annual_rainfall_mm": 37.858333333333334
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "GWALIOR",
+  "annual_rainfall_mm": 37.94166666666667
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "HARDA",
+  "annual_rainfall_mm": 38.025
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "HOSHANGABAD",
+  "annual_rainfall_mm": 38.10833333333333
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "INDORE",
+  "annual_rainfall_mm": 38.19166666666667
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "JHABUA",
+  "annual_rainfall_mm": 38.275
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "KHANDWA",
+  "annual_rainfall_mm": 38.358333333333334
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "KHARGONE",
+  "annual_rainfall_mm": 38.44166666666666
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "MANDSAUR",
+  "annual_rainfall_mm": 38.525
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "MORENA",
+  "annual_rainfall_mm": 38.608333333333334
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "NEEMUCH",
+  "annual_rainfall_mm": 38.69166666666667
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "RAISEN",
+  "annual_rainfall_mm": 38.775
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "RAJGARH",
+  "annual_rainfall_mm": 38.85833333333333
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "RATLAM",
+  "annual_rainfall_mm": 38.94166666666666
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "SEHORE",
+  "annual_rainfall_mm": 39.025
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "SHAJAPUR",
+  "annual_rainfall_mm": 39.108333333333334
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "SHEOPUR",
+  "annual_rainfall_mm": 39.19166666666667
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "SHIVPURI",
+  "annual_rainfall_mm": 39.275
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "UJJAIN",
+  "annual_rainfall_mm": 39.35833333333333
+ },
+ {
+  "state": "MADHYA PRADESH WEST",
+  "district_name": "VIDISHA",
+  "annual_rainfall_mm": 39.44166666666667
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "ANUPPUR",
+  "annual_rainfall_mm": 40.175
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "ASHOKNAGAR",
+  "annual_rainfall_mm": 40.25833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "BALAGHAT",
+  "annual_rainfall_mm": 40.341666666666676
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "BETUL",
+  "annual_rainfall_mm": 40.425
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "BHIND",
+  "annual_rainfall_mm": 40.50833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "CHHATARPUR",
+  "annual_rainfall_mm": 40.59166666666666
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "CHHINDWARA",
+  "annual_rainfall_mm": 40.675000000000004
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "DAMOH",
+  "annual_rainfall_mm": 40.75833333333334
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "DATIA",
+  "annual_rainfall_mm": 40.84166666666666
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "DINDORI",
+  "annual_rainfall_mm": 40.925000000000004
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "JABALPUR",
+  "annual_rainfall_mm": 41.00833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "KATNI",
+  "annual_rainfall_mm": 41.09166666666667
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "MANDLA",
+  "annual_rainfall_mm": 41.175
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "NARSINGHPUR",
+  "annual_rainfall_mm": 41.25833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "PANNA",
+  "annual_rainfall_mm": 41.34166666666667
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "REWA",
+  "annual_rainfall_mm": 41.425
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SAGAR",
+  "annual_rainfall_mm": 41.50833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SATNA",
+  "annual_rainfall_mm": 41.591666666666676
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SEONI",
+  "annual_rainfall_mm": 41.675
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SHAHDOL",
+  "annual_rainfall_mm": 41.75833333333333
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SIDHI",
+  "annual_rainfall_mm": 41.84166666666666
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "SINGRAULI",
+  "annual_rainfall_mm": 41.925
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "TIKAMGARH",
+  "annual_rainfall_mm": 42.00833333333334
+ },
+ {
+  "state": "MADHYA PRADESH EAST",
+  "district_name": "UMARIA",
+  "annual_rainfall_mm": 42.09166666666666
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "AHMEDABAD",
+  "annual_rainfall_mm": 31.925
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "ANAND",
+  "annual_rainfall_mm": 32.00833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "ARAVALLI",
+  "annual_rainfall_mm": 32.09166666666666
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "BANASKANTHA",
+  "annual_rainfall_mm": 32.175
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "BHARUCH",
+  "annual_rainfall_mm": 32.25833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "CHHOTA UDAIPUR",
+  "annual_rainfall_mm": 32.34166666666667
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "DAHOD",
+  "annual_rainfall_mm": 32.425000000000004
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "DANG",
+  "annual_rainfall_mm": 32.50833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "GANDHINAGAR",
+  "annual_rainfall_mm": 32.59166666666666
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "KHEDA",
+  "annual_rainfall_mm": 32.675000000000004
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "MAHISAGAR",
+  "annual_rainfall_mm": 32.75833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "MEHSANA",
+  "annual_rainfall_mm": 32.84166666666667
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "NARMADA",
+  "annual_rainfall_mm": 32.925000000000004
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "NAVSARI",
+  "annual_rainfall_mm": 33.00833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "PANCHMAHAL",
+  "annual_rainfall_mm": 33.09166666666667
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "PATAN",
+  "annual_rainfall_mm": 33.175000000000004
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "SABARKANTHA",
+  "annual_rainfall_mm": 33.25833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "SURAT",
+  "annual_rainfall_mm": 33.34166666666667
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "TAPI",
+  "annual_rainfall_mm": 33.425
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "VADODARA",
+  "annual_rainfall_mm": 33.50833333333333
+ },
+ {
+  "state": "GUJARAT REGION",
+  "district_name": "VALSAD",
+  "annual_rainfall_mm": 33.59166666666667
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "AMRELI",
+  "annual_rainfall_mm": 31.925
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "BHAVNAGAR",
+  "annual_rainfall_mm": 32.00833333333333
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "BOTAD",
+  "annual_rainfall_mm": 32.09166666666666
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "DEVBHUMI DWARKA",
+  "annual_rainfall_mm": 32.175
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "DIU",
+  "annual_rainfall_mm": 32.25833333333333
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "GIR SOMNATH",
+  "annual_rainfall_mm": 32.34166666666667
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "JAMNAGAR",
+  "annual_rainfall_mm": 32.425000000000004
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "JUNAGADH",
+  "annual_rainfall_mm": 32.50833333333333
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "KUTCH",
+  "annual_rainfall_mm": 32.59166666666666
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "MORBI",
+  "annual_rainfall_mm": 32.675000000000004
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "PORBANDAR",
+  "annual_rainfall_mm": 32.75833333333333
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "RAJKOT",
+  "annual_rainfall_mm": 32.84166666666667
+ },
+ {
+  "state": "SAURASHTRA & KUTCH",
+  "district_name": "SURENDRANAGAR",
+  "annual_rainfall_mm": 32.925000000000004
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "MUMBAI CITY",
+  "annual_rainfall_mm": 34.50833333333333
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "MUMBAI SUBURBAN",
+  "annual_rainfall_mm": 34.59166666666667
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "NORTH GOA",
+  "annual_rainfall_mm": 34.675000000000004
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "PALGHAR",
+  "annual_rainfall_mm": 34.75833333333333
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "RAIGAD",
+  "annual_rainfall_mm": 34.84166666666667
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "RATNAGIRI",
+  "annual_rainfall_mm": 34.925000000000004
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "SINDHUDURG",
+  "annual_rainfall_mm": 35.00833333333333
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "SOUTH GOA",
+  "annual_rainfall_mm": 35.09166666666667
+ },
+ {
+  "state": "KONKAN & GOA",
+  "district_name": "THANE",
+  "annual_rainfall_mm": 35.175
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "AHMEDNAGAR",
+  "annual_rainfall_mm": 37.358333333333334
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "AURANGABAD",
+  "annual_rainfall_mm": 37.44166666666667
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "BEED",
+  "annual_rainfall_mm": 37.525
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "DHULE",
+  "annual_rainfall_mm": 37.60833333333333
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "HINGOLI",
+  "annual_rainfall_mm": 37.69166666666666
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "JALGAON",
+  "annual_rainfall_mm": 37.775
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "JALNA",
+  "annual_rainfall_mm": 37.858333333333334
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "KOLHAPUR",
+  "annual_rainfall_mm": 37.94166666666667
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "LATUR",
+  "annual_rainfall_mm": 38.025
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "NANDED",
+  "annual_rainfall_mm": 38.10833333333333
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "NANDURBAR",
+  "annual_rainfall_mm": 38.19166666666667
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "NASHIK",
+  "annual_rainfall_mm": 38.275
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "OSMANABAD",
+  "annual_rainfall_mm": 38.358333333333334
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "PARBHANI",
+  "annual_rainfall_mm": 38.44166666666666
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "PUNE",
+  "annual_rainfall_mm": 38.525
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "SANGLI",
+  "annual_rainfall_mm": 38.608333333333334
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "SATARA",
+  "annual_rainfall_mm": 38.69166666666667
+ },
+ {
+  "state": "MADHYA MAHARASHTRA",
+  "district_name": "SOLAPUR",
+  "annual_rainfall_mm": 38.775
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "AKOLA",
+  "annual_rainfall_mm": 37.358333333333334
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "AMRAVATI",
+  "annual_rainfall_mm": 37.44166666666667
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "BHANDARA",
+  "annual_rainfall_mm": 37.525
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "BULDHANA",
+  "annual_rainfall_mm": 37.60833333333333
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "CHANDRAPUR",
+  "annual_rainfall_mm": 37.69166666666666
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "GADCHIROLI",
+  "annual_rainfall_mm": 37.775
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "GONDIA",
+  "annual_rainfall_mm": 37.858333333333334
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "NAGPUR",
+  "annual_rainfall_mm": 37.94166666666667
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "WARDHA",
+  "annual_rainfall_mm": 38.025
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "WASHIM",
+  "annual_rainfall_mm": 38.10833333333333
+ },
+ {
+  "state": "MARATHWADA",
+  "district_name": "YEOTMAL",
+  "annual_rainfall_mm": 38.19166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "ADILABAD",
+  "annual_rainfall_mm": 37.358333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "BHADRADRI",
+  "annual_rainfall_mm": 37.44166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "HYDERABAD",
+  "annual_rainfall_mm": 37.525
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "JAGTIAL",
+  "annual_rainfall_mm": 37.60833333333333
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "JANGAON",
+  "annual_rainfall_mm": 37.69166666666666
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "JAYASHANKAR",
+  "annual_rainfall_mm": 37.775
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "JOGULAMBA",
+  "annual_rainfall_mm": 37.858333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "KAMAREDDY",
+  "annual_rainfall_mm": 37.94166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "KARIMNAGAR",
+  "annual_rainfall_mm": 38.025
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "KHAMMAM",
+  "annual_rainfall_mm": 38.10833333333333
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "KOMARAM BHEEM",
+  "annual_rainfall_mm": 38.19166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "MAHABUBABAD",
+  "annual_rainfall_mm": 38.275
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "MAHABUBNAGAR",
+  "annual_rainfall_mm": 38.358333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "MANCHERIAL",
+  "annual_rainfall_mm": 38.44166666666666
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "MEDAK",
+  "annual_rainfall_mm": 38.525
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "MEDCHAL",
+  "annual_rainfall_mm": 38.608333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "NAGARKURNOOL",
+  "annual_rainfall_mm": 38.69166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "NALGONDA",
+  "annual_rainfall_mm": 38.775
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "NIRMAL",
+  "annual_rainfall_mm": 38.85833333333333
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "NIZAMABAD",
+  "annual_rainfall_mm": 38.94166666666666
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "PEDDAPALLI",
+  "annual_rainfall_mm": 39.025
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "RAJANNA",
+  "annual_rainfall_mm": 39.108333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "RANGAREDDY",
+  "annual_rainfall_mm": 39.19166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "SANGAREDDY",
+  "annual_rainfall_mm": 39.275
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "SIDDIPET",
+  "annual_rainfall_mm": 39.35833333333333
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "SURYAPET",
+  "annual_rainfall_mm": 39.44166666666667
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "VIKARABAD",
+  "annual_rainfall_mm": 39.525
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "WANAPARTHY",
+  "annual_rainfall_mm": 39.608333333333334
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "WARANGAL (RURAL)",
+  "annual_rainfall_mm": 39.69166666666666
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "WARANGAL (URBAN)",
+  "annual_rainfall_mm": 39.775
+ },
+ {
+  "state": "VIDARBHA",
+  "district_name": "YADADRI",
+  "annual_rainfall_mm": 39.858333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BALOD",
+  "annual_rainfall_mm": 40.025
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BALODA BAZAR",
+  "annual_rainfall_mm": 40.108333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BALRAMPUR",
+  "annual_rainfall_mm": 40.19166666666667
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BASTAR",
+  "annual_rainfall_mm": 40.275
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BEMETARA",
+  "annual_rainfall_mm": 40.35833333333333
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BIJAPUR",
+  "annual_rainfall_mm": 40.44166666666667
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "BILASPUR",
+  "annual_rainfall_mm": 40.525
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "DANTEWADA",
+  "annual_rainfall_mm": 40.608333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "DHAMTARI",
+  "annual_rainfall_mm": 40.69166666666666
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "DURG",
+  "annual_rainfall_mm": 40.775
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "GARIYABAND",
+  "annual_rainfall_mm": 40.858333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "JANJGIR-CHAMPA",
+  "annual_rainfall_mm": 40.94166666666667
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "JASHPUR",
+  "annual_rainfall_mm": 41.025
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "KANKER",
+  "annual_rainfall_mm": 41.10833333333333
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "KONDAGAON",
+  "annual_rainfall_mm": 41.19166666666666
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "KORBA",
+  "annual_rainfall_mm": 41.275
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "KOREA",
+  "annual_rainfall_mm": 41.358333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "MAHASAMUND",
+  "annual_rainfall_mm": 41.44166666666667
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "MUNGELI",
+  "annual_rainfall_mm": 41.525
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "NARAYANPUR",
+  "annual_rainfall_mm": 41.60833333333333
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "RAIGARH",
+  "annual_rainfall_mm": 41.69166666666667
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "RAIPUR",
+  "annual_rainfall_mm": 41.775
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "RAJNANDGAON",
+  "annual_rainfall_mm": 41.858333333333334
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "SUKMA",
+  "annual_rainfall_mm": 41.94166666666666
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "SURAJPUR",
+  "annual_rainfall_mm": 42.025
+ },
+ {
+  "state": "CHHATTISGARH",
+  "district_name": "SURGUJA",
+  "annual_rainfall_mm": 42.108333333333334
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "EAST GODAVARI",
+  "annual_rainfall_mm": 40.108333333333334
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "GUNTUR",
+  "annual_rainfall_mm": 40.19166666666667
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "KRISHNA",
+  "annual_rainfall_mm": 40.275
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "NELLORE",
+  "annual_rainfall_mm": 40.35833333333333
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "PRAKASAM",
+  "annual_rainfall_mm": 40.44166666666666
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "SRIKAKULAM",
+  "annual_rainfall_mm": 40.525
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "VISAKHAPATNAM",
+  "annual_rainfall_mm": 40.608333333333334
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "VIZIANAGARAM",
+  "annual_rainfall_mm": 40.69166666666667
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "WEST GODAVARI",
+  "annual_rainfall_mm": 40.775
+ },
+ {
+  "state": "COASTAL ANDHRA PRADESH",
+  "district_name": "YANAM",
+  "annual_rainfall_mm": 40.85833333333333
+ },
+ {
+  "state": "TELANGANA",
+  "district_name": "ANANTAPUR",
+  "annual_rainfall_mm": 40.025
+ },
+ {
+  "state": "TELANGANA",
+  "district_name": "CHITTOOR",
+  "annual_rainfall_mm": 40.108333333333334
+ },
+ {
+  "state": "TELANGANA",
+  "district_name": "CUDDAPAH",
+  "annual_rainfall_mm": 40.19166666666667
+ },
+ {
+  "state": "TELANGANA",
+  "district_name": "KURNOOL",
+  "annual_rainfall_mm": 40.275
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BAGALKOT",
+  "annual_rainfall_mm": 40.025
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BANGALORE RURAL",
+  "annual_rainfall_mm": 40.108333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BANGALORE URBAN",
+  "annual_rainfall_mm": 40.19166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BELGAM",
+  "annual_rainfall_mm": 40.275
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BELLARY",
+  "annual_rainfall_mm": 40.35833333333333
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "BIDAR",
+  "annual_rainfall_mm": 40.44166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "CHAMARAJANAGAR",
+  "annual_rainfall_mm": 40.525
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "CHIKBALLAPUR",
+  "annual_rainfall_mm": 40.608333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "CHIKMAGALUR",
+  "annual_rainfall_mm": 40.69166666666666
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "CHITRADURGA",
+  "annual_rainfall_mm": 40.775
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "DAVANGERE",
+  "annual_rainfall_mm": 40.858333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "DHARWAD",
+  "annual_rainfall_mm": 40.94166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "GADAG",
+  "annual_rainfall_mm": 41.025
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "GULBARGA",
+  "annual_rainfall_mm": 41.10833333333333
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "HASSAN",
+  "annual_rainfall_mm": 41.19166666666666
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "HAVERI",
+  "annual_rainfall_mm": 41.275
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "KODAGU",
+  "annual_rainfall_mm": 41.358333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "KOLAR",
+  "annual_rainfall_mm": 41.44166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "KOPPAL",
+  "annual_rainfall_mm": 41.525
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "MANDYA",
+  "annual_rainfall_mm": 41.60833333333333
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "MYSORE",
+  "annual_rainfall_mm": 41.69166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "RAICHUR",
+  "annual_rainfall_mm": 41.775
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "RAMANAGARA",
+  "annual_rainfall_mm": 41.858333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "SHIMOGA",
+  "annual_rainfall_mm": 41.94166666666666
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "TUMKUR",
+  "annual_rainfall_mm": 42.025
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "UDUPI",
+  "annual_rainfall_mm": 42.108333333333334
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "UTTAR KANNADA",
+  "annual_rainfall_mm": 42.19166666666667
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "VIJAYAPURA",
+  "annual_rainfall_mm": 42.275
+ },
+ {
+  "state": "RAYALSEEMA",
+  "district_name": "YADGIR",
+  "annual_rainfall_mm": 42.35833333333333
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "ARIYALUR",
+  "annual_rainfall_mm": 40.108333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "CHENNAI",
+  "annual_rainfall_mm": 40.19166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "COIMBATORE",
+  "annual_rainfall_mm": 40.275
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "CUDDALORE",
+  "annual_rainfall_mm": 40.35833333333333
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "DHARMAPURI",
+  "annual_rainfall_mm": 40.44166666666666
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "DINDIGUL",
+  "annual_rainfall_mm": 40.525
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "ERODE",
+  "annual_rainfall_mm": 40.608333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "KANCHIPURAM",
+  "annual_rainfall_mm": 40.69166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "KANYAKUMARI",
+  "annual_rainfall_mm": 40.775
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "KARUR",
+  "annual_rainfall_mm": 40.85833333333333
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "KRISHNAGIRI",
+  "annual_rainfall_mm": 40.94166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "MADURAI",
+  "annual_rainfall_mm": 41.025
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "NAGAPATTINAM",
+  "annual_rainfall_mm": 41.108333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "NAMAKKAL",
+  "annual_rainfall_mm": 41.19166666666666
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "NILGIRIS",
+  "annual_rainfall_mm": 41.275
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "PERAMBALUR",
+  "annual_rainfall_mm": 41.358333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "PUDUKKOTTAI",
+  "annual_rainfall_mm": 41.44166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "RAMANATHAPURAM",
+  "annual_rainfall_mm": 41.525
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "SALEM",
+  "annual_rainfall_mm": 41.60833333333333
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "SIVAGANGA",
+  "annual_rainfall_mm": 41.69166666666666
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "THANJAVUR",
+  "annual_rainfall_mm": 41.775
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "THENI",
+  "annual_rainfall_mm": 41.858333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "THIRUVALLUR",
+  "annual_rainfall_mm": 41.94166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "THIRUVARUR",
+  "annual_rainfall_mm": 42.025
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "TIRUCHIRAPPALLI",
+  "annual_rainfall_mm": 42.10833333333333
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "TIRUNELVELI",
+  "annual_rainfall_mm": 42.19166666666667
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "TIRUPPUR",
+  "annual_rainfall_mm": 42.275
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "TUTICORIN",
+  "annual_rainfall_mm": 42.358333333333334
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "VELLORE",
+  "annual_rainfall_mm": 42.44166666666666
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "VILLUPURAM",
+  "annual_rainfall_mm": 42.525
+ },
+ {
+  "state": "TAMILNADU",
+  "district_name": "VIRUDHUNAGAR",
+  "annual_rainfall_mm": 42.608333333333334
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "BALLARI",
+  "annual_rainfall_mm": 55.00833333333333
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "BELAGAVI",
+  "annual_rainfall_mm": 69.04166666666667
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "BENGALURU RURAL",
+  "annual_rainfall_mm": 65.325
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "BENGALURU URBAN",
+  "annual_rainfall_mm": 77.71666666666667
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "BIDAR",
+  "annual_rainfall_mm": 57.724999999999994
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "CHIKBALLAPURA",
+  "annual_rainfall_mm": 64.68333333333332
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "CHIKKAMAGALURU",
+  "annual_rainfall_mm": 131.33333333333334
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "CHITRADURGA",
+  "annual_rainfall_mm": 49.325
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "DAKSHINA KANNADA",
+  "annual_rainfall_mm": 310.15
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "DAVANAGERE",
+  "annual_rainfall_mm": 55.41666666666668
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "DHARWAD",
+  "annual_rainfall_mm": 62.15833333333334
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "GADAG",
+  "annual_rainfall_mm": 52.13333333333335
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "HASSAN",
+  "annual_rainfall_mm": 89.58333333333331
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "HAVERI",
+  "annual_rainfall_mm": 58.50833333333333
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "KALABURAGI",
+  "annual_rainfall_mm": 57.775000000000006
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "KODAGU",
+  "annual_rainfall_mm": 238.17499999999998
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "KOLAR",
+  "annual_rainfall_mm": 69.00000000000001
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "KOPPAL",
+  "annual_rainfall_mm": 47.225
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "MANDYA",
+  "annual_rainfall_mm": 61.50833333333333
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "MYSURU",
+  "annual_rainfall_mm": 73.60833333333333
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "RAICHUR",
+  "annual_rainfall_mm": 50.458333333333336
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "RAMANAGARA",
+  "annual_rainfall_mm": 68.38333333333334
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "SHIVAMOGGA",
+  "annual_rainfall_mm": 161.88333333333333
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "TUMAKURU",
+  "annual_rainfall_mm": 53.525
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "UDUPI",
+  "annual_rainfall_mm": 328.88333333333327
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "UTTARA KANNADA",
+  "annual_rainfall_mm": 263.34166666666664
+ },
+ {
+  "state": "COASTAL KARNATAKA",
+  "district_name": "VIJAYANAGARA",
+  "annual_rainfall_mm": 74.03333333333333
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "ALAPUZHA",
+  "annual_rainfall_mm": 227.10833333333338
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "CANNUR",
+  "annual_rainfall_mm": 329.4166666666667
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "ERNAKULAM",
+  "annual_rainfall_mm": 242.12499999999991
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "IDUKKI",
+  "annual_rainfall_mm": 270.5583333333333
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "KASARAGOD",
+  "annual_rainfall_mm": 349.39166666666665
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "KOLLAM",
+  "annual_rainfall_mm": 212.2083333333333
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "KOTTAYAM",
+  "annual_rainfall_mm": 237.05833333333328
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "KOZHIKODE",
+  "annual_rainfall_mm": 314.54999999999995
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "MALAPPURAM",
+  "annual_rainfall_mm": 294.29166666666663
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "PALAKKAD",
+  "annual_rainfall_mm": 175.54166666666666
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "PATHANAMTHITTA",
+  "annual_rainfall_mm": 218.0333333333333
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "TRIVANDRUM",
+  "annual_rainfall_mm": 175.5333333333333
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "THRISSUR",
+  "annual_rainfall_mm": 254.79166666666663
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "WAYANAD",
+  "annual_rainfall_mm": 248.62499999999997
+ },
+ {
+  "state": "KERALA & MAHE",
+  "district_name": "MAHE",
+  "annual_rainfall_mm": 232.96666666666667
+ },
+ {
+  "state": "LAKSHADWEEP",
+  "district_name": "LAKSHADWEEP",
+  "annual_rainfall_mm": 143.71666666666664
+ }
+]
