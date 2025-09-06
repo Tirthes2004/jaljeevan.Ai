@@ -122,6 +122,7 @@ def get_client_ip(request):
     return ip
 
 @api_view(['GET'])
+
 def list_districts(request):
     """
     Get list of districts using DRF.
@@ -134,8 +135,8 @@ def list_districts(request):
         
         if search:
             queryset = queryset.filter(
-                Q(district_name__icontains=search) | 
-                Q(state__icontains=search)
+                Q(district_name__istartswith=search) 
+                # Q(state__icontains=search)
             )
         
         queryset = queryset.order_by('district_name')[:50]
@@ -162,6 +163,26 @@ def list_districts(request):
         return Response({
             'error': f'Failed to fetch districts: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+# def list_districts(request):
+#     query = request.GET.get('search','')
+#     results = []
+#     if query :
+#         results = RainfallData.objects.filter(Q(district_name__icontains = query) | Q(state__icontains = query))
+#     return render(request,'demo.html',{'query':query,'results':results})
+
+# def list_districts(request):
+#     query = request.GET.get('search', '')
+#     results = []
+    
+#     if query:
+#         results = RainfallData.objects.filter(
+#             Q(district_name__icontains=query) | 
+#             Q(state__icontains=query)
+#         )
+    
+#     return render(request, 'demo.html', {'query': query, 'results': results})
+
 
 @api_view(['GET'])
 def get_district_info(request, district_name):

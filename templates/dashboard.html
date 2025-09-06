@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaHarvest - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #0a1929;
+            --primary-medium: #0d2337;
+            --primary-light: #143d66;
+            --accent-blue: #2196f3;
+            --accent-teal: #00e5ff;
+            --text-primary: #e6f7ff;
+            --text-secondary: #b3e0ff;
+            --glow-color: rgba(33, 150, 243, 0.6);
+            --weak-color: #ff4757;
+            --medium-color: #ffa502;
+            --strong-color: #2ed573;
+            --very-strong-color: #1e90ff;
+        }
+
+        /* Dashboard Icon Styles */
+        .user-dashboard-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-teal);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.8);
+        }
+
+        .btn-logout {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 71, 87, 0.5);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 71, 87, 0.3);
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+
+        /* Dashboard Modal Styles */
+        .dashboard-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            padding: 20px;
+        }
+
+        .dashboard-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dashboard-modal .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 41, 0.9);
+            backdrop-filter: blur(8px);
+        }
+
+        .dashboard-modal .modal-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .dashboard-modal .modal-card {
+            background: linear-gradient(135deg, var(--primary-medium) 0%, var(--primary-light) 100%);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(30px) rotateX(5deg) scale(0.95);
+            overflow: hidden;
+        }
+
+        .dashboard-modal.active .modal-card {
+            opacity: 1;
+            transform: translateY(0) rotateX(0) scale(1);
+        }
+
+        .dashboard-modal .modal-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent-blue), transparent, var(--accent-teal));
+            z-index: -1;
+            border-radius: 22px;
+            animation: border-glow 3s ease-in-out infinite alternate;
+        }
+
+        .dashboard-modal .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(179, 224, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .dashboard-modal .modal-close:hover {
+            background: rgba(179, 224, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .dashboard-modal .modal-close i {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .dashboard-header {
+            padding: 30px;
+            text-align: center;
+            background: rgba(10, 25, 41, 0.3);
+            border-bottom: 1px solid rgba(179, 224, 255, 0.1);
+        }
+
+        .dashboard-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent-teal), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dashboard-content {
+            display: flex;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        .user-info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .user-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-teal);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            margin-bottom: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-change-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .user-avatar-large:hover .avatar-change-overlay {
+            opacity: 1;
+        }
+
+        .avatar-change-overlay i {
+            color: var(--accent-teal);
+            font-size: 24px;
+        }
+
+        .user-details {
+            width: 100%;
+            background: rgba(10, 25, 41, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(179, 224, 255, 0.1);
+        }
+
+        .user-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(179, 224, 255, 0.1);
+        }
+
+        .user-detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .history-section {
+            flex: 2;
+            background: rgba(10, 25, 41, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(179, 224, 255, 0.1);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-section h3 {
+            color: var(--accent-teal);
+            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .history-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: rgba(20, 61, 102, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-teal);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .history-action {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .history-details {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Animation for modal content */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-content > * {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .user-info-section {
+            animation-delay: 0.2s;
+        }
+
+        .history-section {
+            animation-delay: 0.4s;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .dashboard-content {
+                flex-direction: column;
+            }
+            
+            .user-info-section, .history-section {
+                width: 100%;
+            }
+            
+            .dashboard-modal .modal-container {
+                max-width: 95%;
+            }
+        }
+
+        /* Hide auth buttons when logged in */
+        .auth-buttons.hidden {
+            display: none;
+        }
+
+        /* Show user dashboard icon when logged in */
+        .user-dashboard-icon.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Rain animation container -->
+    <div class="rain-container"></div>
+    
+    <!-- Navbar with user dashboard icon (initially hidden) -->
+    <nav class="navbar">
+        <div class="left-sidebar-toggle"> <i class="fas fa-bars"></i> </div>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-droplet"></i></div>
+            <div class="logo-text">JALJEEVAN</div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="/templates/home.html">Home</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">LeaderBoard</a></li>
+            <li><a href="/templates/contact.html">Contact</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="language-selector">
+                <button class="language-btn">
+                    English <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown">
+                    <a href="#">Hindi</a>
+                    <a href="#">Spanish</a>
+                    <a href="#">French</a>
+                    <a href="#">German</a>
+                </div>
+            </div>
+            
+            <!-- Auth buttons (visible when not logged in) -->
+            <div class="auth-buttons">
+                <button class="btn btn-signin" onclick="openModal('signup-modal')">Sign Up</button>
+                <button class="btn btn-login" onclick="openModal('login-modal')">Login</button>
+            </div>
+            
+            <!-- User dashboard icon (hidden when not logged in) -->
+            <div class="user-dashboard-icon hidden">
+                <img src="/static/assets/default-user.png" alt="User" class="user-avatar" id="user-avatar" onclick="openDashboard()">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Dashboard Modal -->
+    <div id="dashboard-modal" class="dashboard-modal">
+        <div class="modal-backdrop" onclick="closeModal('dashboard-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close" onclick="closeModal('dashboard-modal')">
+                    <i class="fas fa-times"></i>
+                </div>
+                
+                <div class="dashboard-header">
+                    <h2>User Dashboard</h2>
+                    <p>Manage your account and view your activity history</p>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="user-info-section">
+                        <div class="avatar-container">
+                            <img src="/static/assets/default-user.png" alt="User" class="user-avatar-large" id="dashboard-avatar">
+                            <div class="avatar-change-overlay" onclick="changeAvatar()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="user-details">
+                            <div class="user-detail">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value" id="user-name">John Doe</span>
+                            </div>
+                            <div class="user-detail">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value" id="user-email">john.doe@example.com</span>
+                            </div>
+                            <div class="user-detail">
+                                <span class="detail-label">Member since:</span>
+                                <span class="detail-value" id="member-since">January 15, 2023</span>
+                            </div>
+                            <div class="user-detail">
+                                <span class="detail-label">Assessments:</span>
+                                <span class="detail-value" id="assessment-count">5 completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="history-section">
+                        <h3>Recent Activity</h3>
+                        
+                        <div class="history-item">
+                            <div class="history-date">Today, 10:30 AM</div>
+                            <div class="history-action">Completed rainwater assessment</div>
+                            <div class="history-details">Estimated potential: 12,000 liters annually</div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-date">Yesterday, 3:45 PM</div>
+                            <div class="history-action">Viewed cost analysis report</div>
+                            <div class="history-details">System payback period: 3.2 years</div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-date">October 12, 2023</div>
+                            <div class="history-action">Shared results with contractor</div>
+                            <div class="history-details">Sent to: aquatec@example.com</div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-date">October 8, 2023</div>
+                            <div class="history-action">Completed system design</div>
+                            <div class="history-details">Tank capacity: 5,000 liters</div>
+                        </div>
+                        
+                        <div class="history-item">
+                            <div class="history-date">October 5, 2023</div>
+                            <div class="history-action">Created new account</div>
+                            <div class="history-details">Welcome to AquaHarvest!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated user data (in a real app, this would come from your backend)
+        const userData = {
+            isLoggedIn: false,
+            name: "John Doe",
+            email: "john.doe@example.com",
+            joinDate: "January 15, 2023",
+            avatar: "/static/assets/default-user.png",
+            assessments: 5
+        };
+
+        // Check if user is logged in (in a real app, this would check with your backend)
+        function checkLoginStatus() {
+            // For demo purposes, we'll use localStorage
+            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            userData.isLoggedIn = loggedIn;
+            updateUI();
+        }
+
+        // Update UI based on login status
+        function updateUI() {
+            const authButtons = document.querySelector('.auth-buttons');
+            const userDashboard = document.querySelector('.user-dashboard-icon');
+            
+            if (userData.isLoggedIn) {
+                authButtons.classList.add('hidden');
+                userDashboard.classList.remove('hidden');
+                
+                // Update user info in dashboard
+                document.getElementById('user-name').textContent = userData.name;
+                document.getElementById('user-email').textContent = userData.email;
+                document.getElementById('member-since').textContent = userData.joinDate;
+                document.getElementById('assessment-count').textContent = `${userData.assessments} completed`;
+                
+                // Set avatars
+                document.getElementById('user-avatar').src = userData.avatar;
+                document.getElementById('dashboard-avatar').src = userData.avatar;
+            } else {
+                authButtons.classList.remove('hidden');
+                userDashboard.classList.add('hidden');
+            }
+        }
+
+        // Login function (simulated)
+        function login(email, password) {
+            // In a real app, this would call your backend API
+            console.log("Logging in with:", email);
+            
+            // Simulate API call
+            setTimeout(() => {
+                userData.isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                updateUI();
+                closeModal('login-modal');
+            }, 1000);
+        }
+
+        // Logout function
+        function logout() {
+            userData.isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            updateUI();
+            closeModal('dashboard-modal');
+        }
+
+        // Open dashboard modal
+        function openDashboard() {
+            openModal('dashboard-modal');
+        }
+
+        // Change avatar function
+        function changeAvatar() {
+            // Create file input element
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        // Update avatar with the new image
+                        userData.avatar = event.target.result;
+                        document.getElementById('user-avatar').src = userData.avatar;
+                        document.getElementById('dashboard-avatar').src = userData.avatar;
+                        
+                        // In a real app, you would upload this to your server
+                        console.log("Avatar updated");
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            fileInput.click();
+        }
+
+        // Modal functions (from auth.js)
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Add touch event listener for mobile
+                if ('ontouchstart' in window) {
+                    document.addEventListener('touchmove', preventScroll, { passive: false });
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Remove touch event listener
+                if ('ontouchstart' in window) {
+                    document.removeEventListener('touchmove', preventScroll);
+                }
+            }
+        }
+
+        // Prevent scroll on mobile when modal is open
+        function preventScroll(e) {
+            e.preventDefault();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            
+            // For demo purposes - simulate login when clicking the login button
+            document.querySelector('.btn-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                // Simulate login after 1 second
+                setTimeout(() => {
+                    login('demo@example.com', 'password');
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
