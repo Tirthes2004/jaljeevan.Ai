@@ -1,143 +1,113 @@
-/* static/css/about.css
-   Dark blue About section with CSS-only raindrop animation.
-*/
+/* about.css - clean, modern, simple */
 
-.about-section {
-  position: relative;
-  padding: 56px 20px 80px;
-  overflow: hidden;
-  background: linear-gradient(180deg, #021428 0%, #04263e 60%, #05324a 100%);
-  color: #e6f7ff;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #0b1d39; /* dark blue background */
+  color: #ffffff;
 }
 
-/* Raindrop container */
+/* About Section */
+.about-section {
+  padding: 40px 20px;
+}
 
-/* Raindrop styles */
-
-/* Raindrop fall keyframes */
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  position: relative;
+}
 
 /* Header */
 .about-header {
-  max-width: 900px;
-  margin: 0 auto 22px;
   text-align: center;
+  margin-bottom: 30px;
 }
 .about-header h1 {
-  font-size: 28px;
-  margin: 0 0 6px;
-  color: #eaf8ff;
-  letter-spacing: -0.4px;
+  font-size: 36px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow 3s infinite alternate;
 }
 .about-header .tagline {
+  font-size: 16px;
+  color: #c7d4e2;
   margin: 0;
-  color: rgba(230,247,255,0.8);
-  font-size: 15px;
 }
 
-/* Grid layout */
+@keyframes glow {
+  from { text-shadow: 0 0 8px rgba(79,172,254,0.6); }
+  to   { text-shadow: 0 0 16px rgba(0,242,254,0.9); }
+}
+
+/* Grid Layout */
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 28px;
-  margin-top: 28px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .about-grid { grid-template-columns: 1fr; }
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
-/* Left side: points */
-.lead {
-  font-weight: 600;
-  color: #aee0ff;
-  margin-bottom: 14px;
-}
 .about-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
+
 .about-item {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  padding: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 16px;
   border-radius: var(--radius);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-  transition: transform .18s ease, background .18s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 .about-item:hover {
   transform: translateY(-4px);
-  background: rgba(255,255,255,0.08);
-}
-.about-item .ai {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.about-item .icon {
-  width: 22px;
-  height: 22px;
-  stroke: #aee0ff;
-  stroke-width: 1.6;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* Text inside items */
-.meta h3 { margin: 0 0 6px; font-size: 16px; color: #eaf8ff; }
-.summary { margin: 0; color: rgba(230,247,255,0.8); font-size: 13px; }
-.detail { margin-top: 10px; color: #aee0ff; font-size: 13px; max-height: 0; overflow: hidden; transition: max-height .28s ease; }
-.about-item.open .detail { max-height: 240px; }
-
-/* Right side: card */
-.map-card {
-  background: rgba(255,255,255,0.05);
-  padding: 18px;
-  border-radius: var(--radius);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  text-align: center;
-  min-height: 240px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.map-pin { font-weight: 700; color: #aee0ff; margin-bottom: 8px; }
-.map-caption { color: rgba(230,247,255,0.7); font-size: 13px; margin: 0; }
-
-/* Buttons */
-.action-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-.btn {
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-  cursor: pointer;
+.about-item h3 {
+  font-size: 18px;
+  margin: 0 0 6px;
   font-weight: 600;
-  color: #e6f7ff;
-  transition: background .2s ease;
 }
-.btn:hover { background: rgba(255,255,255,0.15); }
-.btn.primary {
-  background: linear-gradient(90deg, #0b74de, #027ab3);
-  color: #fff;
-  border: none;
+.about-item p {
+  font-size: 14px;
+  margin: 0;
+  color: #d0dae6;
+}
+
+/* Right Panel (Map / Extra info) */
+.about-right {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+}
+.about-right h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.about-right p {
+  font-size: 14px;
+  color: #c7d4e2;
 }
 
 /* Footnote */
 .about-footnote {
-  margin-top: 20px;
+  margin-top: 30px;
   text-align: center;
-  color: rgba(230,247,255,0.7);
+  color: #8fa6c9;
   font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
 }
