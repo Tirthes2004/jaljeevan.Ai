@@ -7,21 +7,14 @@
   <link rel="stylesheet" href="/static/css/about.css">
 </head>
 <body>
-  <!-- ABOUT SECTION: Drop this section where you currently have the "Features" block. -->
+  <!-- ABOUT SECTION -->
   <section id="rtrwh-about" class="about-section">
-    <!-- Decorative animated clouds (pure CSS/SVG) -->
-    <div class="bg-clouds" aria-hidden="true">
-      <svg class="cloud cloud-1" viewBox="0 0 200 60" preserveAspectRatio="none">
-        <path d="M20 40c-10 0-16-8-16-16s6-16 16-16c4 0 8 2 10 5 4-6 10-9 20-9 14 0 22 9 24 16 6 0 16 8 16 16s-10 16-20 16H20z"/>
-      </svg>
-      <svg class="cloud cloud-2" viewBox="0 0 200 60" preserveAspectRatio="none">
-        <path d="M20 40c-10 0-16-8-16-16s6-16 16-16c4 0 8 2 10 5 4-6 10-9 20-9 14 0 22 9 24 16 6 0 16 8 16 16s-10 16-20 16H20z"/>
-      </svg>
-    </div>
-     <div class="container">
+    <div class="container">
       <header class="about-header">
-        <h1>On-spot assessment: RTRWH & Artificial Recharge</h1>
-        <p class="tagline">A practical web/mobile tool to estimate rooftop rainwater harvesting potential, recommend recharge structures, and provide sizing & cost guidance.</p>
+        <h1>On-spot Assessment: RTRWH & Artificial Recharge</h1>
+        <p class="tagline">
+          A practical web/mobile tool to estimate rooftop rainwater harvesting potential, recommend recharge structures, and provide sizing & cost guidance.
+        </p>
       </header>
 
       <div class="about-grid">
@@ -31,120 +24,55 @@
 
           <ul class="about-list">
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M3 12h18M3 6h12M3 18h12"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Feasibility check</h3>
-                <p class="summary">Instant assessment using roof area, rainfall input and runoff coefficient to tell if RTRWH is viable.</p>
-                <div class="detail">Runs a location-aware algorithm combining roof geometry and local rainfall to estimate how much rain can be captured annually and whether infiltration is feasible on-site.</div>
-              </div>
+              <h3>Feasibility check</h3>
+              <p>Instant assessment using roof area, rainfall input, and runoff coefficient to tell if RTRWH is viable.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M12 2v20M2 12h20"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Suggested structure types</h3>
-                <p class="summary">Recommends pit, trench, shaft or soakaway types based on site constraints.</p>
-                <div class="detail">Chooses the most suitable RTRWH/AR structure considering available open space, soil permeability, and expected runoff volumes.</div>
-              </div>
+              <h3>Suggested structure types</h3>
+              <p>Recommends pit, trench, shaft, or soakaway types based on site constraints.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M12 2c4 0 7 3 7 7s-3 7-7 7-7-3-7-7 3-7 7-7z"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Hydrogeology snapshot</h3>
-                <p class="summary">Principal aquifer type and depth-to-water at the location.</p>
-                <div class="detail">Presents nearby aquifer characteristics and recent groundwater level ranges so users understand recharge potential and safety margins.</div>
-              </div>
+              <h3>Hydrogeology snapshot</h3>
+              <p>Principal aquifer type and depth-to-water at the location.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M3 3h18v6H3zM3 11h18v10H3z"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Local rainfall & seasonal profile</h3>
-                <p class="summary">Monthly rainfall patterns used to size the system.</p>
-                <div class="detail">Uses local (station or gridded) rainfall to create a monthly capture profile and recommend storage/recharge timing.</div>
-              </div>
+              <h3>Local rainfall & seasonal profile</h3>
+              <p>Monthly rainfall patterns used to size the system.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M12 20v-6M6 12l6-6 6 6"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Runoff & capture estimates</h3>
-                <p class="summary">Estimated annual harvest and peak-runoff rates.</p>
-                <div class="detail">Presents expected harvest volume (m³/yr) and peak runoff for design storms so sizing is robust under extremes.</div>
-              </div>
+              <h3>Runoff & capture estimates</h3>
+              <p>Estimated annual harvest and peak-runoff rates.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M4 6h16v12H4z"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Recommended dimensions</h3>
-                <p class="summary">Suggested sizes for recharge pits, trenches, shafts or percolation systems.</p>
-                <div class="detail">Gives quick-build dimensions with safety buffers and expected infiltration rates based on simple geotechnical inputs.</div>
-              </div>
+              <h3>Recommended dimensions</h3>
+              <p>Suggested sizes for recharge pits, trenches, shafts, or percolation systems.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M12 4v16M8 8h8"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Cost & benefit estimate</h3>
-                <p class="summary">Ballpark cost and simple payback / benefit analysis.</p>
-                <div class="detail">Produces an order-of-magnitude cost estimate and a simple lifecycle cost-benefit to help users decide investment levels.</div>
-              </div>
+              <h3>Cost & benefit estimate</h3>
+              <p>Ballpark cost and simple payback / benefit analysis.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Regional language support</h3>
-                <p class="summary">Form and outputs prepared for easy translation and offline printing.</p>
-                <div class="detail">Design is modular to add Marathi/Hindi/Bengali/Tamil/Telugu strings — critical for adoption in rural & urban communities.</div>
-              </div>
+              <h3>Regional language support</h3>
+              <p>Form and outputs prepared for easy translation and offline printing.</p>
             </li>
-
             <li class="about-item">
-              <div class="ai">
-                <svg viewBox="0 0 24 24" class="icon"><path d="M4 12h16M12 4v16"/></svg>
-              </div>
-              <div class="meta">
-                <h3>Community & field workflow</h3>
-                <p class="summary">Generates printable guidance & field-checklists for installation teams.</p>
-                <div class="detail">Produces a short installation checklist (material list, safety notes) and a shareable report for authorities or homeowners.</div>
-              </div>
+              <h3>Community & field workflow</h3>
+              <p>Generates printable guidance & field-checklists for installation teams.</p>
             </li>
-
           </ul>
-
         </div>
 
-        <!-- Right column: map / visual + actions -->
+        <!-- Right column: simple info panel -->
         <div class="about-right">
-          <div class="map-card" id="map-preview" role="region" aria-label="Map preview placeholder">
-            <div class="map-pin">Map preview</div>
-            <p class="map-caption">Replace this block with your live GIS map (Leaflet/Mapbox/Google Maps). The UI adapts automatically.</p>
-          </div>
-
+          <h3>Map Integration (Pluggable)</h3>
+          <p>
+            This panel can be replaced with a live GIS map (Leaflet / Mapbox / Google Maps) or
+            additional project visuals. The UI adapts automatically.
+          </p>
           <div class="action-row">
-            <button id="demo-btn" class="btn primary">Open demo (mock)</button>
-            <button id="brief-btn" class="btn">Download brief</button>
+            <button class="btn primary">Open Demo</button>
+            <button class="btn">Download Brief</button>
           </div>
-
         </div>
       </div>
 
@@ -153,6 +81,7 @@
       </footer>
     </div>
   </section>
-  
-    <script src="/static/js/about.js"></script>
+
+  <script src="/static/js/about.js"></script>
 </body>
+</html>
