@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaHarvest - Rooftop Rainwater Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Component CSS -->
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="stylesheet" href="/static/css/sidebar.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body>
+    <!-- Rain animation container -->
+    <div class="rain-container"></div>
+    
+    <!-- Navbar Component -->
+    <div id="navbar-container"></div>
+    
+    <!-- Sidebar Component -->
+    <div id="sidebar-container"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-heading">Assess Your <span>Rainwater Harvesting</span> Potential</h1>
+                <h2 class="hero-subheading">AI-Powered Analysis for Sustainable Water Management</h2>
+                <p class="hero-description">Our advanced application helps you evaluate the potential for rooftop rainwater harvesting and artificial recharge at your location. Get personalized recommendations, dimension calculations, and cost estimates with just a few clicks.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Get Started <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn-secondary">Learn More</button>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <!-- Floating image container with ripple effect -->
+                <div class="floating-image-container">
+                    <img src="/static/assets/image_float.png" alt="Rainwater Harvesting" class="floating-image">
+                    <div class="ripple-container">
+                        <div class="ripple ripple-1"></div>
+                        <div class="ripple ripple-2"></div>
+                        <div class="ripple ripple-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Auth Modals Container -->
+    <div id="auth-modals-container"></div>
+
+    <!-- Component Loader -->
+    <script src="/static/js/componentLoader.js"></script>
+    
+    <!-- Component JS -->
+    <script src="/static/js/navbar.js"></script>
+    <script src="/static/js/sidebar.js"></script>
+    
+    <!-- Page-specific JS -->
+    <script src="/static/js/home.js"></script>
+    <script src="/static/js/auth.js"></script>
+</body>
+</html>

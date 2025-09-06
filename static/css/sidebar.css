@@ -1,0 +1,83 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: var(--primary-medium);
+    z-index: 999;
+    padding: 6rem 2rem 2rem;
+    transition: left 0.4s ease;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    display: none; /* Hidden by default, will show on mobile */
+    /* Hide scrollbar but maintain functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.sidebar-links {
+    list-style: none;
+    margin-top: 2rem;
+    padding: 0;
+}
+
+.sidebar-links li {
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: block;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(179, 224, 255, 0.1);
+}
+
+.sidebar-links a:hover {
+    color: var(--accent-teal);
+    padding-left: 0.5rem;
+}
+
+.sidebar-auth {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-auth .btn {
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+.sidebar-language {
+    margin-top: 2rem;
+}
+
+/* Show sidebar only on mobile */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        display: block;
+    }
+}
