@@ -373,3 +373,16 @@ html {
         }
     }
 }
+.btn-danger {
+    background: linear-gradient(45deg, #f44336, #ff9800);
+    color: white;
+    border-radius: 10px;
+    border: 0;
+    margin-right: -40px;
+}
+.btn-danger:hover {
+    background: linear-gradient(45deg, #f44336, #ffffff);
+    color: black;
+    border-radius: 10px;
+    border: 0;
+}

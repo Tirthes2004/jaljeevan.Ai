@@ -487,10 +487,6 @@ body {
     box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
 }
 
-.btn-danger {
-    background: linear-gradient(45deg, #f44336, #ff9800);
-    color: white;
-}
 
 /* Animations */
 @keyframes spin {
