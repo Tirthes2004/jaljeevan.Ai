@@ -1,96 +1,220 @@
-// static/js/about.js
-// Lightweight raindrop generator for the About section.
-// Save as: static/js/about.js
+ // Slider State
+        let currentSlide = 0;
+        const totalSlides = 9;
+        let autoplayEnabled = true;
+        let autoplayInterval;
 
-document.addEventListener('DOMContentLoaded', function () {
-  // existing interactive code: expand items and demo/brief buttons
-  document.querySelectorAll('.about-item').forEach(function(item){
-    item.addEventListener('click', function(e){
-      if (e.target.tagName.toLowerCase() === 'button' || e.target.closest('.btn')) return;
-      item.classList.toggle('open');
-    });
-  });
+        // Elements
+        const cards = document.querySelectorAll('.card');
+        const dots = document.querySelectorAll('.dot');
+        const cardCounter = document.getElementById('cardCounter');
+        const autoplayIndicator = document.getElementById('autoplayIndicator');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-  var demoBtn = document.getElementById('demo-btn');
-  var briefBtn = document.getElementById('brief-btn');
-  demoBtn && demoBtn.addEventListener('click', function(){ alert('Demo opened — integrate map/GIS here.'); });
-  briefBtn && briefBtn.addEventListener('click', function(){
-    var text = 'SIH 2025 — RTRWH & AR brief\n\nProject: On-spot assessment of rooftop rainwater harvesting and artificial recharge.\n\nKey points:\n';
-    document.querySelectorAll('.about-list .about-item h3').forEach(function(h){ text += '- ' + h.textContent + '\n'; });
-    var blob = new Blob([text], {type: 'text/plain'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a'); a.href = url; a.download = 'SIH2025_RTRWH_brief.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  });
+        // Card position classes
+        const positionClasses = ['far-prev', 'prev', 'active', 'next', 'far-next'];
 
-  // -------------------------
-  // Raindrop generation
-  // -------------------------
-  var section = document.querySelector('.about-section');
-  if (!section) return;
+        function updateCardPositions() {
+            cards.forEach((card, index) => {
+                // Remove all position classes
+                card.classList.remove('active', 'next', 'prev', 'far-next', 'far-prev', 'hidden');
+                
+                const relativeIndex = (index - currentSlide + totalSlides) % totalSlides;
+                
+                if (relativeIndex === 0) {
+                    card.classList.add('active');
+                } else if (relativeIndex === 1) {
+                    card.classList.add('next');
+                } else if (relativeIndex === 2) {
+                    card.classList.add('far-next');
+                } else if (relativeIndex === totalSlides - 1) {
+                    card.classList.add('prev');
+                } else if (relativeIndex === totalSlides - 2) {
+                    card.classList.add('far-prev');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
 
-  // create rain container if not present
-  var rain = section.querySelector('.rain');
-  if (!rain) {
-    rain = document.createElement('div');
-    rain.className = 'rain';
-    section.insertBefore(rain, section.firstChild); // behind content but above bg-clouds (z-index controlled in CSS)
-  }
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
 
-  // parameters
-  var dropCount = 28; // tweak for performance
-  var sectionWidth = section.offsetWidth || window.innerWidth;
+            // Update counter
+            cardCounter.textContent = `Card ${currentSlide + 1} of ${totalSlides}`;
+        }
 
-  function rand(min, max) { return Math.random() * (max - min) + min; }
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCardPositions();
+        }
 
-  // create drops
-  for (var i = 0; i < dropCount; i++) {
-    (function(i){
-      var drop = document.createElement('div');
-      drop.className = 'raindrop';
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCardPositions();
+        }
 
-      // randomize start left (0-100%), slight negative allowed for overflow
-      var left = rand(-8, 108);
-      drop.style.left = left + '%';
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCardPositions();
+        }
 
-      // randomize width and height (gives variety)
-      var widthPx = rand(1, 3);
-      var heightVh = rand(8, 18);
-      drop.style.width = widthPx + 'px';
-      drop.style.height = heightVh + 'vh';
+        function startAutoplay() {
+            if (autoplayInterval) clearInterval(autoplayInterval);
+            autoplayInterval = setInterval(nextSlide, 4000);
+        }
 
-      // randomize fall duration and delay
-      var duration = rand(1.2, 2.6); // seconds
-      var delay = rand(-2.0, 0.8); // negative delays to stagger initial appearance
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+        }
 
-      // horizontal drift via transform animation (implemented with CSS animation generated per element)
-      // create keyframes for this element by injecting animation through style attribute
-      var animName = 'fallAnim' + i;
-      var styleEl = document.createElement('style');
-      styleEl.innerHTML = "\n@keyframes " + animName + " {\n" +
-        "0% { transform: translateY(-20vh) translateX(0) scaleY(0.9); opacity: 0.95; }\n" +
-        "70% { opacity: 0.95; }\n" +
-        "90% { opacity: 0.35; }\n" +
-        "100% { transform: translateY(110vh) translateX(" + (rand(-8,8)) + "vw) scaleY(1); opacity: 0; }\n" +
-      "}\n";
-      document.head.appendChild(styleEl);
+        function toggleAutoplay() {
+            autoplayEnabled = !autoplayEnabled;
+            const toggleBtn = document.getElementById('toggleBtn');
+            
+            if (autoplayEnabled) {
+                autoplayIndicator.textContent = 'Auto-play: ON';
+                autoplayIndicator.classList.remove('paused');
+                toggleBtn.textContent = 'Pause Auto-play';
+                toggleBtn.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a52)';
+                startAutoplay();
+            } else {
+                autoplayIndicator.textContent = 'Auto-play: OFF';
+                autoplayIndicator.classList.add('paused');
+                toggleBtn.textContent = 'Resume Auto-play';
+                toggleBtn.style.background = 'linear-gradient(135deg, #51cf66, #40c057)';
+                stopAutoplay();
+            }
+        }
 
-      drop.style.animation = animName + ' ' + duration + 's linear ' + delay + 's infinite';
-      // randomize opacity slightly
-      drop.style.opacity = rand(0.6, 0.95);
+        function resetSlider() {
+            currentSlide = 0;
+            updateCardPositions();
+            
+            // Visual feedback for reset
+            const resetBtn = document.getElementById('resetBtn');
+            const originalText = resetBtn.textContent;
+            resetBtn.textContent = 'Reset ✓';
+            resetBtn.style.background = 'linear-gradient(135deg, #51cf66, #40c057)';
+            
+            setTimeout(() => {
+                resetBtn.textContent = originalText;
+                resetBtn.style.background = 'linear-gradient(135deg, var(--accent), #00f2fe)';
+            }, 1000);
+        }
 
-      // optional staggered blur/scale
-      drop.style.transformOrigin = 'top center';
+        // Event Listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
 
-      rain.appendChild(drop);
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoplay();
+            }
+        });
 
-      // remove style tag later on unload if desired (not necessary)
-    })(i);
-  }
+        // Touch/Swipe support
+        let startX = 0;
+        let endX = 0;
 
-  // handle resize: optionally remove & re-create drops (kept simple here)
-  window.addEventListener('resize', function(){
-    // a quick, cheap strategy: if width changed significantly, clear and recreate a smaller set
-    // (left as a no-op to keep code minimal; update if you notice visual glitches).
-  }, { passive: true });
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
 
-});
+        document.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        });
+
+        // Pause autoplay on hover
+        const sliderContainer = document.querySelector('.slider-container');
+        sliderContainer.addEventListener('mouseenter', () => {
+            if (autoplayEnabled) stopAutoplay();
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            if (autoplayEnabled) startAutoplay();
+        });
+
+        // Background Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 75;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize
+        function initializeSlider() {
+          updateCardPositions();
+          if (autoplayEnabled) startAutoplay();
+          createParticles(); // now particles appear
+      }
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSlider();
+        });
+        
+        // If DOM is already loaded, initialize immediately
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeSlider);
+        } else {
+            initializeSlider();
+        }
+
+        // Add sparkle effects on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.10) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+                sparkle.style.width = '5px';
+                sparkle.style.height = '5px';
+                sparkle.style.background = 'var(--accent)';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '100';
+                sparkle.style.animation = 'sparkle 0.8s ease-out forwards';
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 800);
+            }
+        });
+
+        // Sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkle {
+                0% { transform: scale(0) rotate(0deg); opacity: 1; }
+                100% { transform: scale(1) rotate(180deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
