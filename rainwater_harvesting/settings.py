@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-from pathlib import Path
+from pathlib import Path 
 from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='your-secret-key-here')
 DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
-
+GEMINI_API_KEY = "AIzaSyAeV7pKkw41E9GclxTl7g8scmoTvpvFH6M"
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable is required")
 
 # Application definition
 
@@ -43,6 +46,7 @@ INSTALLED_APPS = [
     'calculator',
     'accounts.apps.AccountsConfig',
     'pages',
+    'chatbot',
 ]
 
 MIDDLEWARE = [

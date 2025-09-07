@@ -6,18 +6,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('pages.urls')),
     
-    # ✅ Main pages at root level
-    path('', include('pages.urls')),                # Home and static pages
-    
-    # ✅ Calculator under /calculator/
-    path('calculator/', include('calculator.urls')), # Calculator pages
-    
-    # ✅ API endpoints
-    path('api/v1/', include('calculator.urls')),     # Keep API endpoints
-    
-    # ✅ Authentication
-    path('auth/', include('accounts.urls')),         # Auth under /auth/
+    # ✅ Fixed: Use different namespaces
+    path('calculator/', include('calculator.urls')),              # Calculator pages
+    path('api/v1/', include('calculator.api_urls')),              # API endpoints (separate file)
+    path('chatbot/', include('chatbot.urls')),                    # Chatbot API
+    path('auth/', include('accounts.urls')),                      # Authentication
 ]
 
 if settings.DEBUG:
