@@ -1,82 +1,65 @@
-from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 
+# Create your views here.
 
-# Modified Register user - API only
-@require_http_methods(["POST"])
+def demo(request):
+    return render(request,'demo.html')
+
+
+
+# Register user
 def registerUser(request):  
-    username = request.POST.get('username')
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-    confirm_password = request.POST.get('confirm_password')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
 
-    # Validation
-    if not username or not email or not password or not confirm_password:
-        return JsonResponse({
-            'success': False,
-            'message': 'All fields required!'
-        })
-    
-    if password != confirm_password:
-        return JsonResponse({
-            'success': False,
-            'message': 'Password Mismatched'
-        })
+        if not username or not email or not password or not confirm_password:
+            messages.error(request,"All fields required!")
+            return redirect('registerUser')
         
-    if User.objects.filter(email=email).exists():
-        return JsonResponse({
-            'success': False,
-            'message': 'Email already exist, Try with another'
-        })
-        
-    if User.objects.filter(username=username).exists():
-        return JsonResponse({
-            'success': False,
-            'message': 'Username already exist, Try with another'
-        })
-    
-    # Create user
-    try:
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
-        login(request, user)
-        return JsonResponse({
-            'success': True,
-            'message': 'Account Created Successfully',
-            'redirect_url': '/demo/'
-        })
-    except Exception as e:
-        return JsonResponse({
-            'success': False,
-            'message': 'Error creating account. Please try again.'
-        })
+        elif(password == confirm_password):
+            if(User.objects.filter(email=email).exists()):
+                messages.info(request,"Email already exist, Try with another")
+                return redirect('registerUser')
+            elif(User.objects.filter(username=username).exists()):
+                messages.info(request,'Username already exist, Try with another')
+                return redirect('registerUser')
+            else:
+                user = User.objects.create_user(username=username,email=email,password=password)
+                user.save()
+                login(request,user)
+                messages.success(request,'Account Created Succesfully')
+                return redirect('loginUser')
+        else:
+            messages.info(request,"Password Mismatched")
+            return redirect('registerUser')
 
-# Your loginUser view - keep as is
-@require_http_methods(["POST"])
-def loginUser(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    
-    user = authenticate(username=username, password=password)
-    
-    if user is not None:
-        login(request, user)
-        return JsonResponse({
-            'success': True,
-            'message': 'Successfully Logged In',
-            'redirect_url': '/'  # Redirect to root (calculator's demo_view)
-        })
     else:
-        return JsonResponse({
-            'success': False,
-            'message': 'Credential Mismatched!!!'
-        })
+        return render(request,'accounts/registerUser.html')
 
+#  Login
+def loginUser(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username,password=password)
+        if user is not None:
+            login(request,user)
+            messages.success(request,"Succesfully Logged In")
+            return redirect('demo')
+        else:
+            messages.error(request,"Credential Mismatched!!!")
+            return redirect('loginUser')
+        
+    return render(request,'accounts/loginUser.html')
+
+#  LogOut
 def logoutUser(request):
     logout(request)
-    messages.success(request, "Successfully Logged Out!!!")
-    return redirect('home')  # Redirect to home (calculator's demo_view)
+    messages.success(request,"Successfully Logged Out!!!")
+    return redirect('demo')

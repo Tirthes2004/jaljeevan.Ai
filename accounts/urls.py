@@ -1,10 +1,9 @@
-# accounts/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Remove the conflicting demo view
-    path('register/', views.registerUser, name='registerUser'),  # Changed to register/
-    path('login/', views.loginUser, name='loginUser'),           # Changed to login/
-    path('logout/', views.logoutUser, name='logoutUser'),        # Changed to logout/
+    path('',views.demo,name = 'demo'),
+    path('registerUser',views.registerUser,name = 'registerUser'),
+    path('loginUser',views.loginUser,name = 'loginUser'),
+    path('logoutUser',views.logoutUser,name = 'logoutUser'),
 ]
