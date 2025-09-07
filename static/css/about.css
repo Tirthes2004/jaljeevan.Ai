@@ -52,7 +52,6 @@ h1, h2, h3, p { margin: 0; padding: 0; }
   line-height: 1.05;
   color: #fff;
   background: linear-gradient(90deg, var(--accent), #00f2fe);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
   padding-bottom: 6px;
