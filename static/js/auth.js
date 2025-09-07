@@ -1,4 +1,8 @@
-// Auth Modal Functionality
+// ============================================
+// AUTH MODAL FUNCTIONALITY - COMPLETE VERSION
+// ============================================
+
+// Modal Control Functions
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -21,6 +25,34 @@ function closeModal(modalId) {
         // Remove touch event listener
         if ('ontouchstart' in window) {
             document.removeEventListener('touchmove', preventScroll);
+        }
+        
+        // Clear any messages when closing modal
+        const messageContainer = modal.querySelector('.message-container');
+        if (messageContainer) {
+            messageContainer.remove();
+        }
+        
+        // Reset form if exists
+        const form = modal.querySelector('.auth-form');
+        if (form) {
+            form.reset();
+            // Reset button state
+            const button = form.querySelector('.btn-auth');
+            if (button) {
+                button.disabled = false;
+                const spans = button.querySelectorAll('span');
+                const icons = button.querySelectorAll('i');
+                if (spans.length && icons.length) {
+                    if (modalId.includes('login')) {
+                        spans[0].textContent = 'Sign In';
+                        icons[0].className = 'fas fa-arrow-right';
+                    } else if (modalId.includes('signup')) {
+                        spans[0].textContent = 'Sign Up';
+                        icons[0].className = 'fas fa-user-plus';
+                    }
+                }
+            }
         }
     }
 }
@@ -158,72 +190,165 @@ function updateRequirement(elementId, isMet) {
     }
 }
 
+// ============================================
+// DJANGO BACKEND INTEGRATION
+// ============================================
+
+// Form Handler Function
+function handleAuthForm(config) {
+    const form = config.form;
+    const button = form.querySelector('.btn-auth');
+    
+    if (!form || !button) return;
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(form);
+        
+        // Basic validation
+        const requiredFields = form.querySelectorAll('input[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            showMessage(form, 'Please fill in all required fields', 'error');
+            return;
+        }
+        
+        // Special validation for signup form
+        if (config.isSignup) {
+            const email = form.querySelector('input[name="email"]').value;
+            const password = form.querySelector('input[name="password"]').value;
+            const confirmPassword = form.querySelector('input[name="confirm_password"]').value;
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showMessage(form, 'Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Password validation
+            if (password.length < 6) {
+                showMessage(form, 'Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage(form, 'Passwords do not match', 'error');
+                return;
+            }
+        }
+
+        // Show loading state
+        setLoadingState(button, true, config.loadingText);
+        
+        // Make AJAX request
+        fetch(config.submitUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(form, data.message, 'success');
+                
+                // Close modal and handle redirect after success
+                setTimeout(() => {
+                    closeModal(config.modalId);
+                    
+                    // Different behavior for login vs signup
+                    if (config.submitUrl.includes('loginUser')) {
+                        // For login, redirect to the demo page
+                        window.location.href = data.redirect_url;
+                    } else {
+                        // For signup, user is already logged in, refresh to update navbar
+                        window.location.reload();
+                    }
+                }, 1500);
+                
+            } else {
+                showMessage(form, data.message, 'error');
+                setLoadingState(button, false, config.defaultText, config.defaultIcon);
+            }
+        })
+        .catch(error => {
+            console.error('Form submission error:', error);
+            showMessage(form, 'An error occurred. Please try again.', 'error');
+            setLoadingState(button, false, config.defaultText, config.defaultIcon);
+        });
+    });
+}
+
+// Show Message Function
+function showMessage(form, message, type) {
+    // Remove existing messages from this form
+    const existingMessage = form.querySelector('.message-container');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Create new message
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message-container';
+    messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    
+    // Insert after the button
+    const button = form.querySelector('.btn-auth');
+    if (button) {
+        button.parentNode.insertBefore(messageDiv, button.nextSibling);
+    }
+    
+    // Auto-hide error messages after 4 seconds
+    if (type === 'error') {
+        setTimeout(() => {
+            if (messageDiv && messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 4000);
+    }
+}
+
+// Loading State Function
+function setLoadingState(button, loading, text, icon = 'fas fa-spinner fa-spin') {
+    button.disabled = loading;
+    if (loading) {
+        button.innerHTML = `<span>${text}</span><i class="fas fa-spinner fa-spin"></i>`;
+    } else {
+        button.innerHTML = `<span>${text}</span><i class="${icon}"></i>`;
+    }
+}
+
+// ============================================
+// INITIALIZATION FUNCTIONS
+// ============================================
+
 // Initialize auth functionality
 function initAuth() {
     // Close modal when clicking on backdrop
     document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
         backdrop.addEventListener('click', function() {
             const modal = this.parentElement;
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Remove touch event listener
-            if ('ontouchstart' in window) {
-                document.removeEventListener('touchmove', preventScroll);
-            }
-        });
-    });
-
-    // Prevent form submission for demo
-    document.querySelectorAll('.auth-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.btn-auth');
-            const originalText = submitBtn.querySelector('span').textContent;
-            const originalIcon = submitBtn.querySelector('i').className;
-            
-            // Show loading state
-            submitBtn.querySelector('span').textContent = 'Processing...';
-            submitBtn.querySelector('i').className = 'fas fa-spinner fa-spin';
-            submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                // Reset button state
-                submitBtn.querySelector('span').textContent = originalText;
-                submitBtn.querySelector('i').className = originalIcon;
-                submitBtn.disabled = false;
-                
-                // Close modal
-                const modal = this.closest('.auth-modal');
-                modal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-                
-                // Remove touch event listener
-                if ('ontouchstart' in window) {
-                    document.removeEventListener('touchmove', preventScroll);
-                }
-                
-                // Show success message
-                alert('Authentication successful!');
-            }, 1500);
+            const modalId = modal.id;
+            closeModal(modalId);
         });
     });
 
     // Close modal with Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            document.querySelectorAll('.auth-modal').forEach(modal => {
-                if (modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                    
-                    // Remove touch event listener
-                    if ('ontouchstart' in window) {
-                        document.removeEventListener('touchmove', preventScroll);
-                    }
-                }
+            document.querySelectorAll('.auth-modal.active').forEach(modal => {
+                closeModal(modal.id);
             });
         }
     });
@@ -258,6 +383,16 @@ function initAuth() {
         }
     });
     
+    // Close buttons functionality
+    document.querySelectorAll('.modal-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            const modal = this.closest('.auth-modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+    
     // Improve mobile experience
     if ('ontouchstart' in window) {
         // Add touch-friendly styles
@@ -271,13 +406,75 @@ function initAuth() {
     }
 }
 
+// Initialize form handlers
+function initFormHandlers() {
+    // Handle Login Form
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        handleAuthForm({
+            form: loginForm,
+            submitUrl: '/auth/login/',
+            loadingText: 'Signing In...',
+            defaultText: 'Sign In',
+            defaultIcon: 'fas fa-arrow-right',
+            modalId: 'login-modal' // Update with your actual login modal ID
+        });
+    }
+    
+    // Handle Signup Form  
+    const signupForm = document.getElementById('signup-form');
+    if (signupForm) {
+        handleAuthForm({
+            form: signupForm,
+            submitUrl: '/auth/register/',
+            loadingText: 'Creating Account...',
+            defaultText: 'Sign Up',
+            defaultIcon: 'fas fa-user-plus',
+            isSignup: true,
+            modalId: 'signup-modal' // Update with your actual signup modal ID
+        });
+    }
+}
+
+// ============================================
+// GLOBAL EXPORTS AND INITIALIZATION
+// ============================================
+
 // Make functions globally available
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.switchAuthModal = switchAuthModal;
 window.checkPasswordStrength = checkPasswordStrength;
 
-// Initialize auth when DOM is loaded
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize basic auth functionality
     initAuth();
+    
+    // Initialize form handlers with Django backend
+    initFormHandlers();
 });
+
+// ============================================
+// EVENT DELEGATION FOR DYNAMIC CONTENT
+// ============================================
+
+// Handle dynamically added modals or forms
+document.addEventListener('click', function(e) {
+    // Handle login/signup buttons
+    if (e.target.matches('[data-modal]')) {
+        e.preventDefault();
+        const modalId = e.target.getAttribute('data-modal');
+        openModal(modalId);
+    }
+    
+    // Handle close buttons
+    if (e.target.matches('.modal-close, .modal-close *')) {
+        e.preventDefault();
+        const modal = e.target.closest('.auth-modal');
+        if (modal) {
+            closeModal(modal.id);
+        }
+    }
+});
+
