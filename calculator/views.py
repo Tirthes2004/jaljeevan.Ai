@@ -6,13 +6,13 @@ from django.db.models import Q
 from .models import RainfallData, CalculationLog
 import logging
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import login_required
 
 
 logger = logging.getLogger(__name__)
 
 
-
+@login_required
 @api_view(['POST'])
 def calculate_rainwater_harvest(request):
     try:
