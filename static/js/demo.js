@@ -9,32 +9,32 @@ class RainwaterCalculatorDemo {
         this.checkAPIStatus();
         console.log('🚀 Rainwater Calculator Demo initialized');
         // Inside bindEvents() or init() instead of searchDistricts()
-const searchInput = document.getElementById('districtSearch');
-if (searchInput) {
-    searchInput.addEventListener('input', async () => {
-        const searchTerm = searchInput.value.trim();
+        const searchInput = document.getElementById('districtSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', async () => {
+                const searchTerm = searchInput.value.trim();
 
-        // show results starting from first character
-        if (searchTerm.length < 1) {
-            this.clearSearchResults();
-            return;
+                // show results starting from first character
+                if (searchTerm.length < 1) {
+                    this.clearSearchResults();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        this.displaySearchResults(data.districts);
+                    } else {
+                        this.showSearchError('No districts found matching your search.');
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                    this.showSearchError('Error searching districts. Please check your connection.');
+                }
+            });
         }
-
-        try {
-            const response = await fetch(`${this.baseURL}/districts/?search=${encodeURIComponent(searchTerm)}`);
-            const data = await response.json();
-
-            if (response.ok && data.success) {
-                this.displaySearchResults(data.districts);
-            } else {
-                this.showSearchError('No districts found matching your search.');
-            }
-        } catch (error) {
-            console.error('Search error:', error);
-            this.showSearchError('Error searching districts. Please check your connection.');
-        }
-    });
-}
 
     }
 
