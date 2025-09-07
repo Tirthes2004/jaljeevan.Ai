@@ -277,9 +277,7 @@
             <div class="modal-container">
                 <div class="modal-card">
                     <div class="modal-close">
-                        <button type="button" class="close-btn" onclick="closeModal('signup-modal')" aria-label="Close modal">
-                            <i class="fas fa-times" aria-hidden="true"></i>
-                        </button>
+                            <i class="fas fa-times" aria-hidden="true" onclick="closeModal('signup-modal')"></i>
                     </div>
                     
                     <div class="modal-header">
@@ -291,7 +289,7 @@
                         {% csrf_token %}
                         
                         <div class="form-group">
-                            <label for="signup-username" class="form-label">Username</label>
+                            <label for="signup-username" class="form-label"></label>
                             <div class="input-wrapper">
                                 <input type="text" name="username" id="signup-username" 
                                        class="form-control" placeholder="Choose username" required
@@ -301,7 +299,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="signup-email" class="form-label">Email</label>
+                            <label for="signup-email" class="form-label"></label>
                             <div class="input-wrapper">
                                 <input type="email" name="email" id="signup-email" 
                                        class="form-control" placeholder="Enter email" required
@@ -313,7 +311,7 @@
                         <div class="form-group password-group">
                             <div class="password-input-section">
                                 <div class="form-group">
-                                    <label for="signup-password" class="form-label">Password</label>
+                                    <label for="signup-password" class="form-label"></label>
                                     <div class="input-wrapper">
                                         <input type="password" name="password" id="signup-password" 
                                                class="form-control" placeholder="Create password" required
@@ -335,7 +333,7 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+                                    <label for="signup-confirm-password" class="form-label"></label>
                                     <div class="input-wrapper">
                                         <input type="password" name="confirm_password" id="signup-confirm-password" 
                                                class="form-control" placeholder="Confirm password" required
@@ -390,9 +388,7 @@
             <div class="modal-container">
                 <div class="modal-card">
                     <div class="modal-close">
-                        <button type="button" class="close-btn" onclick="closeModal('login-modal')" aria-label="Close modal">
-                            <i class="fas fa-times" aria-hidden="true"></i>
-                        </button>
+                            <i class="fas fa-times" aria-hidden="true" onclick="closeModal('login-modal')"></i>
                     </div>
                     
                     <div class="modal-header">
@@ -404,7 +400,7 @@
                         {% csrf_token %}
                         
                         <div class="form-group">
-                            <label for="login-username" class="form-label">Username</label>
+                            <label for="login-username" class="form-label"></label>
                             <div class="input-wrapper">
                                 <input type="text" name="username" id="login-username" 
                                        class="form-control" placeholder="Enter username" required
@@ -414,7 +410,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="login-password" class="form-label">Password</label>
+                            <label for="login-password" class="form-label"></label>
                             <div class="input-wrapper">
                                 <input type="password" name="password" id="login-password" 
                                        class="form-control" placeholder="Enter password" required
