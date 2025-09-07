@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AquaHarvest - Rooftop Rainwater Assessment</title>
+    <title>{% block title %}AquaHarvest - Rooftop Rainwater Assessment{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     
@@ -14,11 +14,11 @@
     <!-- Page-specific CSS -->
     <link rel="stylesheet" href="/static/css/home.css">
     <link rel="stylesheet" href="/static/css/auth.css">
-    <link rel="stylesheet" href="/static/css/about.css">
 </head>
 <body>
     <!-- Rain animation container -->
     <div class="rain-container"></div>
+    {% block navbar %}
     <!-- Navbar Component -->
     <nav class="navbar">
     <div class="left-sidebar-toggle"> <i class="fas fa-bars"></i> </div>
@@ -29,7 +29,7 @@
 
 <ul class="nav-links">
     <li><a href="/templates/home.html">Home</a></li>
-    <li><a href="/templates/about.html">About</a></li>
+    <li><a href="#">Features</a></li>
     <li><a href="#">Technology</a></li>
     <li><a href="#">LeaderBoard</a></li>
     <li><a href="/templates/contact.html">Contact</a></li>
@@ -49,12 +49,17 @@
     </div>
     
     <div class="auth-buttons">
+    {% if user.is_authenticated %}
     <a class="btn btn-danger" href="/auth/logout/">Logout</a>
+    {% else %}
     <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
     <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
+    {% endif %}
 </div>
 </div>
 </nav>
+   {% endblock %}
+    {% block sidebar %}
     <!-- Sidebar Component -->
     <div class="sidebar">
     <div class="sidebar-close">
@@ -63,16 +68,19 @@
     
     <ul class="sidebar-links">
         <li><a href="/templates/home.html">Home</a></li>
-        <li><a href="/templates/about.html">About</a></li>
+        <li><a href="#">Features</a></li>
         <li><a href="#">Technology</a></li>
         <li><a href="#">LeaderBoard</a></li>
         <li><a href="/templates/contact.html">Contact</a></li>
     </ul>
     
     <div class="sidebar-auth">
+    {% if user.is_authenticated %}
     <a class="btn btn-danger" href="/auth/logout/">Logout</a>
+    {% else %}
     <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
     <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
+    {% endif %}
 </div>
 
     
@@ -82,6 +90,8 @@
         </button>
     </div>
 </div>
+    {% endblock %}
+    {% block content %}
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -108,6 +118,7 @@
             </div>
         </div>
     </section>
+    {% endblock %}
     <!-- Auth Modals Container -->
      <!-- Sign Up Modal -->
     <div id="signup-modal" class="auth-modal">
@@ -124,6 +135,7 @@
                 </div>
                 
                 <form class="auth-form" id="signup-form" method="POST" novalidate>
+    {% csrf_token %}
     <div class="form-group">
         <label for="signup-username" required>Username</label>
         <input type="text" name="username" id="signup-username" class="form-control" placeholder="Choose username" required>
@@ -177,6 +189,7 @@
                 </div>
                 
                 <form class="auth-form" id="login-form" method="POST" novalidate>
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="username" required>Username</label>
                         <input type="text" name="username" id="login-username" class="form-control" placeholder="Enter username" required>
@@ -214,6 +227,5 @@
     <!-- Page-specific JS -->
     <script src="/static/js/home.js"></script>
     <script src="/static/js/auth.js"></script>
-    <script src="/static/js/about.js"></script>
 </body>
 </html>
