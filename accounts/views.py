@@ -47,7 +47,7 @@ def registerUser(request):
         return JsonResponse({
             'success': True,
             'message': 'Account Created Successfully',
-            'redirect_url': '/demo/'
+            'redirect_url': '/calculator/'
         })
     except Exception as e:
         return JsonResponse({
@@ -76,7 +76,16 @@ def loginUser(request):
             'message': 'Credential Mismatched!!!'
         })
 
+# def logoutUser(request):
+#     logout(request)
+#     messages.success(request, "Successfully Logged Out!!!")
+#     return redirect('home')  # Redirect to home (calculator's demo_view)
+
+
+
 def logoutUser(request):
-    logout(request)
-    messages.success(request, "Successfully Logged Out!!!")
-    return redirect('home')  # Redirect to home (calculator's demo_view)
+    if request.method == "POST":
+        logout(request)
+        return JsonResponse({'status': 'success', 'message': 'Successfully Logged Out!!!'})
+    
+    return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)

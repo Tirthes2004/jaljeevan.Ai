@@ -1,14 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About — RTRWH & Artificial Recharge | SIH 2025</title>
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}About — RTRWH & Artificial Recharge | SIH 2025{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/about.css' %}">{% endblock %}
 
   <!-- Use your static path; if Flask use url_for('static', ...) -->
-  <link rel="stylesheet" href="/static/css/about.css">
-</head>
-<body>
+  
+{% block content %}
   <!-- ABOUT SECTION -->
   <section id="rtrwh-about" class="about-section">
     <div class="container">
@@ -76,7 +74,7 @@
       </footer>
     </div>
   </section>
-
-  <script src="/static/js/about.js"></script>
+{% endblock %}
+{% block js %}<script src="{% static 'js/about.js' %}"></script>{% endblock %}
 </body>
 </html>

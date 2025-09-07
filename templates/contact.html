@@ -1,30 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Team - JALJEEVAN</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    
-    <!-- Component CSS -->
-    <link rel="stylesheet" href="/static/css/navbar.css">
-    <link rel="stylesheet" href="/static/css/sidebar.css">
-    
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="/static/css/contact.css">
-    <link rel="stylesheet" href="/static/css/auth.css">
+{% extends "home.html" %}
+{% load static %}
 
-</head>
-<body>
-    <!-- Water drop animations -->
-    <div id="water-drops"></div>
-    <!-- Navbar Component -->
-    <div id="navbar-container"></div>
-    
-    <!-- Sidebar Component -->
-    <div id="sidebar-container"></div>
+{% block title %}About — RTRWH & Artificial Recharge | SIH 2025{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/contact.css' %}">{% endblock %}
+
+  <!-- Use your static path; if Flask use url_for('static', ...) -->
+  
+{% block content %}
 
      <!-- Contact Content -->
     <div class="contact-container">
@@ -167,20 +149,13 @@
             </div>
         </div>
     </div>
+    <!-- End Contact Content -->
+    {% endblock %}
 
-     <!-- Auth Modals Container -->
-    <div id="auth-modals-container"></div>
-
-    <!-- Component Loader -->
-    <script src="/static/js/componentLoader.js"></script>
-    
-    <!-- Component JS -->
-    <script src="/static/js/navbar.js"></script>
-    <script src="/static/js/sidebar.js"></script>
-    
+{% block js %}
     <!-- Page-specific JS -->
     <script src="/static/js/contact.js"></script>
-    <script src="/static/js/auth.js"></script>
+{% endblock %}
 
     
 </body>

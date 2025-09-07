@@ -6,9 +6,18 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('calculator.urls')),  # Keep API endpoints
-    path('auth/', include('accounts.urls')),      # Put auth under /auth/ prefix
-    path('', include('calculator.urls')),         # Calculator handles root URLs
+    
+    # ✅ Main pages at root level
+    path('', include('pages.urls')),                # Home and static pages
+    
+    # ✅ Calculator under /calculator/
+    path('calculator/', include('calculator.urls')), # Calculator pages
+    
+    # ✅ API endpoints
+    path('api/v1/', include('calculator.urls')),     # Keep API endpoints
+    
+    # ✅ Authentication
+    path('auth/', include('accounts.urls')),         # Auth under /auth/
 ]
 
 if settings.DEBUG:

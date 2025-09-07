@@ -1,276 +1,516 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AquaHarvest - Rooftop Rainwater Assessment{% endblock %}</title>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta name="description" content="AI-powered rainwater harvesting assessment tool for sustainable water management">
+    <meta name="keywords" content="rainwater harvesting, water management, sustainability, AI assessment">
+    
+    <title>{% block title %}JalJeevan.AI - Smart Rainwater Harvesting Assessment{% endblock %}</title>
+    
+    <!-- External CDN Resources -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Component CSS -->
-    <link rel="stylesheet" href="/static/css/navbar.css">
-    <link rel="stylesheet" href="/static/css/sidebar.css">
+    <!-- Django Static Files -->
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="/static/css/home.css">
-    <link rel="stylesheet" href="/static/css/auth.css">
+    <!-- Page-specific CSS Block -->
+    {% block css %}{% endblock %}
 </head>
 <body>
-    <!-- Rain animation container -->
+    <!-- Rain Animation Container -->
     <div class="rain-container"></div>
+    
     {% block navbar %}
-    <!-- Navbar Component -->
-    <nav class="navbar">
-    <div class="left-sidebar-toggle"> <i class="fas fa-bars"></i> </div>
-    <div class="logo">
-    <div class="logo-icon"><i class="fas fa-droplet"></i></div>
-    <div class="logo-text">JALJEEVAN</div>
-</div>
-
-<ul class="nav-links">
-    <li><a href="/templates/home.html">Home</a></li>
-    <li><a href="#">Features</a></li>
-    <li><a href="#">Technology</a></li>
-    <li><a href="#">LeaderBoard</a></li>
-    <li><a href="/templates/contact.html">Contact</a></li>
-</ul>
-
-<div class="nav-right">
-    <div class="language-selector">
-        <button class="language-btn">
-            English <i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="language-dropdown">
-            <a href="#">Hindi</a>
-            <a href="#">Spanish</a>
-            <a href="#">French</a>
-            <a href="#">German</a>
+    <!-- Navigation Bar Component -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="left-sidebar-toggle">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-    </div>
-    
-    <div class="auth-buttons">
-    {% if user.is_authenticated %}
-    <a class="btn btn-danger" href="/auth/logout/">Logout</a>
-    {% else %}
-    <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
-    <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
-    {% endif %}
-</div>
-</div>
-</nav>
-   {% endblock %}
-    {% block sidebar %}
-    <!-- Sidebar Component -->
-    <div class="sidebar">
-    <div class="sidebar-close">
-        <i class="fas fa-times"></i>
-    </div>
-    
-    <ul class="sidebar-links">
-        <li><a href="/templates/home.html">Home</a></li>
-        <li><a href="#">Features</a></li>
-        <li><a href="#">Technology</a></li>
-        <li><a href="#">LeaderBoard</a></li>
-        <li><a href="/templates/contact.html">Contact</a></li>
-    </ul>
-    
-    <div class="sidebar-auth">
-    {% if user.is_authenticated %}
-    <a class="btn btn-danger" href="/auth/logout/">Logout</a>
-    {% else %}
-    <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
-    <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
-    {% endif %}
-</div>
+        
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-droplet" aria-hidden="true"></i>
+            </div>
+            <div class="logo-text">JALJEEVAN</div>
+        </div>
 
-    
-    <div class="sidebar-language">
-        <button class="language-btn" style="width: 100%;">
-            English <i class="fas fa-chevron-down"></i>
-        </button>
-    </div>
-</div>
-    {% endblock %}
-    {% block content %}
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-heading">Assess Your <span>Rainwater Harvesting</span> Potential</h1>
-                <h2 class="hero-subheading">AI-Powered Analysis for Sustainable Water Management</h2>
-                <p class="hero-description">Our advanced application helps you evaluate the potential for rooftop rainwater harvesting and artificial recharge at your location. Get personalized recommendations, dimension calculations, and cost estimates with just a few clicks.</p>
-                <div class="hero-buttons">
-                    <button class="btn-primary">Get Started <i class="fas fa-arrow-right"></i></button>
-                    <button class="btn-secondary">Learn More</button>
+        <ul class="nav-links" role="menubar">
+            <li role="none">
+                <a href="{% url 'pages:home' %}" role="menuitem" 
+                   class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                   Home
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'calculator:calculator' %}" role="menuitem" 
+                   class="nav-link {% if 'calculator' in request.resolver_match.namespace %}active{% endif %}">
+                   Calculator
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'pages:about' %}" role="menuitem" 
+                   class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                   About
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'pages:contact' %}" role="menuitem" 
+                   class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                   Contact
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-right">
+            <div class="language-selector">
+                <button class="language-btn" aria-haspopup="true" aria-expanded="false">
+                    English <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="language-dropdown" role="menu">
+                    <a href="#" role="menuitem">Hindi</a>
+                    <a href="#" role="menuitem">Spanish</a>
+                    <a href="#" role="menuitem">French</a>
+                    <a href="#" role="menuitem">German</a>
                 </div>
             </div>
             
-            <div class="hero-visual">
-                <!-- Floating image container with ripple effect -->
-                <div class="floating-image-container">
-                    <img src="/static/assets/image_float.png" alt="Rainwater Harvesting" class="floating-image">
-                    <div class="ripple-container">
-                        <div class="ripple ripple-1"></div>
-                        <div class="ripple ripple-2"></div>
-                        <div class="ripple ripple-3"></div>
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                    <span class="welcome-message">
+                        <i class="fas fa-user-circle" aria-hidden="true"></i>
+                        Welcome, {{ user.username }}!
+                    </span>
+                    <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger" id="logout-btn">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();" type="button">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                        Login
+                    </button>
+                    <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();" type="button">
+                        <i class="fas fa-user-plus" aria-hidden="true"></i>
+                        Sign Up
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% endblock %}
+
+    {% block sidebar %}
+    <!-- Mobile Sidebar Component -->
+    <div class="sidebar" id="sidebar" role="navigation" aria-label="Mobile navigation">
+        <div class="sidebar-close">
+            <button class="close-btn" onclick="closeSidebar()" aria-label="Close sidebar">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+        
+        <ul class="sidebar-links" role="menu">
+            <li role="none">
+                <a href="{% url 'pages:home' %}" role="menuitem" class="sidebar-link">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                    Home
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'calculator:calculator' %}" role="menuitem" class="sidebar-link">
+                    <i class="fas fa-calculator" aria-hidden="true"></i>
+                    Calculator
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'pages:about' %}" role="menuitem" class="sidebar-link">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                    About
+                </a>
+            </li>
+            <li role="none">
+                <a href="{% url 'pages:contact' %}" role="menuitem" class="sidebar-link">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-auth">
+            {% if user.is_authenticated %}
+                <div class="user-profile">
+                    <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    <span>Welcome, {{ user.username }}!</span>
+                </div>
+                <form method="post" action="{% url 'logoutUser' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger sidebar-logout-btn">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <button class="btn btn-login sidebar-btn" onclick="openModal('login-modal'); closeSidebar();" type="button">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    Login
+                </button>
+                <button class="btn btn-signin sidebar-btn" onclick="openModal('signup-modal'); closeSidebar();" type="button">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i>
+                    Sign Up
+                </button>
+            {% endif %}
+        </div>
+        
+        <div class="sidebar-language">
+            <button class="language-btn" style="width: 100%;" aria-haspopup="true">
+                <i class="fas fa-globe" aria-hidden="true"></i>
+                English <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+    {% endblock %}
+
+    <!-- Main Content Area -->
+    {% block content %}
+    <main class="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="hero" role="banner">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-heading">
+                        Assess Your <span class="highlight">Rainwater Harvesting</span> Potential
+                    </h1>
+                    <h2 class="hero-subheading">
+                        AI-Powered Analysis for Sustainable Water Management
+                    </h2>
+                    <p class="hero-description">
+                        Our advanced application helps you evaluate the potential for rooftop rainwater 
+                        harvesting and artificial recharge at your location. Get personalized recommendations, 
+                        dimension calculations, and cost estimates with just a few clicks.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{% url 'calculator:calculator' %}" class="btn-primary">
+                            <span>Get Started</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                        <a href="{% url 'pages:about' %}" class="btn-secondary">
+                            <span>Learn More</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual" aria-hidden="true">
+                    <!-- Floating image container with ripple effect -->
+                    <div class="floating-image-container">
+                        <img src="{% static 'assets/image_float.png' %}" 
+                             alt="Rainwater Harvesting Visualization" 
+                             class="floating-image"
+                             loading="lazy">
+                        <div class="ripple-container">
+                            <div class="ripple ripple-1"></div>
+                            <div class="ripple ripple-2"></div>
+                            <div class="ripple ripple-3"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Features Preview Section -->
+        <section class="features-preview" id="features-preview">
+            <div class="container">
+                <h2 class="section-title">Why Choose JalJeevan.AI?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain" aria-hidden="true"></i>
+                        </div>
+                        <h3>AI Calculator</h3>
+                        <p>Advanced calculations using real rainfall data and machine learning algorithms</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map" aria-hidden="true"></i>
+                        </div>
+                        <h3>GIS + Runoff</h3>
+                        <p>Geographical analysis with precise runoff coefficient estimation</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cube" aria-hidden="true"></i>
+                        </div>
+                        <h3>AR Preview</h3>
+                        <p>Visualize your harvesting system in 3D augmented reality</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-trophy" aria-hidden="true"></i>
+                        </div>
+                        <h3>Water Credits</h3>
+                        <p>Earn points and compete with others in water conservation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
     {% endblock %}
-    <!-- Auth Modals Container -->
-     <!-- Sign Up Modal -->
-    <div id="signup-modal" class="auth-modal">
-        <div class="modal-backdrop" onclick="closeModal('signup-modal')"></div>
-        <div class="modal-container">
-            <div class="modal-card">
-                <div class="modal-close" onclick="closeModal('signup-modal')">
-                    <i class="fas fa-times"></i>
-                </div>
-                
-                <div class="modal-header">
-                    <h2>Create Account</h2>
-                    <p>Join us to start your rainwater harvesting journey</p>
-                </div>
-                
-                <form class="auth-form" id="signup-form" method="POST" novalidate>
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="signup-username" required></label>
-        <input type="text" name="username" id="signup-username" class="form-control" placeholder="Choose username" required>
-        <i class="fas fa-user"></i>
-    </div>
-    
-    <div class="form-group">
-        <label for="signup-email" required></label>
-        <input type="email" name="email" id="signup-email" class="form-control" placeholder="Enter email" required>
-        <i class="fas fa-envelope"></i>
-    </div>
-    
-    
-    
 
-
-                <div class="form-group password-group">
-                        <div class="password-input-section">
-                            <div class="form-group">
-                                <label for="signup-password"></label>
-                                <input type="password" name="password" id="signup-password" class="form-control" placeholder="Create password" required>
-                                <i class="fas fa-lock"></i>
-                             </div>
-                            <div class="password-strength">
-                                <div class="strength-bar" id="bar-1"></div>
-                                <div class="strength-bar" id="bar-2"></div>
-                                <div class="strength-bar" id="bar-3"></div>
-                                <div class="strength-bar" id="bar-4"></div>
+    <!-- Authentication Modals Container -->
+    <div class="auth-modals-container">
+        <!-- Sign Up Modal -->
+        <div id="signup-modal" class="auth-modal" role="dialog" aria-labelledby="signup-title" aria-hidden="true">
+            <div class="modal-backdrop" onclick="closeModal('signup-modal')"></div>
+            <div class="modal-container">
+                <div class="modal-card">
+                    <div class="modal-close">
+                        <button type="button" class="close-btn" onclick="closeModal('signup-modal')" aria-label="Close modal">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-header">
+                        <h2 id="signup-title">Create Account</h2>
+                        <p>Join us to start your rainwater harvesting journey</p>
+                    </div>
+                    
+                    <form class="auth-form" id="signup-form" method="POST" action="{% url 'registerUser' %}" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="signup-username" class="form-label">Username</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="username" id="signup-username" 
+                                       class="form-control" placeholder="Choose username" required
+                                       autocomplete="username">
+                                <i class="fas fa-user input-icon" aria-hidden="true"></i>
                             </div>
-                            
-                            <div class="strength-text">
-                                <i class="strength-icon fas fa-lock"></i>
-                                Password strength: <span id="strength-value">None</span>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-confirm-password"></label>
-                                <input type="password" name="confirm_password" id="signup-confirm-password" class="form-control" placeholder="Confirm password" required>
-                                <i class="fas fa-lock"></i>
-                            </div>
-                             
                         </div>
                         
-                        <div class="strength-requirements">
-                            <h4>Password Requirements:</h4>
-                            <div class="requirement" id="req-length">
-                                <i class="fas fa-circle"></i>
-                                <span>At least 8 characters</span>
-                            </div>
-                            <div class="requirement" id="req-lowercase">
-                                <i class="fas fa-circle"></i>
-                                <span>Contains lowercase letters</span>
-                            </div>
-                            <div class="requirement" id="req-uppercase">
-                                <i class="fas fa-circle"></i>
-                                <span>Contains uppercase letters</span>
-                            </div>
-                            <div class="requirement" id="req-number">
-                                <i class="fas fa-circle"></i>
-                                <span>Contains numbers</span>
-                            </div>
-                            <div class="requirement" id="req-special">
-                                <i class="fas fa-circle"></i>
-                                <span>Contains special characters</span>
+                        <div class="form-group">
+                            <label for="signup-email" class="form-label">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" name="email" id="signup-email" 
+                                       class="form-control" placeholder="Enter email" required
+                                       autocomplete="email">
+                                <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
                             </div>
                         </div>
+
+                        <div class="form-group password-group">
+                            <div class="password-input-section">
+                                <div class="form-group">
+                                    <label for="signup-password" class="form-label">Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" name="password" id="signup-password" 
+                                               class="form-control" placeholder="Create password" required
+                                               autocomplete="new-password">
+                                        <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="password-strength">
+                                    <div class="strength-bar" id="bar-1"></div>
+                                    <div class="strength-bar" id="bar-2"></div>
+                                    <div class="strength-bar" id="bar-3"></div>
+                                    <div class="strength-bar" id="bar-4"></div>
+                                </div>
+                                
+                                <div class="strength-text">
+                                    <i class="strength-icon fas fa-lock" aria-hidden="true"></i>
+                                    Password strength: <span id="strength-value">None</span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" name="confirm_password" id="signup-confirm-password" 
+                                               class="form-control" placeholder="Confirm password" required
+                                               autocomplete="new-password">
+                                        <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="strength-requirements">
+                                <h4>Password Requirements:</h4>
+                                <div class="requirement" id="req-length">
+                                    <i class="fas fa-circle" aria-hidden="true"></i>
+                                    <span>At least 8 characters</span>
+                                </div>
+                                <div class="requirement" id="req-lowercase">
+                                    <i class="fas fa-circle" aria-hidden="true"></i>
+                                    <span>Contains lowercase letters</span>
+                                </div>
+                                <div class="requirement" id="req-uppercase">
+                                    <i class="fas fa-circle" aria-hidden="true"></i>
+                                    <span>Contains uppercase letters</span>
+                                </div>
+                                <div class="requirement" id="req-number">
+                                    <i class="fas fa-circle" aria-hidden="true"></i>
+                                    <span>Contains numbers</span>
+                                </div>
+                                <div class="requirement" id="req-special">
+                                    <i class="fas fa-circle" aria-hidden="true"></i>
+                                    <span>Contains special characters</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-auth">
+                            <span>Sign Up</span>
+                            <i class="fas fa-user-plus" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-switch">
+                        Already have an account? 
+                        <a href="#" onclick="switchAuthModal('login-modal')" class="auth-link">Sign In</a>
                     </div>
+                </div>
+            </div>
+        </div>
 
-
-                    <button type="submit" class="btn-auth">
-                        <span>Sign Up</span>
-                        <i class="fas fa-user-plus"></i>
-                    </button>
-                </form>
-
-                
-                <div class="auth-switch">
-                    Already have an account? <a href="#" onclick="switchAuthModal('login-modal')">Sign In</a>
+        <!-- Login Modal -->
+        <div id="login-modal" class="auth-modal" role="dialog" aria-labelledby="login-title" aria-hidden="true">
+            <div class="modal-backdrop" onclick="closeModal('login-modal')"></div>
+            <div class="modal-container">
+                <div class="modal-card">
+                    <div class="modal-close">
+                        <button type="button" class="close-btn" onclick="closeModal('login-modal')" aria-label="Close modal">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="modal-header">
+                        <h2 id="login-title">Welcome Back</h2>
+                        <p>Sign in to continue your rainwater harvesting journey</p>
+                    </div>
+                    
+                    <form class="auth-form" id="login-form" method="POST" action="{% url 'loginUser' %}" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="login-username" class="form-label">Username</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="username" id="login-username" 
+                                       class="form-control" placeholder="Enter username" required
+                                       autocomplete="username">
+                                <i class="fas fa-user input-icon" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password" class="form-label">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" name="password" id="login-password" 
+                                       class="form-control" placeholder="Enter password" required
+                                       autocomplete="current-password">
+                                <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" name="remember_me">
+                                <span class="checkmark"></span>
+                                Remember me
+                            </label>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn-auth">
+                            <span>Sign In</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="auth-switch">
+                        Don't have an account? 
+                        <a href="#" onclick="switchAuthModal('signup-modal')" class="auth-link">Sign Up</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="auth-modal">
-        <div class="modal-backdrop" onclick="closeModal('login-modal')"></div>
-        <div class="modal-container">
-            <div class="modal-card">
-                <div class="modal-close" onclick="closeModal('login-modal')">
-                    <i class="fas fa-times"></i>
-                </div>
-                
-                <div class="modal-header">
-                    <h2>Welcome Back</h2>
-                    <p>Sign in to continue your rainwater harvesting journey</p>
-                </div>
-                
-                <form class="auth-form" id="login-form" method="POST" novalidate>
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="username" required></label>
-                        <input type="text" name="username" id="login-username" class="form-control" placeholder="Enter username" required>
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="password"></label>
-                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    
-                    
-                    <div class="form-options">
-                        <a href="#" class="forgot-password">Forgot Password?</a>
-                    </div>
-                    
-                    
-                    <button type="submit" class="btn-auth">
-                        <span>Sign In</span>
-                        <i class="fas fa-arrow-right"></i>
+    <!-- Error/Success Messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}" aria-hidden="true"></i>
+                    <span>{{ message }}</span>
+                    <button type="button" class="alert-close" onclick="this.parentElement.remove()" aria-label="Close message">
+                        <i class="fas fa-times" aria-hidden="true"></i>
                     </button>
-                </form>
-                
-                <div class="auth-switch">
-                    Don't have an account? <a href="#" onclick="switchAuthModal('signup-modal')">Sign Up</a>
                 </div>
-            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
         </div>
     </div>
+
+    <!-- JavaScript Files -->
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/sidebar.js' %}"></script>
+    <script src="{% static 'js/auth.js' %}"></script>
+    <script src="{% static 'js/home.js' %}"></script>
     
-    <!-- Component JS -->
-    <script src="/static/js/navbar.js"></script>
-    <script src="/static/js/sidebar.js"></script>
-    
-    <!-- Page-specific JS -->
-    <script src="/static/js/home.js"></script>
-    <script src="/static/js/auth.js"></script>
+    <!-- Page-specific JavaScript Block -->
+    {% block js %}{% endblock %}
+
+    <!-- Global JavaScript -->
+    <script>
+        // CSRF Token Setup for AJAX
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrftoken = getCookie('csrftoken');
+        
+        // Setup CSRF for all AJAX requests
+        if (window.fetch) {
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+                options = options || {};
+                if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method.toUpperCase())) {
+                    options.headers = options.headers || {};
+                    options.headers['X-CSRFToken'] = csrftoken;
+                }
+                return originalFetch(url, options);
+            };
+        }
+    </script>
 </body>
 </html>

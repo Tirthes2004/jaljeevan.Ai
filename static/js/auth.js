@@ -267,14 +267,8 @@ function handleAuthForm(config) {
                 setTimeout(() => {
                     closeModal(config.modalId);
                     
-                    // Different behavior for login vs signup
-                    if (config.submitUrl.includes('loginUser')) {
-                        // For login, redirect to the demo page
-                        window.location.href = data.redirect_url;
-                    } else {
-                        // For signup, user is already logged in, refresh to update navbar
-                        window.location.reload();
-                    }
+                    // For both login and signup, refresh to update navbar
+                    window.location.reload();
                 }, 1500);
                 
             } else {
@@ -291,9 +285,9 @@ function handleAuthForm(config) {
 }
 
 // Show Message Function
-function showMessage(form, message, type) {
-    // Remove existing messages from this form
-    const existingMessage = form.querySelector('.message-container');
+function showMessage(container, message, type) {
+    // Remove existing messages
+    const existingMessage = container.querySelector('.message-container');
     if (existingMessage) {
         existingMessage.remove();
     }
@@ -303,20 +297,31 @@ function showMessage(form, message, type) {
     messageDiv.className = 'message-container';
     messageDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
     
-    // Insert after the button
-    const button = form.querySelector('.btn-auth');
-    if (button) {
-        button.parentNode.insertBefore(messageDiv, button.nextSibling);
+    // Insert message appropriately
+    if (container === document.body) {
+        // For logout messages, show at top of page
+        messageDiv.style.position = 'fixed';
+        messageDiv.style.top = '20px';
+        messageDiv.style.left = '50%';
+        messageDiv.style.transform = 'translateX(-50%)';
+        messageDiv.style.zIndex = '10000';
+        document.body.appendChild(messageDiv);
+    } else {
+        // For form messages, insert after button
+        const button = container.querySelector('.btn-auth');
+        if (button) {
+            button.parentNode.insertBefore(messageDiv, button.nextSibling);
+        } else {
+            container.appendChild(messageDiv);
+        }
     }
     
-    // Auto-hide error messages after 4 seconds
-    if (type === 'error') {
-        setTimeout(() => {
-            if (messageDiv && messageDiv.parentNode) {
-                messageDiv.remove();
-            }
-        }, 4000);
-    }
+    // Auto-hide messages after 4 seconds
+    setTimeout(() => {
+        if (messageDiv && messageDiv.parentNode) {
+            messageDiv.remove();
+        }
+    }, 4000);
 }
 
 // Loading State Function
@@ -327,6 +332,85 @@ function setLoadingState(button, loading, text, icon = 'fas fa-spinner fa-spin')
     } else {
         button.innerHTML = `<span>${text}</span><i class="${icon}"></i>`;
     }
+}
+
+// ============================================
+// LOGOUT FUNCTIONALITY
+// ============================================
+
+function initLogoutHandler() {
+    const logoutBtn = document.getElementById("logout-btn");
+    if (!logoutBtn) return;
+
+    logoutBtn.addEventListener("click", async function(e) {
+        e.preventDefault();
+
+        // Show loading state
+        setLoadingState(logoutBtn, true, 'Logging out...');
+
+        try {
+            // Get CSRF token from meta tag
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            if (!csrfTokenMeta) {
+                throw new Error('CSRF token not found. Please refresh the page.');
+            }
+            const csrfToken = csrfTokenMeta.getAttribute('content');
+
+            const response = await fetch("/auth/logout/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                // Show success message
+                showMessage(document.body, data.message, 'success');
+                
+                // Update navbar dynamically
+                updateNavbarAfterLogout();
+                
+            } else {
+                showMessage(document.body, data.message || 'Logout failed', 'error');
+                setLoadingState(logoutBtn, false, 'Logout');
+            }
+        } catch (error) {
+            console.error("Logout failed:", error);
+            showMessage(document.body, error.message || "Something went wrong. Please try again.", 'error');
+            setLoadingState(logoutBtn, false, 'Logout');
+        }
+    });
+}
+
+// Update navbar after successful logout
+function updateNavbarAfterLogout() {
+    // Hide logout button
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.style.display = "none";
+    }
+
+    // Show login/signup buttons
+    const authButtons = document.querySelector('.auth-buttons');
+    if (authButtons) {
+        authButtons.innerHTML = `
+            <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();">Login</button>
+            <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();">Sign Up</button>
+        `;
+    }
+
+    // Hide authenticated content
+    document.querySelectorAll('.auth-required').forEach(el => {
+        el.style.display = 'none';
+    });
+
+    // Show guest content
+    document.querySelectorAll('.guest-only').forEach(el => {
+        el.style.display = 'inline-block';
+    });
 }
 
 // ============================================
@@ -417,7 +501,7 @@ function initFormHandlers() {
             loadingText: 'Signing In...',
             defaultText: 'Sign In',
             defaultIcon: 'fas fa-arrow-right',
-            modalId: 'login-modal' // Update with your actual login modal ID
+            modalId: 'login-modal'
         });
     }
     
@@ -431,7 +515,7 @@ function initFormHandlers() {
             defaultText: 'Sign Up',
             defaultIcon: 'fas fa-user-plus',
             isSignup: true,
-            modalId: 'signup-modal' // Update with your actual signup modal ID
+            modalId: 'signup-modal'
         });
     }
 }
@@ -453,6 +537,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize form handlers with Django backend
     initFormHandlers();
+    
+    // Initialize logout handler
+    initLogoutHandler();
 });
 
 // ============================================
@@ -478,3 +565,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
+// ============================================
+// END OF AUTH.JS - COMPLETE & PERFECT VERSION
+// ============================================

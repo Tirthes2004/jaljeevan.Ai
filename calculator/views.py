@@ -206,8 +206,11 @@ def get_district_info(request, district_name):
         }, status=status.HTTP_404_NOT_FOUND)
 
 # ✅ Simple view for serving frontend (no DRF needed)
-def demo_view(request):
+def calculator_view(request):
     from django.shortcuts import render
-    return render(request, 'demo.html')
+    return render(request, 'calculator.html')
 
+def home_view(request):
+    from django.shortcuts import render
+    return render(request, 'home.html')
 

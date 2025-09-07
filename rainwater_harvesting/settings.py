@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'calculator',
     'accounts.apps.AccountsConfig',
+    'pages',
 ]
 
 MIDDLEWARE = [
