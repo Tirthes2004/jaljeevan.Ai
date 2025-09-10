@@ -112,6 +112,61 @@
                 </div>
             </div>
         </div>
+         <div class="form-row">
+                <div class="form-group">
+                    <label for="unit_cost_per_meter3_structure">
+                        <i class="fas fa-cube"></i> Unit Cost per m³ Structure (₹)
+                    </label>
+                    <input type="number" 
+                           id="unit_cost_per_meter3_structure" 
+                           name="unit_cost_per_meter3_structure" 
+                           step="0.01" 
+                           min="0" 
+                           placeholder="e.g., 100.00" 
+                           value="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="tank_cost_per_liter">
+                        <i class="fas fa-money-bill-wave"></i> Tank Cost per Liter (₹)
+                    </label>
+                    <input type="number" 
+                           id="tank_cost_per_liter" 
+                           name="tank_cost_per_liter" 
+                           step="0.01" 
+                           min="0" 
+                           placeholder="e.g., 0.50" 
+                           value="0.5">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="installation_fixed_costs">
+                        <i class="fas fa-tools"></i> Installation Fixed Costs (₹)
+                    </label>
+                    <input type="number" 
+                           id="installation_fixed_costs" 
+                           name="installation_fixed_costs" 
+                           step="0.01" 
+                           min="0" 
+                           placeholder="e.g., 5000.00" 
+                           value="5000">
+                </div>
+
+                <div class="form-group">
+                    <label for="cost_per_kiloliter">
+                        <i class="fas fa-tint"></i> Cost per Kiloliter (₹)
+                    </label>
+                    <input type="number" 
+                           id="cost_per_kiloliter" 
+                           name="cost_per_kiloliter" 
+                           step="0.01" 
+                           min="0" 
+                           placeholder="e.g., 50.00" 
+                           value="50">
+                </div>
+            </div>
             
             {% if user.is_authenticated %}
             <button type="submit" class="btn btn-primary" id="calculateBtn">

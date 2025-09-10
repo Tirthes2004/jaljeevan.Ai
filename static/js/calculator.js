@@ -360,7 +360,26 @@ class RainwaterCalculatorDemo {
             this.showError('Please select a roof type.');
             return false;
         }
+        
+        if (isNaN(data.unit_cost_per_meter3_structure) || data.unit_cost_per_meter3_structure < 0) {
+            this.showError('Please enter a valid unit cost per m³ structure.');
+            return false;
+        }
 
+        if (isNaN(data.tank_cost_per_liter) || data.tank_cost_per_liter < 0) {
+            this.showError('Please enter a valid tank cost per liter.');
+            return false;
+        }
+
+        if (isNaN(data.installation_fixed_costs) || data.installation_fixed_costs < 0) {
+            this.showError('Please enter valid installation fixed costs.');
+            return false;
+        }
+
+        if (isNaN(data.cost_per_kiloliter) || data.cost_per_kiloliter < 0) {
+            this.showError('Please enter a valid cost per kiloliter.');
+            return false;
+        }
         return true;
     }
 
