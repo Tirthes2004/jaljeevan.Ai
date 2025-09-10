@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Rainfall Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Monthly Rainfall Chart</h1>
+
+    <form method="get">
+        <label>District: </label>
+        <input type="text" name="district" value="{{ request.GET.district }}">
+        <button type="submit">Show Chart</button>
+    </form>
+
+    {% if monthly_rainfall %}
+        <canvas id="rainfallChart" width="600" height="400"></canvas>
+
+        <script>
+            // Convert Django list to JS
+            const data = {{ monthly_rainfall|safe }};
+            const labels = data.map(item => item.month);
+            const values = data.map(item => item.rainfall_mm);
+
+            const ctx = document.getElementById('rainfallChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Rainfall (mm)',
+                        data: values,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        </script>
+    {% else %}
+        <p>No data available. Enter a valid district.</p>
+    {% endif %}
+</body>
+</html>

@@ -6,4 +6,6 @@ app_name = 'calculator'
 
 urlpatterns = [
     path('', views.calculator_view, name='calculator'),
+    path("rainfall-chart/<str:district_name>/", views.rainfall_chart, name="rainfall-chart"),
+
 ]
