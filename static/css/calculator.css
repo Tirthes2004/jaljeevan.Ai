@@ -740,3 +740,52 @@ input[type="number"]::-webkit-inner-spin-button {
     font-weight: 600;
     color: var(--text-primary);
 }
+/* Chart card styling */
+.chart-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    grid-column: span 2; /* Make chart card span 2 columns for better visibility */
+}
+
+.chart-container {
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-loading, .chart-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+.chart-loading i {
+    font-size: 1.5em;
+    color: #007bff;
+}
+
+.chart-error i {
+    font-size: 1.5em;
+    color: #dc3545;
+}
+
+#rainfallChart {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+}
+
+/* Responsive chart layout */
+@media (max-width: 768px) {
+    .chart-card {
+        grid-column: span 1;
+    }
+    
+    .chart-container {
+        min-height: 250px;
+    }
+}
