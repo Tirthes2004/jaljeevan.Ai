@@ -78,6 +78,40 @@
                            required>
                 </div>
             </div>
+        <div class="form-row">
+            <div class="form-group">
+            <label for="dwellers">
+                <i class="fas fa-users"></i> Number of Dwellers *
+            </label>
+            <input type="number" 
+                   id="dwellers" 
+                   name="number_of_dwellers" 
+                   min="1" 
+                   placeholder="e.g., 4" 
+                   required>
+            </div>
+        
+        
+        <div class="form-group roof-type-container">
+                <label for="roofType">
+                    <i class="fas fa-home"></i> Roof Type *
+                </label>
+                <div class="custom-dropdown">
+                    <button type="button" class="dropdown-toggle" id="roofTypeToggle">
+                        <span class="selected-option">Select Roof Type</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="RCC">RCC / Terrace / Metal Sheet</div>
+                        <div class="dropdown-option" data-value="TILE ROOF">Tile Roof</div>
+                        <div class="dropdown-option" data-value="ASBESTOS">Asbestos / Rough Surface</div>
+                        <div class="dropdown-option" data-value="GREEN ROOF">Green Roof / Soil</div>
+                        <div class="dropdown-option" data-value="OTHER">Other</div>
+                    </div>
+                    <input type="hidden" id="roofType" name="roof_type" required>
+                </div>
+            </div>
+        </div>
             
             {% if user.is_authenticated %}
             <button type="submit" class="btn btn-primary" id="calculateBtn">
@@ -130,6 +164,10 @@
                         <span class="label">Annual Rainfall:</span>
                         <span id="resultRainfall" class="value">-</span>
                     </div>
+                    <div class="result-item">
+                        <span class="label">Number of Dwellers:</span>
+                        <span id="resultDwellers" class="value">-</span>
+                    </div>
                 </div>
             </div>
 
@@ -143,6 +181,10 @@
                     <div class="result-item">
                         <span class="label">Roof Area:</span>
                         <span id="resultRoofArea" class="value">-</span>
+                    </div>
+                     <div class="result-item">
+                        <span class="label">Roof Type:</span>
+                        <span id="resultRoofType" class="value">-</span>
                     </div>
                     <div class="result-item">
                         <span class="label">Runoff Coefficient:</span>

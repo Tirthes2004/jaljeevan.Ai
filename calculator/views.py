@@ -3,252 +3,161 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from .models import RainfallData, CalculationLog
 import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from math import sqrt, pi
-
-
+import math
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from .models import RainfallData, CalculationLog, GraphPlot
+import matplotlib.pyplot as plt
+import io
+from django.http import HttpResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from .models import GraphPlot
 
 logger = logging.getLogger(__name__)
 
 
-@login_required
-@api_view(['POST'])
-# def calculate_rainwater_harvest(request):
-#     try:
-#         data = request.data
-#         district_name = data.get('district_name', '').strip()
-#         length = float(data.get('length', 0))
-#         width = float(data.get('width', 0))
-#         roof_type = data.get('roof_type',"TERRACE")
-#         number_of_dwellers = data.get('number_of_dwellers',5)
-        
-#         print(f"🔍 Received: {district_name}, {length}x{width}")
-#         print(f"👤 User: {request.user}, Authenticated: {request.user.is_authenticated}")
-        
-#         # Validation
-#         if not district_name or length <= 0 or width <= 0:
-#             return Response({
-#                 'error': 'Invalid input data'
-#             }, status=status.HTTP_400_BAD_REQUEST)
-        
-#         # Find district
-#         try:
-#             district = RainfallData.objects.get(district_name__iexact=district_name)
-#             print(f"✅ Found: {district.district_name}")
-#         except RainfallData.DoesNotExist:
-#             return Response({
-#                 'error': f'District "{district_name}" not found'
-#             }, status=status.HTTP_404_NOT_FOUND)
-        
-#         # Calculate
-#         roof_area = length * width
-#         annual_rainfall_mm = float(district.annual_rainfall_mm)
-#         rainfall_m = annual_rainfall_mm / 1000
-        
-#         if (roof_type.upper() == "RCC" or roof_type.upper() == "TERRACE" or roof_type.upper() == "METAL SHEET") :
-#             runoff_coefficient = 0.85
-#         elif (roof_type.upper() == "TILE ROOF") :
-#             runoff_coefficient = 0.75
-#         elif (roof_type.upper() == "ASBESTOS" or roof_type.upper() == "ROUGH SURFACE"):
-#             runoff_coefficient = 0.6
-#         elif (roof_type.upper() == "GREEN ROOF" or roof_type.upper() == "SOIL"):
-#             runoff_coefficient = 0.4
-#         else:
-#             runoff_coefficient = 0.8
-
-#         perCapita_LPD = 135
-#         water_harvested_liters = roof_area * rainfall_m * runoff_coefficient * 1000
-
-#         annual_demand_liters = number_of_dwellers * perCapita_LPD * 365
-
-#         feasibility = (water_harvested_liters / annual_demand_liters) * 100 
-
-#         water_harvested_gallons = water_harvested_liters * 0.264172
-#         daily_average = water_harvested_liters / 365
-        
-#         # Generate recommendation
-#         if water_harvested_liters < 1000:
-#             recommendation = "Consider supplementing with other water conservation methods."
-#         elif water_harvested_liters < 5000:
-#             recommendation = "Good potential for household water needs. Consider installing a rainwater harvesting system."
-#         elif water_harvested_liters < 15000:
-#             recommendation = "Excellent potential! This could significantly reduce your water bills."
-#         else:
-#             recommendation = "Outstanding harvesting potential! Consider larger storage capacity and multiple usage applications."
-        
-#         print(f"✅ Result: {water_harvested_liters:.0f} liters")
-        
-#         # ✅ FIXED: Save calculation to database WITH USER
-#         try:
-#             calculation_log = CalculationLog.objects.create(
-#                 user=request.user if request.user.is_authenticated else None,  # ✅ ADD THIS LINE
-#                 district=district,
-#                 roof_length=length,
-#                 roof_width=width,
-#                 roof_area=roof_area,
-#                 water_harvested_liters=water_harvested_liters,
-#                 runoff_coefficient=runoff_coefficient,
-#                 ip_address=get_client_ip(request),
-#                 user_agent=request.META.get('HTTP_USER_AGENT', '')[:500],
-#                 session_id=request.session.session_key
-#             )
-#             print(f"💾 Saved calculation log ID: {calculation_log.id}")
-#             print(f"👤 Saved with user: {calculation_log.user}")
-            
-#         except Exception as e:
-#             print(f"⚠️ Failed to save calculation log: {str(e)}")
-#             import traceback
-#             print(traceback.format_exc())
-        
-#         # Response data
-#         response_data = {
-#             'calculation_id': calculation_log.id if 'calculation_log' in locals() else None,  # ✅ ADD THIS
-#             'user': request.user.username if request.user.is_authenticated else None,  # ✅ ADD THIS
-#             'district_name': district.district_name,
-#             'state': district.state or 'Not specified',
-#             'annual_rainfall_mm': annual_rainfall_mm,
-#             'roof_area_sqm': round(roof_area, 2),
-#             'water_harvested_liters': round(water_harvested_liters, 2),
-#             'water_harvested_gallons': round(water_harvested_gallons, 2),
-#             'runoff_coefficient': runoff_coefficient,
-#             'daily_average_liters': round(daily_average, 2),
-#             'recommendation': recommendation
-#         }
-        
-#         return Response({
-#             'success': True,
-#             'data': response_data
-#         }, status=status.HTTP_200_OK)
-        
-#     except Exception as e:
-#         print(f"❌ Calculate error: {e}")
-#         import traceback
-#         print(traceback.format_exc())
-#         return Response({
-#             'error': 'Internal server error'
-#         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 @api_view(['POST'])
 @login_required
+def get_client_ip(request):
+    """Simple helper — adapt as needed for proxy headers."""
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        return x_forwarded_for.split(",")[0].strip()
+    return request.META.get("REMOTE_ADDR", "")
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
 def calculate_rainwater_harvest(request):
     try:
-        data = request.data
-        district_name = data.get('district_name', '').strip()
-        length = float(data.get('length', 0))
-        width = float(data.get('width', 0))
-        roof_type = data.get('roof_type', "TERRACE")
-        number_of_dwellers = int(data.get('number_of_dwellers', 5))
-        
-        # Optional inputs with defaults
-        per_capita_lpd = int(data.get('per_capita_lpd', 135))
-        first_flush_mm = float(data.get('first_flush_mm', 2))        # mm
-        tank_fraction = float(data.get('tank_fraction', 0.10))       # fraction of annual harvest
-        percolation_efficiency = float(data.get('percolation_efficiency', 0.5))
-        num_pits = int(data.get('num_pits', 2))
-        pit_depth_m = float(data.get('pit_depth_m', 2.0))
-        
-        # Validation
-        if not district_name or length <= 0 or width <= 0:
-            return Response({'error': 'Invalid input data'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Find district rainfall
+        data = request.data or {}
+
+        # Helpers
+        def to_float(x, default=0.0):
+            try:
+                return float(x)
+            except Exception:
+                return default
+
+        def to_int(x, default=0):
+            try:
+                return int(float(x))
+            except Exception:
+                return default
+
+        # === Inputs ===
+        district_name = (data.get("district_name") or "").strip()
+        annual_rainfall_mm = data.get("annual_rainfall_mm")
+        if annual_rainfall_mm is not None:
+            annual_rainfall_mm = to_float(annual_rainfall_mm, None)
+
+        length = to_float(data.get("length", 0))
+        width = to_float(data.get("width", 0))
+        roof_area_m2 = to_float(data.get("roof_area_m2", 0))
+
+        # allow area from length*width
+        if roof_area_m2 <= 0 and length > 0 and width > 0:
+            roof_area_m2 = length * width
+
+        roof_type = (data.get("roof_type") or "TERRACE").strip()
+        number_of_dwellers = to_int(data.get("number_of_dwellers", 1), 1)
+        per_capita_lpd = to_float(data.get("per_capita_lpd", 135))
+
+        # If annual_rainfall_mm not provided, try district lookup
+        monthly_rainfall = None
+        if annual_rainfall_mm is None:
+            if not district_name:
+                return Response(
+                    {"error": "Provide 'district_name' or 'annual_rainfall_mm'."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            try:
+                district = RainfallData.objects.get(district_name__iexact=district_name)
+                annual_rainfall_mm = float(getattr(district, "annual_rainfall_mm", 0.0))
+            except RainfallData.DoesNotExist:
+                return Response(
+                    {"error": f'District "{district_name}" not found and no "annual_rainfall_mm" given.'},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+        # Try to fetch monthly rainfall (for plotting)
         try:
-            district = RainfallData.objects.get(district_name__iexact=district_name)
-        except RainfallData.DoesNotExist:
-            return Response({'error': f'District "{district_name}" not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        roof_area = length * width
-        annual_rainfall_mm = float(district.annual_rainfall_mm)
-        
-        # Runoff coefficient mapping
-        if roof_type.upper() in ["RCC", "TERRACE", "METAL SHEET"]:
-            runoff_coefficient = 0.85
-        elif roof_type.upper() == "TILE ROOF":
-            runoff_coefficient = 0.75
-        elif roof_type.upper() in ["ASBESTOS", "ROUGH SURFACE"]:
-            runoff_coefficient = 0.6
-        elif roof_type.upper() in ["GREEN ROOF", "SOIL"]:
-            runoff_coefficient = 0.4
-        else:
-            runoff_coefficient = 0.8  # fallback
-        
-        # Core calculations
-        harvested_liters = roof_area * annual_rainfall_mm * runoff_coefficient  # L
-        annual_demand_liters = number_of_dwellers * per_capita_lpd * 365
-        feasibility_pct = (harvested_liters / annual_demand_liters) * 100 if annual_demand_liters > 0 else 0
-        
-        # First flush
-        first_flush_liters = roof_area * first_flush_mm
-        
-        # Tank sizing (fraction method)
-        tank_volume_liters = tank_fraction * harvested_liters
-        
-        # Recharge available
-        available_recharge_liters = harvested_liters - first_flush_liters - tank_volume_liters
-        
-        # Required pit volume (accounting percolation efficiency)
-        required_pit_volume_liters = available_recharge_liters / percolation_efficiency if percolation_efficiency > 0 else 0
-        each_pit_volume_liters = required_pit_volume_liters / num_pits if num_pits > 0 else 0
-        each_pit_volume_m3 = each_pit_volume_liters / 1000
-        
-        # Pit dimensions (circular, depth = pit_depth_m)
-        pit_area_m2 = each_pit_volume_m3 / pit_depth_m if pit_depth_m > 0 else 0
-        pit_diameter_m = 2 * sqrt(pit_area_m2 / pi) if pit_area_m2 > 0 else 0
-        
-        # Recommendation (basic)
-        if feasibility_pct < 40:
-            recommendation = "Low coverage. Consider supplementing with other water conservation methods."
-        elif feasibility_pct < 80:
-            recommendation = "Moderate coverage. Good potential for household needs."
-        else:
-            recommendation = "High coverage! Excellent potential to meet most of your needs."
-        
-        # Save log
-        try:
-            calculation_log = CalculationLog.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                district=district,
-                roof_length=length,
-                roof_width=width,
-                roof_area=roof_area,
-                water_harvested_liters=harvested_liters,
-                runoff_coefficient=runoff_coefficient,
-                ip_address=get_client_ip(request),
-                user_agent=request.META.get('HTTP_USER_AGENT', '')[:500],
-                session_id=request.session.session_key
-            )
-        except Exception as e:
-            print(f"⚠️ Log save failed: {e}")
-            calculation_log = None
-        
-        # Response data
-        response_data = {
-            'calculation_id': calculation_log.id if calculation_log else None,
-            'district_name': district.district_name,
-            'annual_rainfall_mm': annual_rainfall_mm,
-            'roof_area_m2': roof_area,
-            'harvested_liters': round(harvested_liters, 2),
-            'annual_demand_liters': annual_demand_liters,
-            'feasibility_percent': round(feasibility_pct, 2),
-            'first_flush_liters': round(first_flush_liters, 2),
-            'tank_volume_liters': round(tank_volume_liters, 2),
-            'available_recharge_liters': round(available_recharge_liters, 2),
-            'required_pit_volume_liters': round(required_pit_volume_liters, 2),
-            'each_pit_volume_liters': round(each_pit_volume_liters, 2),
-            'each_pit_volume_m3': round(each_pit_volume_m3, 2),
-            'pit_diameter_m': round(pit_diameter_m, 2),
-            'runoff_coefficient': runoff_coefficient,
-            'recommendation': recommendation
+            gp = GraphPlot.objects.get(district_name__iexact=district_name)
+            monthly_rainfall = dict(gp.get_monthly_values())  # {"JAN": 10.0, "FEB": 5.0, ...}
+        except GraphPlot.DoesNotExist:
+            monthly_rainfall = None
+
+        # === Core calculations ===
+        rc_map = {
+            "RCC": 0.85,
+            "TERRACE": 0.85,
+            "METAL SHEET": 0.85,
+            "TILE": 0.75,
+            "TILE ROOF": 0.75,
+            "ASBESTOS": 0.6,
+            "ROUGH SURFACE": 0.6,
+            "GREEN ROOF": 0.4,
+            "SOIL": 0.4,
         }
-        
-        return Response({'success': True, 'data': response_data}, status=status.HTTP_200_OK)
-    
-    except Exception as e:
-        print(f"❌ Error: {e}")
-        return Response({'error': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        runoff_coefficient = rc_map.get(roof_type.upper(), 0.8)
+
+        harvested_liters = roof_area_m2 * annual_rainfall_mm * runoff_coefficient
+        daily_demand_l = number_of_dwellers * per_capita_lpd
+        annual_demand_l = daily_demand_l * 365
+        feasibility_pct = (harvested_liters / annual_demand_l) * 100 if annual_demand_l > 0 else 0.0
+
+        # === Response ===
+        response_data = {
+            "district_name": district_name,
+            "annual_rainfall_mm": round(annual_rainfall_mm, 3),
+            "roof_area_m2": round(roof_area_m2, 3),
+            "runoff_coefficient": round(runoff_coefficient, 3),
+            "harvested_liters": round(harvested_liters, 2),
+            "daily_demand_l": round(daily_demand_l, 2),
+            "annual_demand_l": round(annual_demand_l, 2),
+            "feasibility_percent": round(feasibility_pct, 2),
+            "monthly_rainfall": monthly_rainfall,  # <-- for bar chart
+        }
+
+        return Response({"success": True, "data": response_data}, status=status.HTTP_200_OK)
+
+    except Exception as exc:
+        print("Error in calculate_rainwater_harvest:", exc)
+        return Response({"error": "Internal server error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def rainfall_chart(request, district_name):
+    try:
+        # Fetch monthly rainfall from DB
+        gp = GraphPlot.objects.get(district_name__iexact=district_name)
+        monthly_rainfall = dict(gp.get_monthly_values())  # {"JAN": 100.7, "FEB": 5, ...}
+
+        # Plot bar chart
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.bar(monthly_rainfall.keys(), monthly_rainfall.values(), color="skyblue")
+        ax.set_title(f"Monthly Rainfall - {district_name}")
+        ax.set_xlabel("Month")
+        ax.set_ylabel("Rainfall (mm)")
+        plt.xticks(rotation=45)
+
+        # Save to memory as PNG
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(buffer, format="png")
+        plt.close(fig)
+        buffer.seek(0)
+
+        return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+    except GraphPlot.DoesNotExist:
+        return HttpResponse("District not found", status=404)
+
 
 
 # ⭐ NEW: Helper function to get client IP
@@ -303,26 +212,6 @@ def list_districts(request):
         return Response({
             'error': f'Failed to fetch districts: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-# def list_districts(request):
-#     query = request.GET.get('search','')
-#     results = []
-#     if query :
-#         results = RainfallData.objects.filter(Q(district_name__icontains = query) | Q(state__icontains = query))
-#     return render(request,'demo.html',{'query':query,'results':results})
-
-# def list_districts(request):
-#     query = request.GET.get('search', '')
-#     results = []
-    
-#     if query:
-#         results = RainfallData.objects.filter(
-#             Q(district_name__icontains=query) | 
-#             Q(state__icontains=query)
-#         )
-    
-#     return render(request, 'demo.html', {'query': query, 'results': results})
-
 
 @api_view(['GET'])
 def get_district_info(request, district_name):
@@ -349,6 +238,44 @@ def get_district_info(request, district_name):
 def calculator_view(request):
     from django.shortcuts import render
     return render(request, 'calculator.html')
+
+def calculator_view(request):
+    from django.shortcuts import render
+
+    district_name = request.GET.get("district")  # e.g., /calculator/?district=Nadia
+    monthly_rainfall = []
+
+    if district_name:
+        try:
+            # Fetch RainfallData
+            district = RainfallData.objects.get(district_name__iexact=district_name)
+
+            # Fetch monthly rainfall from GraphPlot
+            graph = GraphPlot.objects.filter(district_name__iexact=district.district_name).first()
+
+            if graph:
+                monthly_rainfall = [
+                    {"month": "Jan", "rainfall_mm": graph.jan},
+                    {"month": "Feb", "rainfall_mm": graph.feb},
+                    {"month": "Mar", "rainfall_mm": graph.mar},
+                    {"month": "Apr", "rainfall_mm": graph.apr},
+                    {"month": "May", "rainfall_mm": graph.may},
+                    {"month": "Jun", "rainfall_mm": graph.jun},
+                    {"month": "Jul", "rainfall_mm": graph.jul},
+                    {"month": "Aug", "rainfall_mm": graph.aug},
+                    {"month": "Sep", "rainfall_mm": graph.sep},
+                    {"month": "Oct", "rainfall_mm": graph.oct},
+                    {"month": "Nov", "rainfall_mm": graph.nov},
+                    {"month": "Dec", "rainfall_mm": graph.dec},
+                ]
+        except RainfallData.DoesNotExist:
+            monthly_rainfall = []
+
+    return render(request, "calculator.html", {
+        "monthly_rainfall": monthly_rainfall,
+        "selected_district": district_name or ""
+    })
+
 
 def home_view(request):
     from django.shortcuts import render

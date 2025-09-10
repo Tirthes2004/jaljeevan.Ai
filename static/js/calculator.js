@@ -7,6 +7,7 @@ class RainwaterCalculatorDemo {
     init() {
         this.bindEvents();
         this.checkAPIStatus();
+        this.setupRoofTypeDropdown();
         console.log('🚀 Rainwater Calculator Demo initialized');
         // Inside bindEvents() or init() instead of searchDistricts()
         const searchInput = document.getElementById('districtSearch');
@@ -37,6 +38,47 @@ class RainwaterCalculatorDemo {
         }
 
     }
+    setupRoofTypeDropdown() {
+    const toggle = document.getElementById('roofTypeToggle');
+    const menu = document.querySelector('.dropdown-menu');
+    const options = document.querySelectorAll('.dropdown-option');
+    const hiddenInput = document.getElementById('roofType');
+    const selectedOption = document.querySelector('.selected-option');
+    
+    if (!toggle) return;
+    
+    // Toggle dropdown
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('show');
+        toggle.classList.toggle('active');
+    });
+    
+    // Select option
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            const text = option.textContent;
+            
+            hiddenInput.value = value;
+            selectedOption.textContent = text;
+            
+            menu.classList.remove('show');
+            toggle.classList.remove('active');
+            
+            // Validate the field
+            hiddenInput.setCustomValidity('');
+        });
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+            menu.classList.remove('show');
+            toggle.classList.remove('active');
+        }
+    });
+}
 
     bindEvents() {
         // Search functionality
@@ -207,6 +249,21 @@ class RainwaterCalculatorDemo {
         if (lengthInput) lengthInput.focus();
     }
 
+    getRunoffCoefficient(roofType) {
+    roofType = roofType.toUpperCase();
+    if (["RCC", "TERRACE", "METAL SHEET"].includes(roofType)) {
+        return 0.85;
+    } else if (roofType === "TILE ROOF") {
+        return 0.75;
+    } else if (["ASBESTOS", "ROUGH SURFACE"].includes(roofType)) {
+        return 0.6;
+    } else if (["GREEN ROOF", "SOIL"].includes(roofType)) {
+        return 0.4;
+    } else {
+        return 0.8;
+    }
+}
+
     async calculateHarvest() {
         const formData = new FormData(document.getElementById('calculatorForm'));
         const data = {
@@ -294,6 +351,16 @@ class RainwaterCalculatorDemo {
             return false;
         }
 
+        if (isNaN(data.number_of_dwellers) || data.number_of_dwellers <= 0) {
+            this.showError('Please enter a valid number of dwellers (at least 1).');
+            return false;
+        }
+
+        if (!data.roof_type) {
+            this.showError('Please select a roof type.');
+            return false;
+        }
+
         return true;
     }
 
@@ -307,7 +374,8 @@ class RainwaterCalculatorDemo {
         document.getElementById('resultWaterLiters').textContent = `${this.formatNumber(data.water_harvested_liters)} L/year`;
         document.getElementById('resultWaterGallons').textContent = `${this.formatNumber(data.water_harvested_gallons)} gal/year`;
         document.getElementById('resultRecommendation').textContent = data.recommendation;
-
+        document.getElementById('resultDwellers').textContent = data.number_of_dwellers;
+        document.getElementById('resultRoofType').textContent = data.roof_type;
         // Show user info if available
         const userInfoDiv = document.getElementById('resultUserInfo');
         if (userInfoDiv && data.user) {
