@@ -81,6 +81,9 @@ class RainwaterCalculatorDemo {
 }
 
     bindEvents() {
+        // Print functionality
+        document.getElementById('printPage')?.addEventListener('click', () => this.printPage());
+        document.getElementById('printResults')?.addEventListener('click', () => this.printPage());
         // Search functionality
         document.getElementById('searchBtn')?.addEventListener('click', () => this.searchDistricts());
         document.getElementById('districtSearch')?.addEventListener('input', (e) => {
@@ -100,6 +103,9 @@ class RainwaterCalculatorDemo {
         // Action buttons
         document.getElementById('newCalculation')?.addEventListener('click', () => this.resetCalculator());
         document.getElementById('saveResults')?.addEventListener('click', () => this.saveResults());
+    }
+    printPage() {
+        window.print();
     }
 
     getCSRFToken() {
