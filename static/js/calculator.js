@@ -265,8 +265,6 @@ class RainwaterCalculatorDemo {
             this.showError('Please select a roof type.');
             return false;
         }
-<<<<<<< HEAD
-=======
         
         if (isNaN(data.unit_cost_per_meter3_structure) || data.unit_cost_per_meter3_structure < 0) {
             this.showError('Please enter a valid unit cost per m³ structure.');
@@ -287,7 +285,7 @@ class RainwaterCalculatorDemo {
             this.showError('Please enter a valid cost per kiloliter.');
             return false;
         }
->>>>>>> 74879fa93d805f7ed5f1d1b58a87832cc58f4f50
+
         return true;
     }
 
