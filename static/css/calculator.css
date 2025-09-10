@@ -600,7 +600,6 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-<<<<<<< HEAD
 /* Chart card styling */
 .chart-card {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -650,54 +649,3 @@ body {
         min-height: 250px;
     }
 }
-=======
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-}
-
-/* Responsive Design */
-@media (max-width: 900px) {
-    .form-row {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .form-group {
-        min-width: 0;
-        width: 100%;
-        flex: 1 1 100%;
-    }
-
-    #districtSearch {
-        min-width: 0;
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .search-container {
-        flex-direction: column;
-    }
-    
-    .header h1 {
-        font-size: 2.2rem;
-    }
-    
-    .results-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-    }
-}
->>>>>>> 74879fa93d805f7ed5f1d1b58a87832cc58f4f50
