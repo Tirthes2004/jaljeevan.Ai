@@ -311,16 +311,27 @@ class RainwaterCalculatorDemo {
         document.getElementById('resultRecommendation').textContent = data.recommendation;
 
         // ✅ MODIFIED: Only show metadata if actually saved
-        if (data.calculation_id && data.is_saved) {
+        // ✅ Show metadata if user exists (saved or not)
+        if (data.user) {  // Changed from: if (data.calculation_id && data.is_saved)
             document.getElementById('calculationMeta').style.display = 'block';
-            document.getElementById('resultCalculationId').textContent = data.calculation_id;
+            
+            // Only show calculation ID if it exists
+            if (data.calculation_id) {
+                document.getElementById('resultCalculationId').textContent = data.calculation_id;
+            } else {
+                document.getElementById('resultCalculationId').textContent = 'Not saved yet';
+            }
+            
+            // Always show username for authenticated users
             if (data.user) {
                 document.getElementById('resultUser').textContent = data.user;
             }
+            
             document.getElementById('resultTimestamp').textContent = new Date().toLocaleString();
         } else {
             document.getElementById('calculationMeta').style.display = 'none';
         }
+
 
         // Update water level visualization
         this.updateWaterVisualization(efficiency);
