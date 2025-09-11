@@ -265,25 +265,6 @@ class RainwaterCalculatorDemo {
             this.showError('Please select a roof type.');
             return false;
         }
-
-<<<<<<< HEAD
-        if (isNaN(data.tank_cost_per_liter) || data.tank_cost_per_liter < 0) {
-            this.showError('Please enter a valid tank cost per liter.');
-            return false;
-        }
-
-        if (isNaN(data.installation_fixed_costs) || data.installation_fixed_costs < 0) {
-            this.showError('Please enter valid installation fixed costs.');
-            return false;
-        }
-
-        if (isNaN(data.cost_per_kiloliter) || data.cost_per_kiloliter < 0) {
-            this.showError('Please enter a valid cost per kiloliter.');
-            return false;
-        }
-
-=======
->>>>>>> parent of 74879fa (calculator page new 4 inputs)
         return true;
     }
 
@@ -330,27 +311,16 @@ class RainwaterCalculatorDemo {
         document.getElementById('resultRecommendation').textContent = data.recommendation;
 
         // ✅ MODIFIED: Only show metadata if actually saved
-        // ✅ Show metadata if user exists (saved or not)
-        if (data.user) {  // Changed from: if (data.calculation_id && data.is_saved)
+        if (data.calculation_id && data.is_saved) {
             document.getElementById('calculationMeta').style.display = 'block';
-            
-            // Only show calculation ID if it exists
-            if (data.calculation_id) {
-                document.getElementById('resultCalculationId').textContent = data.calculation_id;
-            } else {
-                document.getElementById('resultCalculationId').textContent = 'Not saved yet';
-            }
-            
-            // Always show username for authenticated users
+            document.getElementById('resultCalculationId').textContent = data.calculation_id;
             if (data.user) {
                 document.getElementById('resultUser').textContent = data.user;
             }
-            
             document.getElementById('resultTimestamp').textContent = new Date().toLocaleString();
         } else {
             document.getElementById('calculationMeta').style.display = 'none';
         }
-
 
         // Update water level visualization
         this.updateWaterVisualization(efficiency);

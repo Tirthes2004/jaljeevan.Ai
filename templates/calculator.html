@@ -1,14 +1,15 @@
 {% extends "home.html" %}
 {% load static %}
 
+
 {% block title %}Rainwater Harvesting Calculator{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/calculator.css">
-<meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
 {% block content %}
+
 <div class="container">
     <!-- Header -->
     <header class="header">
@@ -77,38 +78,37 @@
                            required>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="dwellers">
-                        <i class="fas fa-users"></i> Number of Dwellers *
-                    </label>
-                    <input type="number" 
-                           id="dwellers" 
-                           name="number_of_dwellers" 
-                           min="1" 
-                           placeholder="e.g., 4" 
-                           required>
-                </div>
-            
-                <div class="form-group roof-type-container">
-                    <label for="roofType">
-                        <i class="fas fa-home"></i> Roof Type *
-                    </label>
-                    <div class="custom-dropdown">
-                        <button type="button" class="dropdown-toggle" id="roofTypeToggle">
-                            <span class="selected-option">Select Roof Type</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-option" data-value="RCC">RCC / Terrace / Metal Sheet</div>
-                            <div class="dropdown-option" data-value="TILE ROOF">Tile Roof</div>
-                            <div class="dropdown-option" data-value="ASBESTOS">Asbestos / Rough Surface</div>
-                            <div class="dropdown-option" data-value="GREEN ROOF">Green Roof / Soil</div>
-                            <div class="dropdown-option" data-value="OTHER">Other</div>
-                        </div>
-                        <input type="hidden" id="roofType" name="roof_type" required>
+        <div class="form-row">
+            <div class="form-group">
+            <label for="dwellers">
+                <i class="fas fa-users"></i> Number of Dwellers *
+            </label>
+            <input type="number" 
+                   id="dwellers" 
+                   name="number_of_dwellers" 
+                   min="1" 
+                   placeholder="e.g., 4" 
+                   required>
+            </div>
+        
+        
+        <div class="form-group roof-type-container">
+                <label for="roofType">
+                    <i class="fas fa-home"></i> Roof Type *
+                </label>
+                <div class="custom-dropdown">
+                    <button type="button" class="dropdown-toggle" id="roofTypeToggle">
+                        <span class="selected-option">Select Roof Type</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="RCC">RCC / Terrace / Metal Sheet</div>
+                        <div class="dropdown-option" data-value="TILE ROOF">Tile Roof</div>
+                        <div class="dropdown-option" data-value="ASBESTOS">Asbestos / Rough Surface</div>
+                        <div class="dropdown-option" data-value="GREEN ROOF">Green Roof / Soil</div>
+                        <div class="dropdown-option" data-value="OTHER">Other</div>
                     </div>
+                    <input type="hidden" id="roofType" name="roof_type" required>
                 </div>
             </div>
         </div>
@@ -118,10 +118,10 @@
                 <i class="fas fa-calculator"></i> Calculate Water Harvest
             </button>
             {% else %}
-            <button type="button" class="btn btn-primary" onclick="openModal('login-modal'); closeSidebar();">
-                <i class="fas fa-calculator"></i> Calculate Water Harvest
-            </button>
+            <button class="btn btn-primary" onclick="openModal('login-modal'); closeSidebar();">Calculate Water Harvest</button>
             {% endif %}
+
+            
         </form>
     </section>
 
@@ -140,186 +140,108 @@
         </div>
     </div>
 
-  <!-- Results Section -->
-<section id="resultsSection" class="results-section hidden">
-    <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
-    
-    <div class="results-grid">
-        <!-- Location Info Card -->
-        <div class="result-card info-card">
-            <div class="card-header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Location Information</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">District:</span>
-                    <span id="resultDistrict" class="value">-</span>
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-section hidden">
+        <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
+        
+        <div class="results-grid">
+            <!-- Location Info Card -->
+            <div class="result-card info-card">
+                <div class="card-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location Information</h3>
                 </div>
-                <div class="result-item">
-                    <span class="label">State:</span>
-                    <span id="resultState" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Annual Rainfall:</span>
-                    <span id="resultRainfall" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Number of Dwellers:</span>
-                    <span id="resultDwellers" class="value">-</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Roof Details Card -->
-        <div class="result-card roof-card">
-            <div class="card-header">
-                <i class="fas fa-home"></i>
-                <h3>Roof Specifications</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Roof Area:</span>
-                    <span id="resultRoofArea" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Roof Type:</span>
-                    <span id="resultRoofType" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Runoff Coefficient:</span>
-                    <span id="resultRunoffCoeff" class="value">-</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Water Harvest Results -->
-        <div class="result-card harvest-card highlight">
-            <div class="card-header">
-                <i class="fas fa-tint"></i>
-                <h3>Water Harvesting Potential</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item main-result">
-                    <span class="label">Annual Water Harvest:</span>
-                    <span id="resultWaterLiters" class="value big">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">In Gallons:</span>
-                    <span id="resultWaterGallons" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">System Efficiency:</span>
-                    <span id="resultEfficiency" class="value efficiency">-</span>
-                </div>
-                <div class="water-visual">
-                    <div class="water-tank">
-                        <div id="waterLevel" class="water-fill"></div>
-                        <span class="tank-label">Harvest Efficiency</span>
+                <div class="card-content">
+                    <div class="result-item">
+                        <span class="label">District:</span>
+                        <span id="resultDistrict" class="value">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">State:</span>
+                        <span id="resultState" class="value">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Annual Rainfall:</span>
+                        <span id="resultRainfall" class="value">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Number of Dwellers:</span>
+                        <span id="resultDwellers" class="value">-</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Water Usage Analysis Card -->
-        <div class="result-card usage-card">
-            <div class="card-header">
-                <i class="fas fa-chart-line"></i>
-                <h3>Water Usage Analysis</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Daily Requirement:</span>
-                    <span id="resultDailyUsage" class="value">-</span>
+            <!-- Roof Details Card -->
+            <div class="result-card roof-card">
+                <div class="card-header">
+                    <i class="fas fa-home"></i>
+                    <h3>Roof Specifications</h3>
                 </div>
-                <div class="result-item">
-                    <span class="label">Annual Requirement:</span>
-                    <span id="resultAnnualUsage" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Water Security:</span>
-                    <span id="resultWaterSecurity" class="value security-level">-</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monthly Rainfall Chart Card -->
-        <div class="result-card chart-card">
-            <div class="card-header">
-                <i class="fas fa-chart-bar"></i>
-                <h3>Monthly Rainfall Pattern</h3>
-            </div>
-            <div class="card-content">
-                <div class="chart-container">
-                    <img id="rainfallChart" 
-                         src="" 
-                         alt="Monthly rainfall chart will appear here" 
-                         style="width: 100%; height: auto; display: none;">
-                    <div id="chartLoading" class="chart-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <span>Loading rainfall chart...</span>
+                <div class="card-content">
+                    <div class="result-item">
+                        <span class="label">Roof Area:</span>
+                        <span id="resultRoofArea" class="value">-</span>
                     </div>
-                    <div id="chartError" class="chart-error" style="display: none;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Chart not available for this district</span>
+                     <div class="result-item">
+                        <span class="label">Roof Type:</span>
+                        <span id="resultRoofType" class="value">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Runoff Coefficient:</span>
+                        <span id="resultRunoffCoeff" class="value">-</span>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Recommendation Card -->
-        <div class="result-card recommendation-card">
-            <div class="card-header">
-                <i class="fas fa-lightbulb"></i>
-                <h3>Expert Recommendation</h3>
-            </div>
-            <div class="card-content">
-                <p id="resultRecommendation" class="recommendation-text">-</p>
-            </div>
-        </div>
-
-        <!-- Calculation Metadata Card -->
-        <div id="calculationMeta" class="result-card meta-card" style="display: none;">
-            <div class="card-header">
-                <i class="fas fa-info-circle"></i>
-                <h3>Calculation Details</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Calculation ID:</span>
-                    <span id="resultCalculationId" class="value">-</span>
+            <!-- Water Harvest Results -->
+            <div class="result-card harvest-card highlight">
+                <div class="card-header">
+                    <i class="fas fa-tint"></i>
+                    <h3>Water Harvesting Potential</h3>
                 </div>
-                <div class="result-item">
-                    <span class="label">Saved for User:</span>
-                    <span id="resultUser" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Calculated on:</span>
-                    <span id="resultTimestamp" class="value">-</span>
+                <div class="card-content">
+                    <div class="result-item main-result">
+                        <span class="label">Annual Water Harvest:</span>
+                        <span id="resultWaterLiters" class="value big">-</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">In Gallons:</span>
+                        <span id="resultWaterGallons" class="value">-</span>
+                    </div>
+                    <div class="water-visual">
+                        <div class="water-tank">
+                            <div id="waterLevel" class="water-fill"></div>
+                            <span class="tank-label">Annual Harvest Visualization</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Recommendation Card -->
+            <div class="result-card recommendation-card">
+                <div class="card-header">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Expert Recommendation</h3>
+                </div>
+                <div class="card-content">
+                    <p id="resultRecommendation" class="recommendation-text">-</p>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button id="newCalculation" class="btn btn-secondary">
-            <i class="fas fa-redo"></i> New Calculation
-        </button>
-        {% if user.is_authenticated %}
-        <button id="saveResults" class="btn btn-success">
-            <i class="fas fa-save"></i> Save Results
-        </button>
-        {% endif %}
-        <button id="downloadResults" class="btn btn-info">
-            <i class="fas fa-download"></i> Download Report
-        </button>
-        <button id="shareResults" class="btn btn-primary">
-            <i class="fas fa-share-alt"></i> Share Results
-        </button>
-    </div>
-</section>
-
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="newCalculation" class="btn btn-secondary">
+                <i class="fas fa-redo"></i> New Calculation
+            </button>
+            <button id="saveResults" class="btn btn-success">
+                <i class="fas fa-save"></i> Save Results
+            </button>
+            <button id="printResults" class="btn btn-print">
+                    <i class="fas fa-print"></i> Print Results
+            </button>
+        </div>
+    </section>
 
     <!-- API Status -->
     <div class="api-status">
@@ -330,4 +252,5 @@
 </div>
 
 <script src="/static/js/calculator.js"></script>
+
 {% endblock %}

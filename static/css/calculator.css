@@ -1,3 +1,4 @@
+
 :root {
     --primary-dark: #0a1929;
     --primary-medium: #0d2337;
@@ -740,7 +741,7 @@ input[type="number"]::-webkit-inner-spin-button {
     font-weight: 600;
     color: var(--text-primary);
 }
-<<<<<<< HEAD
+
 /* Chart card styling */
 .chart-card {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -785,10 +786,11 @@ input[type="number"]::-webkit-inner-spin-button {
     .chart-card {
         grid-column: span 1;
     }
-    
-    .chart-container {
-        min-height: 250px;
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 }
-=======
->>>>>>> parent of 74879fa (calculator page new 4 inputs)
+

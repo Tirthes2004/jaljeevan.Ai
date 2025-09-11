@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from django.core.validators import MinValueValidator
-from django.contrib.auth.models import User
 
 class RainfallData(models.Model):
     district_name = models.CharField(
@@ -65,73 +64,46 @@ class RainfallData(models.Model):
         return f"{self.district_name}, {self.state} - {self.annual_rainfall_mm}mm"
 
 class CalculationLog(models.Model):
-    """Store rainwater harvesting calculations"""
-    
-    # User information
+
     user = models.ForeignKey(
-        User, 
+        'auth.User', 
         on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True,
-        help_text="User who performed the calculation"
-    )
-    
-    # Location data
-    district_name = models.CharField(max_length=100, help_text="District name")  # ✅ Fixed: was 'district'
-    state = models.CharField(max_length=100, blank=True, help_text="State name")
-    
-    # Roof specifications
-    roof_area_sqm = models.FloatField(  # ✅ Fixed: was 'roof_area'
-        validators=[MinValueValidator(0.1)],
-        help_text="Roof area in square meters"
-    )
-    roof_type = models.CharField(max_length=50, help_text="Type of roof")
-    runoff_coefficient = models.FloatField(
-        validators=[MinValueValidator(0.1)],
-        help_text="Runoff coefficient based on roof type"
-    )
-    
-    # Weather data
-    annual_rainfall_mm = models.FloatField(
-        validators=[MinValueValidator(0)],
-        help_text="Annual rainfall in millimeters"
-    )
-    
-    # Household data
-    number_of_dwellers = models.PositiveIntegerField(
-        validators=[MinValueValidator(1)],
-        help_text="Number of people in household"
-    )
-    
-    # Calculation results
-    water_harvested_liters = models.FloatField(
-        validators=[MinValueValidator(0)],
-        help_text="Annual water harvest in liters"
-    )
-    efficiency_percent = models.FloatField(
-        blank=True,
+        blank=True, 
         null=True,
-        help_text="System efficiency percentage"
+        related_name='calculation_logs'
     )
-    
-    # Metadata
-    client_ip = models.GenericIPAddressField(
-        null=True, 
-        blank=True,
-        help_text="IP address of client"
+    """Log calculations for analytics and usage tracking"""
+    district = models.ForeignKey(
+        RainfallData, 
+        on_delete=models.CASCADE,
+        related_name='calculations'
     )
-    created_at = models.DateTimeField(auto_now_add=True)  # ✅ Fixed: was 'calculated_at'
-    updated_at = models.DateTimeField(auto_now=True)
-    
+    roof_length = models.DecimalField(max_digits=8, decimal_places=2)
+    roof_width = models.DecimalField(max_digits=8, decimal_places=2)
+    roof_area = models.DecimalField(max_digits=10, decimal_places=2)
+    water_harvested_liters = models.DecimalField(max_digits=12, decimal_places=2)
+    runoff_coefficient = models.DecimalField(
+        max_digits=3, 
+        decimal_places=2, 
+        default=0.80
+    )
+    calculated_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    user_agent = models.TextField(blank=True, null=True)
+    session_id = models.CharField(max_length=100, blank=True, null=True)
+
     class Meta:
-        db_table = 'calculation_log'
-        ordering = ['-created_at']
-        verbose_name = 'Calculation Log'
-        verbose_name_plural = 'Calculation Logs'
-    
+        db_table = 'calculation_logs'
+        ordering = ['-calculated_at']
+        indexes = [
+            models.Index(fields=['calculated_at']),
+            models.Index(fields=['district', 'calculated_at']),
+            models.Index(fields=['ip_address', 'calculated_at']),
+        ]
+
     def __str__(self):
-        user_name = self.user.username if self.user else 'Anonymous'
-        return f"{user_name} - {self.district_name} - {self.water_harvested_liters:.0f}L"
+        username = self.user.username if self.user else "Anonymous"
+        return f"{username} - {self.district.district_name} - {self.water_harvested_liters}L - {self.calculated_at.strftime('%Y-%m-%d %H:%M')}"
 
 class SystemConfiguration(models.Model):
     """System-wide configuration settings"""
