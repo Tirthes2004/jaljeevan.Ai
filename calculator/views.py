@@ -28,36 +28,37 @@ def get_client_ip(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def calculate_rainwater_harvest(request):
-    """Enhanced calculation API with duplicate district handling."""
+    """Enhanced calculation API with corrected formulas and realistic costs."""
     try:
         data = request.data or {}
-
+        
         # Helper functions
         def to_float(x, default=0.0):
             try:
                 return float(x)
             except Exception:
                 return default
-
+                
         def to_int(x, default=0):
             try:
                 return int(float(x))
             except Exception:
                 return default
-
+        
         # Extract inputs
         district_name = (data.get("district_name") or "").strip()
         length = to_float(data.get("length", 0))
         width = to_float(data.get("width", 0))
         roof_area_sqm = to_float(data.get("roof_area_sqm", 0))
-
+        per_capita_lpd = 135
+        
         if roof_area_sqm <= 0 and length > 0 and width > 0:
             roof_area_sqm = length * width
-
+            
         roof_type = (data.get("roof_type") or "RCC").strip().upper()
         number_of_dwellers = to_int(data.get("number_of_dwellers", 1), 1)
         annual_rainfall_mm = to_float(data.get("annual_rainfall_mm", 0))
-
+        
         # Validation
         if not district_name:
             return Response({
@@ -70,16 +71,15 @@ def calculate_rainwater_harvest(request):
                 'success': False,
                 'error': 'Valid roof area is required'
             }, status=status.HTTP_400_BAD_REQUEST)
-
+            
         if number_of_dwellers <= 0:
             return Response({
                 'success': False,
                 'error': 'Number of dwellers must be at least 1'
             }, status=status.HTTP_400_BAD_REQUEST)
-
-        # ✅ FIX: Handle duplicate districts properly
+        
+        # Handle district lookup and duplicates
         if annual_rainfall_mm <= 0:
-            # Use filter instead of get to handle duplicates
             districts = RainfallData.objects.filter(district_name__iexact=district_name)
             
             if not districts.exists():
@@ -89,7 +89,6 @@ def calculate_rainwater_harvest(request):
                 }, status=status.HTTP_404_NOT_FOUND)
             
             elif districts.count() > 1:
-                # Multiple districts found - provide helpful error message
                 district_list = [f"{d.district_name} ({d.state})" for d in districts[:3]]
                 district_names = ", ".join(district_list)
                 return Response({
@@ -98,13 +97,12 @@ def calculate_rainwater_harvest(request):
                 }, status=status.HTTP_400_BAD_REQUEST)
             
             else:
-                # Exactly one district found - use it
                 district = districts.first()
                 annual_rainfall_mm = float(district.annual_rainfall_mm)
                 state = district.state or 'Not specified'
         else:
             state = 'Custom'
-
+        
         # Runoff coefficients mapping
         runoff_coefficients = {
             'RCC': 0.85,
@@ -119,57 +117,96 @@ def calculate_rainwater_harvest(request):
         }
         
         runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
-
+        
         # Core calculations
         water_harvested_liters = roof_area_sqm * annual_rainfall_mm * runoff_coefficient
         water_harvested_gallons = water_harvested_liters * 0.264172
         
-        daily_requirement_liters = number_of_dwellers * 135
+        daily_requirement_liters = number_of_dwellers * per_capita_lpd
         annual_requirement_liters = daily_requirement_liters * 365
         
         efficiency_percent = (water_harvested_liters / annual_requirement_liters) * 100 if annual_requirement_liters > 0 else 0
-                # ✅ ADD THIS SECTION - COST ANALYSIS AND TECHNICAL SPECS
-        # (Add this right after your existing efficiency_percent calculation)
         
-        # Default cost values (Indian market rates)
-        unit_cost_per_m3_structure = 8000.0  # ₹8000 per m³ for pit construction
-        tank_cost_per_l = 2.5  # ₹2.5 per liter for tank
-        installation_fixed_costs = 15000.0  # ₹15000 fixed installation cost
-        cost_per_kl = 25.0  # ₹25 per 1000L water cost
+        # ===== CORRECTED COST PARAMETERS =====
+        unit_cost_per_m3_structure = 2500.0  # Realistic pit construction cost
+        tank_cost_per_l = 8.0  # ✅ CORRECTED: Market-realistic tank cost
+        installation_fixed_costs = 15000.0  # ✅ Slightly higher for quality
+        cost_per_kl = 100.0  # ✅ CORRECTED: Realistic tanker replacement cost
+        
+        # ===== PRACTICAL SIZING APPROACH =====
+        # Practical tank sizing based on harvest potential (instead of percentage)
+        if water_harvested_liters >= 50000:  # Large harvest
+            practical_tank_liters = 10000
+        elif water_harvested_liters >= 30000:  # Medium harvest  
+            practical_tank_liters = 7500
+        else:  # Small harvest
+            practical_tank_liters = 5000
 
-        # Tank sizing (15% of harvested water)
-        tank_volume_liters = water_harvested_liters * 0.15
+        tank_volume_liters = practical_tank_liters
         tank_volume_m3 = tank_volume_liters / 1000.0
-
-        # First flush calculation (2mm over roof area)
+        
+        # First flush calculation (keep existing)
         first_flush_liters = roof_area_sqm * 2
+        
+        # Practical recharge pit sizing (overflow management, not total excess)
+        if roof_area_sqm >= 200:
+            practical_pit_volume_m3 = 25  # Large pit
+            pit_diameter_m = 4.0
+        elif roof_area_sqm >= 100: 
+            practical_pit_volume_m3 = 15  # Medium pit
+            pit_diameter_m = 3.5
+        else:
+            practical_pit_volume_m3 = 10  # Small pit
+            pit_diameter_m = 3.0
 
-        # Recharge pit calculations
-        available_recharge_liters = water_harvested_liters - first_flush_liters - tank_volume_liters
-        if available_recharge_liters < 0:
-            available_recharge_liters = 0.0
-
-        required_pit_volume_liters = available_recharge_liters / 0.6  # 60% efficiency
-        pit_volume_m3 = required_pit_volume_liters / 1000.0
         pit_depth_m = 2.0
-        pit_area_m2 = pit_volume_m3 / pit_depth_m if pit_depth_m > 0 else 0.0
-        pit_diameter_m = 2.0 * math.sqrt(pit_area_m2 / math.pi) if pit_area_m2 > 0 else 0.0
-
-        # Cost calculations
-        pit_construction_cost = pit_volume_m3 * unit_cost_per_m3_structure
+        pit_area_m2 = math.pi * (pit_diameter_m / 2) ** 2
+        
+        # Available recharge calculation (for display purposes)
+        available_recharge_liters = max(0, water_harvested_liters - first_flush_liters - tank_volume_liters)
+        required_pit_volume_liters = practical_pit_volume_m3 * 1000  # Convert back to liters for display
+        
+        # ===== CORRECTED COST CALCULATIONS =====
+        pit_construction_cost = practical_pit_volume_m3 * unit_cost_per_m3_structure
         tank_construction_cost = tank_volume_liters * tank_cost_per_l
         total_install_cost = pit_construction_cost + tank_construction_cost + installation_fixed_costs
-
-        # Annual savings
-        saved_water_kL = tank_volume_liters / 1000.0
-        annual_water_savings = saved_water_kL * cost_per_kl
-        annual_maintenance_cost = total_install_cost * 0.02  # 2% maintenance
+        
+        # ===== CORRECTED BENEFITS CALCULATION =====
+        utilization_factor = 0.6  # 60% of harvest is actually used
+        annual_usage_liters = min(water_harvested_liters * utilization_factor, annual_requirement_liters)
+        
+        # Multi-source benefits (not just direct water replacement)
+        municipal_substitution_rate = 0.30  # 30% substitutes municipal water
+        municipal_rate_per_kL = 25  # Municipal water rate
+        tanker_avoidance_events = 3  # Shortage events avoided per year
+        tanker_cost_per_event = 2000  # Cost per tanker delivery
+        
+        # Calculate realistic annual savings
+        municipal_savings = (annual_usage_liters * municipal_substitution_rate / 1000) * municipal_rate_per_kL
+        tanker_savings = tanker_avoidance_events * tanker_cost_per_event
+        annual_water_savings = municipal_savings + tanker_savings
+        
+        # ===== CORRECTED MAINTENANCE & PAYBACK =====
+        annual_maintenance_cost = total_install_cost * 0.01  # ✅ CORRECTED: 1% instead of 2%
         net_annual_savings = annual_water_savings - annual_maintenance_cost
-
+        
         # Payback calculation
         payback_years = total_install_cost / net_annual_savings if net_annual_savings > 0 else None
         roi_percentage = (net_annual_savings * 10 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
-
+        
+        # ===== VALIDATION CHECKS =====
+        warnings = []
+        
+        if total_install_cost > 200000:
+            warnings.append("⚠️ System cost exceeds typical residential budget")
+        
+        if pit_diameter_m > 4.0:
+            num_recommended_pits = math.ceil(practical_pit_volume_m3 / (math.pi * 2**2 * pit_depth_m))
+            warnings.append(f"💡 Consider {num_recommended_pits} smaller pits for easier installation")
+        
+        if payback_years and payback_years > 25:
+            warnings.append("⏳ Long payback period - primary benefits are water security & environmental")
+        
         # Enhanced recommendations
         enhanced_recommendations = [
             f"💰 Total system cost: ₹{total_install_cost:,.0f}",
@@ -178,9 +215,12 @@ def calculate_rainwater_harvest(request):
             f"🔧 Recommended tank capacity: {tank_volume_liters:,.0f}L",
             f"🕳️ Pit specifications: {pit_diameter_m:.1f}m diameter, {pit_depth_m}m depth"
         ]
-
-
-        # Generate recommendation
+        
+        # Add warnings to recommendations if any exist
+        if warnings:
+            enhanced_recommendations.extend(warnings)
+        
+        # Generate recommendation (keep existing logic)
         if efficiency_percent >= 100:
             recommendation = f"🌟 Excellent! Your {roof_area_sqm}m² roof can harvest {water_harvested_liters:,.0f}L annually, fully meeting your {number_of_dwellers}-person household's water needs."
         elif efficiency_percent >= 70:
@@ -191,11 +231,9 @@ def calculate_rainwater_harvest(request):
             recommendation = f"⚡ Moderate Potential. Your roof can harvest {water_harvested_liters:,.0f}L annually, covering {efficiency_percent:.0f}% of your needs."
         else:
             recommendation = f"💡 Limited harvest potential of {water_harvested_liters:,.0f}L annually. Consider increasing roof area or improving runoff efficiency."
-
-        # Prepare response data
-                # Prepare response data
+        
+        # Prepare response data (keep all existing fields intact)
         response_data = {
-            # ✅ KEEP: All your existing fields
             'district_name': district_name,
             'state': state,
             'annual_rainfall_mm': round(annual_rainfall_mm, 2),
@@ -213,7 +251,7 @@ def calculate_rainwater_harvest(request):
             'user': request.user.username if request.user.is_authenticated else None,
             'is_saved': False,
             
-            # ✅ ADD: NEW TECHNICAL SPECIFICATIONS
+            # Technical specifications
             'tank_volume_liters': round(tank_volume_liters, 0),
             'tank_volume_m3': round(tank_volume_m3, 1),
             'first_flush_liters': round(first_flush_liters, 0),
@@ -223,7 +261,7 @@ def calculate_rainwater_harvest(request):
             'pit_depth_m': round(pit_depth_m, 1),
             'pit_area_m2': round(pit_area_m2, 1),
             
-            # ✅ ADD: NEW COST ANALYSIS
+            # Cost analysis
             'costs': {
                 'pit_construction_cost': round(pit_construction_cost, 0),
                 'tank_construction_cost': round(tank_construction_cost, 0),
@@ -236,20 +274,16 @@ def calculate_rainwater_harvest(request):
                 'roi_percentage': round(roi_percentage, 1)
             },
             
-            # ✅ ADD: ENHANCED RECOMMENDATIONS
             'enhanced_recommendations': enhanced_recommendations
         }
-
-
     
-
         return Response({
             'success': True,
             'data': response_data
         }, status=status.HTTP_200_OK)
-
+        
     except Exception as exc:
-        logger.error(f"Error in calculate_rainwater_harvest: {str(exc)}")
+        logger.error(f"Error in calculate_rainwater_harvest: {str(exc)}", exc_info=True)
         return Response({
             'success': False,
             'error': 'Internal server error. Please try again later.'
@@ -386,11 +420,6 @@ def save_calculation_manual(request):
             'error': 'Failed to save calculation. Please try again.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-import matplotlib
-matplotlib.use('Agg')  # ✅ CRITICAL: Set non-GUI backend BEFORE importing pyplot
-import matplotlib.pyplot as plt
-import io
-import logging
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
