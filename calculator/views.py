@@ -128,6 +128,57 @@ def calculate_rainwater_harvest(request):
         annual_requirement_liters = daily_requirement_liters * 365
         
         efficiency_percent = (water_harvested_liters / annual_requirement_liters) * 100 if annual_requirement_liters > 0 else 0
+                # ✅ ADD THIS SECTION - COST ANALYSIS AND TECHNICAL SPECS
+        # (Add this right after your existing efficiency_percent calculation)
+        
+        # Default cost values (Indian market rates)
+        unit_cost_per_m3_structure = 8000.0  # ₹8000 per m³ for pit construction
+        tank_cost_per_l = 2.5  # ₹2.5 per liter for tank
+        installation_fixed_costs = 15000.0  # ₹15000 fixed installation cost
+        cost_per_kl = 25.0  # ₹25 per 1000L water cost
+
+        # Tank sizing (15% of harvested water)
+        tank_volume_liters = water_harvested_liters * 0.15
+        tank_volume_m3 = tank_volume_liters / 1000.0
+
+        # First flush calculation (2mm over roof area)
+        first_flush_liters = roof_area_sqm * 2
+
+        # Recharge pit calculations
+        available_recharge_liters = water_harvested_liters - first_flush_liters - tank_volume_liters
+        if available_recharge_liters < 0:
+            available_recharge_liters = 0.0
+
+        required_pit_volume_liters = available_recharge_liters / 0.6  # 60% efficiency
+        pit_volume_m3 = required_pit_volume_liters / 1000.0
+        pit_depth_m = 2.0
+        pit_area_m2 = pit_volume_m3 / pit_depth_m if pit_depth_m > 0 else 0.0
+        pit_diameter_m = 2.0 * math.sqrt(pit_area_m2 / math.pi) if pit_area_m2 > 0 else 0.0
+
+        # Cost calculations
+        pit_construction_cost = pit_volume_m3 * unit_cost_per_m3_structure
+        tank_construction_cost = tank_volume_liters * tank_cost_per_l
+        total_install_cost = pit_construction_cost + tank_construction_cost + installation_fixed_costs
+
+        # Annual savings
+        saved_water_kL = tank_volume_liters / 1000.0
+        annual_water_savings = saved_water_kL * cost_per_kl
+        annual_maintenance_cost = total_install_cost * 0.02  # 2% maintenance
+        net_annual_savings = annual_water_savings - annual_maintenance_cost
+
+        # Payback calculation
+        payback_years = total_install_cost / net_annual_savings if net_annual_savings > 0 else None
+        roi_percentage = (net_annual_savings * 10 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
+
+        # Enhanced recommendations
+        enhanced_recommendations = [
+            f"💰 Total system cost: ₹{total_install_cost:,.0f}",
+            f"💧 Annual water savings: ₹{net_annual_savings:,.0f}",
+            f"⏱️ Payback period: {payback_years:.1f} years" if payback_years else "⏱️ Long-term investment benefits",
+            f"🔧 Recommended tank capacity: {tank_volume_liters:,.0f}L",
+            f"🕳️ Pit specifications: {pit_diameter_m:.1f}m diameter, {pit_depth_m}m depth"
+        ]
+
 
         # Generate recommendation
         if efficiency_percent >= 100:
@@ -142,7 +193,9 @@ def calculate_rainwater_harvest(request):
             recommendation = f"💡 Limited harvest potential of {water_harvested_liters:,.0f}L annually. Consider increasing roof area or improving runoff efficiency."
 
         # Prepare response data
+                # Prepare response data
         response_data = {
+            # ✅ KEEP: All your existing fields
             'district_name': district_name,
             'state': state,
             'annual_rainfall_mm': round(annual_rainfall_mm, 2),
@@ -157,9 +210,36 @@ def calculate_rainwater_harvest(request):
             'efficiency_percent': round(efficiency_percent, 1),
             'recommendation': recommendation,
             'calculation_id': None,
-            'user': request.user.username if request.user.is_authenticated else None,  # ✅ FIX: Include username
-            'is_saved': False
+            'user': request.user.username if request.user.is_authenticated else None,
+            'is_saved': False,
+            
+            # ✅ ADD: NEW TECHNICAL SPECIFICATIONS
+            'tank_volume_liters': round(tank_volume_liters, 0),
+            'tank_volume_m3': round(tank_volume_m3, 1),
+            'first_flush_liters': round(first_flush_liters, 0),
+            'available_recharge_liters': round(available_recharge_liters, 0),
+            'required_pit_volume_liters': round(required_pit_volume_liters, 0),
+            'pit_diameter_m': round(pit_diameter_m, 1),
+            'pit_depth_m': round(pit_depth_m, 1),
+            'pit_area_m2': round(pit_area_m2, 1),
+            
+            # ✅ ADD: NEW COST ANALYSIS
+            'costs': {
+                'pit_construction_cost': round(pit_construction_cost, 0),
+                'tank_construction_cost': round(tank_construction_cost, 0),
+                'installation_fixed_costs': round(installation_fixed_costs, 0),
+                'total_install_cost': round(total_install_cost, 0),
+                'annual_water_savings': round(annual_water_savings, 0),
+                'annual_maintenance_cost': round(annual_maintenance_cost, 0),
+                'net_annual_savings': round(net_annual_savings, 0),
+                'payback_years': round(payback_years, 1) if payback_years else None,
+                'roi_percentage': round(roi_percentage, 1)
+            },
+            
+            # ✅ ADD: ENHANCED RECOMMENDATIONS
+            'enhanced_recommendations': enhanced_recommendations
         }
+
 
     
 

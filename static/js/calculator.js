@@ -269,82 +269,204 @@ class RainwaterCalculatorDemo {
     }
 
     displayResults(data) {
-        // Basic information
-        document.getElementById('resultDistrict').textContent = data.district_name;
-        document.getElementById('resultState').textContent = data.state;
-        document.getElementById('resultRainfall').textContent = `${this.formatNumber(data.annual_rainfall_mm)} mm/year`;
-        document.getElementById('resultDwellers').textContent = data.number_of_dwellers;
+        try {
+            console.log('📊 Displaying results with data:', data);
 
-        // Roof specifications
-        document.getElementById('resultRoofArea').textContent = `${this.formatNumber(data.roof_area_sqm)} m²`;
-        document.getElementById('resultRoofType').textContent = data.roof_type;
-        document.getElementById('resultRunoffCoeff').textContent = data.runoff_coefficient;
+            // ✅ BASIC INFORMATION - Keep your existing logic
+            document.getElementById('resultDistrict').textContent = data.district_name || 'Unknown';
+            document.getElementById('resultState').textContent = data.state || 'Not specified';
+            document.getElementById('resultRainfall').textContent = `${this.formatNumber(data.annual_rainfall_mm || 0)} mm/year`;
+            document.getElementById('resultDwellers').textContent = data.number_of_dwellers || 0;
 
-        // Water harvest results
-        document.getElementById('resultWaterLiters').textContent = `${this.formatNumber(data.water_harvested_liters)} L/year`;
-        document.getElementById('resultWaterGallons').textContent = `${this.formatNumber(data.water_harvested_gallons)} gal/year`;
-        
-        // Efficiency display
-        const efficiency = data.efficiency_percent || 0;
-        document.getElementById('resultEfficiency').textContent = `${efficiency.toFixed(1)}%`;
-        
-        // Color-code efficiency
-        const efficiencyElement = document.getElementById('resultEfficiency');
-        if (efficiency >= 80) {
-            efficiencyElement.className = 'value efficiency excellent';
-        } else if (efficiency >= 50) {
-            efficiencyElement.className = 'value efficiency good';
-        } else {
-            efficiencyElement.className = 'value efficiency limited';
-        }
+            // ✅ ROOF SPECIFICATIONS - Keep your existing logic
+            document.getElementById('resultRoofArea').textContent = `${this.formatNumber(data.roof_area_sqm || 0)} m²`;
+            document.getElementById('resultRoofType').textContent = data.roof_type || 'Unknown';
+            document.getElementById('resultRunoffCoeff').textContent = data.runoff_coefficient || 0;
 
-        // Usage analysis  
-        document.getElementById('resultDailyUsage').textContent = `${this.formatNumber(data.daily_requirement_liters)} L/day`;
-        document.getElementById('resultAnnualUsage').textContent = `${this.formatNumber(data.annual_requirement_liters)} L/year`;
-        
-        // Water security level
-        const securityLevel = this.getWaterSecurityLevel(efficiency);
-        document.getElementById('resultWaterSecurity').textContent = securityLevel.text;
-        document.getElementById('resultWaterSecurity').className = `value security-level ${securityLevel.class}`;
-
-        // Recommendation
-        document.getElementById('resultRecommendation').textContent = data.recommendation;
-
-        // ✅ MODIFIED: Only show metadata if actually saved
-        // ✅ Show metadata if user exists (saved or not)
-        if (data.user) {  // Changed from: if (data.calculation_id && data.is_saved)
-            document.getElementById('calculationMeta').style.display = 'block';
+            // ✅ WATER HARVEST RESULTS - Keep your existing logic
+            document.getElementById('resultWaterLiters').textContent = `${this.formatNumber(data.water_harvested_liters || 0)} L/year`;
+            document.getElementById('resultWaterGallons').textContent = `${this.formatNumber(data.water_harvested_gallons || 0)} gal/year`;
             
-            // Only show calculation ID if it exists
-            if (data.calculation_id) {
-                document.getElementById('resultCalculationId').textContent = data.calculation_id;
-            } else {
-                document.getElementById('resultCalculationId').textContent = 'Not saved yet';
+            // ✅ EFFICIENCY DISPLAY - Keep your existing logic
+            const efficiency = data.efficiency_percent || 0;
+            document.getElementById('resultEfficiency').textContent = `${efficiency.toFixed(1)}%`;
+            
+            // Color-code efficiency
+            const efficiencyElement = document.getElementById('resultEfficiency');
+            if (efficiencyElement) {
+                if (efficiency >= 80) {
+                    efficiencyElement.className = 'value efficiency excellent';
+                } else if (efficiency >= 50) {
+                    efficiencyElement.className = 'value efficiency good';
+                } else {
+                    efficiencyElement.className = 'value efficiency limited';
+                }
             }
+
+            // ✅ USAGE ANALYSIS - Keep your existing logic
+            document.getElementById('resultDailyUsage').textContent = `${this.formatNumber(data.daily_requirement_liters || 0)} L/day`;
+            document.getElementById('resultAnnualUsage').textContent = `${this.formatNumber(data.annual_requirement_liters || 0)} L/year`;
             
-            // Always show username for authenticated users
+            // Water security level
+            const securityLevel = this.getWaterSecurityLevel(efficiency);
+            const securityElement = document.getElementById('resultWaterSecurity');
+            if (securityElement) {
+                securityElement.textContent = securityLevel.text;
+                securityElement.className = `value security-level ${securityLevel.class}`;
+            }
+
+            // ✅ RECOMMENDATION - Keep your existing logic
+            const recommendationElement = document.getElementById('resultRecommendation');
+            if (recommendationElement) {
+                recommendationElement.textContent = data.recommendation || 'No recommendation available';
+            }
+
+            // ✅ METADATA DISPLAY - Keep your existing logic
             if (data.user) {
-                document.getElementById('resultUser').textContent = data.user;
+                const metaElement = document.getElementById('calculationMeta');
+                if (metaElement) {
+                    metaElement.style.display = 'block';
+                    
+                    const calcIdElement = document.getElementById('resultCalculationId');
+                    if (calcIdElement) {
+                        calcIdElement.textContent = data.calculation_id ? data.calculation_id : 'Not saved yet';
+                    }
+                    
+                    const userElement = document.getElementById('resultUser');
+                    if (userElement) {
+                        userElement.textContent = data.user;
+                    }
+                    
+                    const timestampElement = document.getElementById('resultTimestamp');
+                    if (timestampElement) {
+                        timestampElement.textContent = new Date().toLocaleString();
+                    }
+                }
+            } else {
+                const metaElement = document.getElementById('calculationMeta');
+                if (metaElement) {
+                    metaElement.style.display = 'none';
+                }
             }
+
+            // ✅ NEW: COST ANALYSIS DISPLAY with Safety Checks
+            if (data.costs) {
+                console.log('💰 Displaying cost analysis:', data.costs);
+                
+                const installCostEl = document.getElementById('resultInstallCost');
+                if (installCostEl) {
+                    installCostEl.textContent = `₹${this.formatNumber(data.costs.total_install_cost || 0)}`;
+                }
+                
+                const annualSavingsEl = document.getElementById('resultAnnualSavings');
+                if (annualSavingsEl) {
+                    annualSavingsEl.textContent = `₹${this.formatNumber(data.costs.net_annual_savings || 0)}`;
+                }
+                
+                const paybackEl = document.getElementById('resultPayback');
+                if (paybackEl) {
+                    paybackEl.textContent = data.costs.payback_years ? `${data.costs.payback_years} years` : 'Long-term benefits';
+                }
+                
+                const roiEl = document.getElementById('resultROI');
+                if (roiEl) {
+                    roiEl.textContent = `${data.costs.roi_percentage || 0}%`;
+                }
+                
+                // Cost breakdown
+                const costBreakdownEl = document.getElementById('resultCostBreakdown');
+                if (costBreakdownEl) {
+                    costBreakdownEl.innerHTML = `
+                        Tank: ₹${this.formatNumber(data.costs.tank_construction_cost || 0)} | 
+                        Pit: ₹${this.formatNumber(data.costs.pit_construction_cost || 0)} | 
+                        Installation: ₹${this.formatNumber(data.costs.installation_fixed_costs || 0)}
+                    `;
+                }
+            } else {
+                console.log('ℹ️ No cost analysis data available');
+            }
+
+            // ✅ NEW: TECHNICAL SPECIFICATIONS DISPLAY with Safety Checks
+            if (data.tank_volume_liters) {
+                console.log('🔧 Displaying technical specifications');
+                
+                const tankVolumeEl = document.getElementById('resultTankVolume');
+                if (tankVolumeEl) {
+                    tankVolumeEl.textContent = `${this.formatNumber(data.tank_volume_liters)} L (${data.tank_volume_m3 || 0} m³)`;
+                }
+                
+                const firstFlushEl = document.getElementById('resultFirstFlush');
+                if (firstFlushEl) {
+                    firstFlushEl.textContent = `${this.formatNumber(data.first_flush_liters || 0)} L`;
+                }
+                
+                const pitDiameterEl = document.getElementById('resultPitDiameter');
+                if (pitDiameterEl) {
+                    pitDiameterEl.textContent = `${data.pit_diameter_m || 0} m`;
+                }
+                
+                const rechargeVolumeEl = document.getElementById('resultRechargeVolume');
+                if (rechargeVolumeEl) {
+                    rechargeVolumeEl.textContent = `${this.formatNumber(data.available_recharge_liters || 0)} L`;
+                }
+            } else {
+                console.log('ℹ️ No technical specifications data available');
+            }
+
+            // ✅ NEW: ENHANCED RECOMMENDATIONS DISPLAY with Safety Checks
+            if (data.enhanced_recommendations && Array.isArray(data.enhanced_recommendations)) {
+                console.log('Displaying enhanced recommendations:', data.enhanced_recommendations);
+                
+                const enhancedRecEl = document.getElementById('resultEnhancedRecommendations');
+                if (enhancedRecEl) {
+                    enhancedRecEl.innerHTML = '<ul>' + 
+                        data.enhanced_recommendations.map(rec => `<li>${rec}</li>`).join('') + 
+                        '</ul>';
+                }
+            } else {
+                console.log('ℹ️ No enhanced recommendations available');
+            }
+
+            // ✅ KEEP: Your existing water visualization and display logic
+            this.updateWaterVisualization(efficiency);
+            this.showResults();
+
+            // ✅ KEEP: Your existing scroll behavior
+            const resultsSection = document.getElementById('resultsSection');
+            if (resultsSection) {
+                resultsSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+
+            console.log('✅ Results displayed successfully with enhanced features!');
+
+        } catch (error) {
+            console.error('❌ Error in displayResults:', error);
+            console.log('📊 Failed with data:', data);
             
-            document.getElementById('resultTimestamp').textContent = new Date().toLocaleString();
-        } else {
-            document.getElementById('calculationMeta').style.display = 'none';
+            // Show error but still try to display basic results
+            this.showError('Results calculated successfully, but some display features encountered issues.');
+            
+            // Fallback: Show at least basic results
+            try {
+                const districtEl = document.getElementById('resultDistrict');
+                if (districtEl) districtEl.textContent = data.district_name || 'Unknown';
+                
+                const waterEl = document.getElementById('resultWaterLiters');
+                if (waterEl) waterEl.textContent = `${this.formatNumber(data.water_harvested_liters || 0)} L/year`;
+                
+                const efficiencyEl = document.getElementById('resultEfficiency');
+                if (efficiencyEl) efficiencyEl.textContent = `${(data.efficiency_percent || 0).toFixed(1)}%`;
+                
+                this.showResults();
+            } catch (fallbackError) {
+                console.error('❌ Fallback display also failed:', fallbackError);
+            }
         }
-
-
-        // Update water level visualization
-        this.updateWaterVisualization(efficiency);
-
-        // Show results section
-        this.showResults();
-
-        // Scroll to results
-        document.getElementById('resultsSection')?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
     }
+
 
     loadRainfallChart(districtName) {
         const chartImg = document.getElementById('rainfallChart');
@@ -686,6 +808,22 @@ Water Harvesting Results:
 - In Gallons: ${this.formatNumber(data.water_harvested_gallons)} gal/year
 - System Efficiency: ${(data.efficiency_percent || 0).toFixed(1)}%
 
+${data.costs ? `
+COST ANALYSIS:
+- Installation Cost: ₹${this.formatNumber(data.costs.total_install_cost)}
+- Annual Savings: ₹${this.formatNumber(data.costs.net_annual_savings)}
+- Payback Period: ${data.costs.payback_years || 'N/A'} years
+- 10-Year ROI: ${data.costs.roi_percentage}%
+` : ''}
+
+${data.tank_volume_liters ? `
+TECHNICAL SPECIFICATIONS:
+- Tank Volume: ${this.formatNumber(data.tank_volume_liters)} L (${data.tank_volume_m3} m³)
+- First Flush Diversion: ${this.formatNumber(data.first_flush_liters)} L
+- Pit Diameter: ${data.pit_diameter_m} m
+- Recharge Volume: ${this.formatNumber(data.available_recharge_liters)} L
+` : ''}
+
 Water Usage Analysis:
 - Daily Requirement: ${this.formatNumber(data.daily_requirement_liters)} L/day
 - Annual Requirement: ${this.formatNumber(data.annual_requirement_liters)} L/year
@@ -697,6 +835,7 @@ Report Generated: ${new Date().toLocaleString()}
 Generated by: JalJeevan.AI - Rainwater Harvesting Calculator
         `.trim();
     }
+
 
     shareResults() {
         if (!this.currentCalculationData) {
@@ -725,10 +864,13 @@ Generated by: JalJeevan.AI - Rainwater Harvesting Calculator
 }
 
 // Initialize calculator when page loads
-const calculator = new RainwaterCalculatorDemo();
+document.addEventListener('DOMContentLoaded', function() {
+    const calculator = new RainwaterCalculatorDemo();
+    window.calculator = calculator;  // ✅ This assignment is INSIDE the event listener
+    console.log('🌧️ RainwaterCalculatorDemo fully loaded with cost analysis! 💧');
+});
 
-// Make calculator available globally for onclick functions
-window.calculator = calculator;
+
 
 // Add CSS animations and styling
 const style = document.createElement('style');
