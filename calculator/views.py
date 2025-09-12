@@ -483,6 +483,165 @@ def rainfall_chart(request, district_name):
         logger.error(f"Chart generation error: {str(e)}")
         return HttpResponse("Error generating chart", status=500)
 
+# def rainfall_line_chart(request, district_name):
+#     """Generate monthly rainfall line chart for a district."""
+#     try:
+#         gp = GraphPlot.objects.get(district_name__iexact=district_name)
+#         monthly_rainfall = dict(gp.get_monthly_values())
+
+#         # ✅ Create figure and axis
+#         fig, ax = plt.subplots(figsize=(10, 6))
+#         months = list(monthly_rainfall.keys())
+#         values = list(monthly_rainfall.values())
+        
+#         # ✅ Line plot # change color here
+#         ax.plot(months, values, marker='o', color='navy', linewidth=2, markersize=6, label="Rainfall")
+
+#         # Enhance chart appearance
+#         ax.set_title(f"Monthly Rainfall Trend - {district_name.title()}", 
+#                      fontsize=16, fontweight='bold', pad=20)
+#         ax.set_xlabel("Month", fontsize=12)
+#         ax.set_ylabel("Rainfall (mm)", fontsize=12)
+#         ax.grid(alpha=0.3, linestyle='--')
+#         ax.legend()
+
+#         # Add value labels
+#         for x, y in zip(months, values):
+#             ax.text(x, y + max(values)*0.01, f"{y:.0f}mm", 
+#                     ha='center', va='bottom', fontsize=9)
+
+#         plt.xticks(rotation=45)
+#         plt.tight_layout()
+
+#         # ✅ Save figure to memory
+#         buffer = io.BytesIO()
+#         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight',
+#                    facecolor='white', edgecolor='none')
+#         plt.close(fig)  # ✅ Always close figure
+#         buffer.seek(0)
+
+#         return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+#     except GraphPlot.DoesNotExist:
+#         # Return placeholder image
+#         fig, ax = plt.subplots(figsize=(10, 6))
+#         ax.text(0.5, 0.5, f'Monthly rainfall data\nnot available for\n{district_name}', 
+#                 ha='center', va='center', fontsize=14, 
+#                 bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray"))
+#         ax.set_xlim(0, 1)
+#         ax.set_ylim(0, 1)
+#         ax.axis('off')
+
+#         buffer = io.BytesIO()
+#         plt.tight_layout()
+#         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight',
+#                    facecolor='white', edgecolor='none')
+#         plt.close(fig)
+#         buffer.seek(0)
+
+#         return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+#     except Exception as e:
+#         logger.error(f"Line chart generation error: {str(e)}")
+#         return HttpResponse("Error generating line chart", status=500)
+
+
+def rainfall_line_chart(request, district_name):
+    """Generate monthly water harvested line chart for a district."""
+    try:
+        gp = GraphPlot.objects.get(district_name__iexact=district_name)
+        monthly_rainfall = dict(gp.get_monthly_values())  # mm data
+
+        # ✅ Extract from query params (provide defaults if not passed)
+        roof_area_sqm = float(request.GET.get("area", 100))  # default 100 m²
+        roof_type = (request.GET.get("roof_type", "RCC")).upper()
+
+        # ✅ Runoff coefficients mapping (same as calculator)
+        runoff_coefficients = {
+            'RCC': 0.85, 'TERRACE': 0.85, 'METAL SHEET': 0.85,
+            'TILE ROOF': 0.75, 'TILE': 0.75, 'ASBESTOS': 0.6,
+            'ROUGH SURFACE': 0.6, 'GREEN ROOF': 0.4, 'SOIL': 0.4,
+        }
+        runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
+
+        # ✅ Calculate harvested water (Liters)
+        # Formula: Rainfall(mm) × Roof Area(m²) × Runoff Coefficient
+        monthly_harvest = {
+            month: rainfall_mm * roof_area_sqm * runoff_coefficient
+            for month, rainfall_mm in monthly_rainfall.items()
+        }
+
+        # ---- Plotting ----
+        fig, ax = plt.subplots(figsize=(10, 6))
+        months = list(monthly_harvest.keys())
+        values = list(monthly_harvest.values())
+
+        ax.plot(
+            months, values,
+            marker='o', color='blue',
+            linewidth=2, markersize=6,
+            label="Water Harvested (L)"
+        )
+        ax.set_title(
+            f"Monthly Water Harvested - {district_name.title()}",
+            fontsize=16, fontweight='bold', pad=20
+        )
+        ax.set_xlabel("Month", fontsize=12)
+        ax.set_ylabel("Water Harvested (Liters)", fontsize=12)
+        ax.grid(alpha=0.3, linestyle='--')
+        ax.legend()
+
+        # Add value labels
+        for x, y in zip(months, values):
+            ax.text(
+                x, y + max(values) * 0.01,
+                f"{y:.0f} L", ha='center', va='bottom', fontsize=9
+            )
+
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+
+        # Save figure to memory
+        buffer = io.BytesIO()
+        plt.savefig(
+            buffer, format="png", dpi=150,
+            bbox_inches='tight', facecolor='white'
+        )
+        plt.close(fig)
+        buffer.seek(0)
+
+        return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+    except GraphPlot.DoesNotExist:
+        # Return placeholder image if no data
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.text(
+            0.5, 0.5,
+            f'Monthly rainfall data\nnot available for\n{district_name}',
+            ha='center', va='center', fontsize=14,
+            bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray")
+        )
+        ax.set_xlim(0, 1)
+        ax.set_ylim(0, 1)
+        ax.axis('off')
+
+        buffer = io.BytesIO()
+        plt.tight_layout()
+        plt.savefig(
+            buffer, format="png", dpi=150,
+            bbox_inches='tight', facecolor='white'
+        )
+        plt.close(fig)
+        buffer.seek(0)
+
+        return HttpResponse(buffer.getvalue(), content_type="image/png")
+
+    except Exception as e:
+        logger.error(f"Line chart generation error: {str(e)}")
+        return HttpResponse("Error generating line chart", status=500)
+
+
+
 def calculator_view(request):
     """Render calculator page with optional pre-filled district data."""
     district_name = request.GET.get("district")

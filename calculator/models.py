@@ -174,11 +174,75 @@ class SystemConfiguration(models.Model):
 
 
 
+# class GraphPlot(models.Model):
+#     """Monthly rainfall data for a district"""
+
+#     district_name = models.CharField(max_length=100, db_index=True)
+#     state = models.CharField(max_length=100, db_index=True)
+
+#     # Monthly rainfall (mm)
+#     jan = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     feb = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     mar = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     apr = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     may = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     jun = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     jul = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     aug = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     sep = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     oct = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     nov = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+#     dec = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
+
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     class Meta:
+#         db_table = "graph_plot"
+#         verbose_name = "Graph Plot"
+#         verbose_name_plural = "Graph Plots"
+#         ordering = ["state", "district_name"]
+#         unique_together = ("state", "district_name")
+
+#     def __str__(self):
+#         return f"{self.district_name}, {self.state}"
+
+#     def get_monthly_values(self):
+#         """Return rainfall values as (month, value) for plotting"""
+#         return [
+#             ("JAN", float(self.jan)),
+#             ("FEB", float(self.feb)),
+#             ("MAR", float(self.mar)),
+#             ("APR", float(self.apr)),
+#             ("MAY", float(self.may)),
+#             ("JUN", float(self.jun)),
+#             ("JUL", float(self.jul)),
+#             ("AUG", float(self.aug)),
+#             ("SEP", float(self.sep)),
+#             ("OCT", float(self.oct)),
+#             ("NOV", float(self.nov)),
+#             ("DEC", float(self.dec)),
+#         ]
+
+
+
+
 class GraphPlot(models.Model):
     """Monthly rainfall data for a district"""
 
+    LABEL_CHOICES = [
+        ("RURAL", "Rural"),
+        ("URBAN", "Urban"),
+        ("SEMI-URBAN", "Semi-Urban"),
+    ]
+
     district_name = models.CharField(max_length=100, db_index=True)
     state = models.CharField(max_length=100, db_index=True)
+    label = models.CharField(
+        max_length=20,
+        choices=LABEL_CHOICES,
+        default="URBAN",   # you can set "RURAL" or "SEMI-URBAN" as default if you prefer
+    )
 
     # Monthly rainfall (mm)
     jan = models.DecimalField(max_digits=6, decimal_places=1, validators=[MinValueValidator(0)])
@@ -205,7 +269,7 @@ class GraphPlot(models.Model):
         unique_together = ("state", "district_name")
 
     def __str__(self):
-        return f"{self.district_name}, {self.state}"
+        return f"{self.district_name}, {self.state} ({self.label})"
 
     def get_monthly_values(self):
         """Return rainfall values as (month, value) for plotting"""
