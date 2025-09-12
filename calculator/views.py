@@ -81,7 +81,8 @@ def calculate_rainwater_harvest(request):
         # Handle district lookup and duplicates
         if annual_rainfall_mm <= 0:
             districts = RainfallData.objects.filter(district_name__iexact=district_name)
-            
+            # Quick one-liner to get max month
+        
             if not districts.exists():
                 return Response({
                     'success': False,
@@ -134,13 +135,57 @@ def calculate_rainwater_harvest(request):
         cost_per_kl = 100.0  # ✅ CORRECTED: Realistic tanker replacement cost
         
         # ===== PRACTICAL SIZING APPROACH =====
-        # Practical tank sizing based on harvest potential (instead of percentage)
-        if water_harvested_liters >= 50000:  # Large harvest
-            practical_tank_liters = 10000
-        elif water_harvested_liters >= 30000:  # Medium harvest  
-            practical_tank_liters = 7500
-        else:  # Small harvest
-            practical_tank_liters = 5000
+        # ===== PRACTICAL SIZING APPROACH =====
+        if district:
+            months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+            month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            
+            rainfall_values = [getattr(district, month, 0) for month in months]
+            max_index = rainfall_values.index(max(rainfall_values))
+            
+            peak_month = month_names[max_index]
+            peak_rainfall = rainfall_values[max_index]
+                
+            # ✅ Extract the coefficient value first
+            runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
+            
+            # ✅ ENHANCED: Peak month based tank sizing with filtration efficiency
+            filtration_efficiency = 0.95  # Account for first flush and filtration losses
+            max_monthly_harvest = peak_rainfall * roof_area_sqm * runoff_coefficient * filtration_efficiency
+            
+            # Storage factor based on household size (practical sizing)
+            if number_of_dwellers >= 6:
+                storage_factor = 0.25  # 25% for large families
+            elif number_of_dwellers >= 4:
+                storage_factor = 0.20  # 20% for medium families  
+            elif number_of_dwellers >= 2:
+                storage_factor = 0.15  # 15% for small families
+            else:
+                storage_factor = 0.10  # 10% for single person
+            
+            # Calculate practical tank size
+            practical_tank_liters = max_monthly_harvest * storage_factor
+            
+            # Apply practical limits (2K-50K liter range)
+            practical_tank_liters = max(2000, min(practical_tank_liters, 50000))
+        else:
+            # Fallback for custom rainfall input
+            practical_tank_liters = water_harvested_liters * 0.15
+
+        # ✅ Rest of your code stays exactly the same - no variable name changes
+        tank_volume_liters = practical_tank_liters
+        tank_volume_m3 = tank_volume_liters / 1000.0
+
+
+
+
+        # # Practical tank sizing based on harvest potential (instead of percentage)
+        # if water_harvested_liters >= 50000:  # Large harvest
+        #     practical_tank_liters = 10000
+        # elif water_harvested_liters >= 30000:  # Medium harvest  
+        #     practical_tank_liters = 7500
+        # else:  # Small harvest
+        #     practical_tank_liters = 5000
 
         tank_volume_liters = practical_tank_liters
         tank_volume_m3 = tank_volume_liters / 1000.0
