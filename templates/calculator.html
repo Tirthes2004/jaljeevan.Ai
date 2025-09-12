@@ -139,12 +139,12 @@
         </div>
     </div>
 
-  <!-- Results Section -->
+ <!-- Results Section -->
 <section id="resultsSection" class="results-section hidden">
     <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
     
     <div class="results-grid">
-        <!-- Location Info Card -->
+        <!-- First Row -->
         <div class="result-card info-card">
             <div class="card-header">
                 <i class="fas fa-map-marker-alt"></i>
@@ -170,7 +170,6 @@
             </div>
         </div>
 
-        <!-- Roof Details Card -->
         <div class="result-card roof-card">
             <div class="card-header">
                 <i class="fas fa-home"></i>
@@ -192,7 +191,28 @@
             </div>
         </div>
 
-        <!-- Water Harvest Results -->
+        <div class="result-card usage-card">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i>
+                <h3>Water Usage Analysis</h3>
+            </div>
+            <div class="card-content">
+                <div class="result-item">
+                    <span class="label">Daily Requirement:</span>
+                    <span id="resultDailyUsage" class="value">-</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">Annual Requirement:</span>
+                    <span id="resultAnnualUsage" class="value">-</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">Water Security:</span>
+                    <span id="resultWaterSecurity" class="value security-level">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row -->
         <div class="result-card harvest-card highlight">
             <div class="card-header">
                 <i class="fas fa-tint"></i>
@@ -220,29 +240,6 @@
             </div>
         </div>
 
-        <!-- Water Usage Analysis Card -->
-        <div class="result-card usage-card">
-            <div class="card-header">
-                <i class="fas fa-chart-line"></i>
-                <h3>Water Usage Analysis</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Daily Requirement:</span>
-                    <span id="resultDailyUsage" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Annual Requirement:</span>
-                    <span id="resultAnnualUsage" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Water Security:</span>
-                    <span id="resultWaterSecurity" class="value security-level">-</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Monthly Rainfall Chart Card -->
         <div class="result-card chart-card">
             <div class="card-header">
                 <i class="fas fa-chart-bar"></i>
@@ -266,7 +263,7 @@
             </div>
         </div>
 
-        <!-- Cost Analysis Card -->
+        <!-- Third Row -->
         <div class="result-card cost-card highlight">
             <div class="card-header">
                 <i class="fas fa-money-bill-wave"></i>
@@ -295,7 +292,6 @@
             </div>
         </div>
 
-        <!-- Technical Specifications Card -->
         <div class="result-card tech-card">
             <div class="card-header">
                 <i class="fas fa-cogs"></i>
@@ -321,7 +317,6 @@
             </div>
         </div>
 
-        <!-- Enhanced Recommendations Card -->
         <div class="result-card enhanced-rec-card">
             <div class="card-header">
                 <i class="fas fa-star"></i>
@@ -332,7 +327,6 @@
             </div>
         </div>
 
-        <!-- Calculation Metadata Card -->
         <div id="calculationMeta" class="result-card meta-card" style="display: none;">
             <div class="card-header">
                 <i class="fas fa-info-circle"></i>
