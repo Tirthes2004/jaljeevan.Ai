@@ -4,24 +4,22 @@
 {% block title %}About — RTRWH & Artificial Recharge | SIH 2025{% endblock %}
 {% block css %}<link rel="stylesheet" href="{% static 'css/about.css' %}">{% endblock %}
 
-  <!-- Use your static path; if Flask use url_for('static', ...) -->
-  
 {% block content %}
    <!-- Background Particles -->
     <div class="bg-particles" id="particles"></div>
 
     <!-- Header -->
     <div class="header">
-        <h1>On-spot Assessment: RTRWH & Artificial Recharge</h1>
+        <h1>JalJeevan.AI: RTRWH & Artificial Recharge</h1>
         <p class="tagline">
-            A practical web/mobile tool to estimate rooftop rainwater harvesting potential,
+            A practical web/mobile tool to estimate rooftop rainwater harvesting potential,GIS analysis, AR visualization,community engagement, 
             recommend recharge structures, and provide sizing & cost guidance.
         </p>
     </div>
 
     <!-- 3D Slider Container -->
     <div class="slider-container">
-        <div class="card-counter" id="cardCounter">Card 1 of 9</div>
+        <div class="card-counter" id="cardCounter">Card 1 of 13</div>
         <div class="autoplay-indicator" id="autoplayIndicator">Auto-play: ON</div>
         
         <!-- Navigation Arrows -->
@@ -29,55 +27,81 @@
         <div class="nav-arrow next" id="nextBtn">›</div>
         
         <div class="slider-track" id="sliderTrack">
+            <!-- New Cards Added Here -->
             <div class="card active" data-index="0">
+                <div class="card-icon">🧠</div>
+                <h3>AI Calculator</h3>
+                <p>Advanced calculations using real rainfall data and machine learning algorithms</p>
+            </div>
+            
+            <div class="card next" data-index="1">
+                <div class="card-icon">🗺️</div>
+                <h3>GIS + Runoff</h3>
+                <p>Geographical analysis with precise runoff coefficient estimation</p>
+            </div>
+            
+            <div class="card far-next" data-index="2">
+                <div class="card-icon">👁️</div>
+                <h3>AR Preview</h3>
+                <p>Visualize your harvesting system in 3D augmented reality</p>
+            </div>
+            
+            <div class="card hidden" data-index="3">
+                <div class="card-icon">🏆</div>
+                <h3>Water Credits</h3>
+                <p>Earn points and compete with others in water conservation</p>
+            </div>
+            
+            <!-- Original Cards (updated indices) -->
+            <div class="card hidden" data-index="4">
                 <div class="card-icon">✓</div>
                 <h3>Feasibility check</h3>
                 <p>Instant assessment using roof area, rainfall input, and runoff coefficient to tell if RTRWH is viable.</p>
             </div>
             
-            <div class="card next" data-index="1">
+            <div class="card hidden" data-index="5">
                 <div class="card-icon">🏗️</div>
                 <h3>Suggested structure types</h3>
                 <p>Recommends pit, trench, shaft, or soakaway types based on site constraints.</p>
             </div>
             
-            <div class="card far-next" data-index="2">
+            <div class="card hidden" data-index="6">
                 <div class="card-icon">🌊</div>
                 <h3>Hydrogeology snapshot</h3>
                 <p>Principal aquifer type and depth-to-water at the location.</p>
             </div>
             
-            <div class="card hidden" data-index="3">
+            <div class="card hidden" data-index="7">
                 <div class="card-icon">🌧️</div>
                 <h3>Local rainfall & seasonal profile</h3>
                 <p>Monthly rainfall patterns used to size the system.</p>
             </div>
             
-            <div class="card hidden" data-index="4">
+            <div class="card hidden" data-index="8">
                 <div class="card-icon">💧</div>
                 <h3>Runoff & capture estimates</h3>
                 <p>Estimated annual harvest and peak-runoff rates.</p>
             </div>
             
-            <div class="card hidden" data-index="5">
+            <div class="card hidden" data-index="9">
                 <div class="card-icon">📏</div>
                 <h3>Recommended dimensions</h3>
                 <p>Suggested sizes for recharge pits, trenches, shafts, or percolation systems.</p>
             </div>
             
-            <div class="card hidden" data-index="6">
+            <div class="card hidden" data-index="10">
                 <div class="card-icon">💰</div>
                 <h3>Cost & benefit estimate</h3>
                 <p>Ballpark cost and simple payback / benefit analysis.</p>
             </div>
             
-            <div class="card hidden" data-index="7">
+            <div class="card hidden" data-index="11">
                 <div class="card-icon">🌐</div>
                 <h3>Regional language support</h3>
                 <p>Form and outputs prepared for easy translation and offline printing.</p>
             </div>
             
-            <div class="card hidden" data-index="8">
+            <div class="card hidden" data-index="12">
                 <div class="card-icon">👥</div>
                 <h3>Community & field workflow</h3>
                 <p>Generates printable guidance & field-checklists for installation teams.</p>
@@ -85,8 +109,8 @@
         </div>
         
         <div class="controls">
-            <button  id="toggleBtn" class="control-btn" onclick="toggleAutoplay()">Toggle Auto-play</button>
-            <button  id="resetBtn" class="control-btn" onclick="resetSlider()">Reset</button>
+            <button id="toggleBtn" class="control-btn" onclick="toggleAutoplay()">Auto-play</button>
+            <button id="resetBtn" class="control-btn" onclick="resetSlider()">Reset</button>
         </div>
         
         <div class="progress-dots" id="progressDots">
@@ -99,6 +123,10 @@
             <div class="dot" onclick="goToSlide(6)"></div>
             <div class="dot" onclick="goToSlide(7)"></div>
             <div class="dot" onclick="goToSlide(8)"></div>
+            <div class="dot" onclick="goToSlide(9)"></div>
+            <div class="dot" onclick="goToSlide(10)"></div>
+            <div class="dot" onclick="goToSlide(11)"></div>
+            <div class="dot" onclick="goToSlide(12)"></div>
         </div>
     </div>
 
@@ -108,5 +136,3 @@
     </div>
 {% endblock %}
 {% block js %}<script src="{% static 'js/about.js' %}"></script>{% endblock %}
-</body>
-</html>

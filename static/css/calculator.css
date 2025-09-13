@@ -789,3 +789,37 @@ input[type="number"]::-webkit-inner-spin-button {
         min-height: 250px;
     }
 }
+/* Add this to your calculator.css file */
+
+/* For larger screens, make Enhanced Analysis and Calculation Details appear side by side */
+@media (min-width: 1024px) {
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Make these two cards span full width when they're the only ones in the row */
+    .enhanced-rec-card,
+    .meta-card {
+        grid-column: span 1;
+    }
+    
+    /* Ensure other important cards still have appropriate sizing */
+    .harvest-card.highlight,
+    .cost-card.highlight {
+        grid-column: span 2;
+    }
+}
+
+/* For medium screens, adjust layout */
+@media (max-width: 1023px) and (min-width: 768px) {
+    .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* For mobile screens, single column layout */
+@media (max-width: 767px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}

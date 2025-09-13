@@ -76,10 +76,10 @@
                     English <i class="fas fa-chevron-down" aria-hidden="true"></i>
                 </button>
                 <div class="language-dropdown" role="menu">
-                    <a href="#" role="menuitem">Hindi</a>
-                    <a href="#" role="menuitem">Spanish</a>
-                    <a href="#" role="menuitem">French</a>
-                    <a href="#" role="menuitem">German</a>
+                    <a href="#" role="menuitem">हिन्दी</a>
+                    <a href="#" role="menuitem">বাংলা</a>
+                    <a href="#" role="menuitem">தமிழ்</a>
+                    <a href="#" role="menuitem">मराठी</a>
                 </div>
             </div>
             
@@ -172,12 +172,17 @@
             {% endif %}
         </div>
         
-        <div class="sidebar-language">
-            <button class="language-btn" style="width: 100%;" aria-haspopup="true">
-                <i class="fas fa-globe" aria-hidden="true"></i>
-                English <i class="fas fa-chevron-down" aria-hidden="true"></i>
-            </button>
-        </div>
+        <div class="language-selector">
+                <button class="language-btn" aria-haspopup="true" aria-expanded="false">
+                    English <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="language-dropdown" role="menu">
+                    <a href="#" role="menuitem">हिन्दी</a>
+                    <a href="#" role="menuitem">বাংলা</a>
+                    <a href="#" role="menuitem">தமிழ்</a>
+                    <a href="#" role="menuitem">मराठी</a>
+                </div>
+            </div>
     </div>
 
     <!-- Sidebar Overlay -->
@@ -230,42 +235,7 @@
             </div>
         </section>
 
-        <!-- Features Preview Section -->
-        <section class="features-preview" id="features-preview">
-            <div class="container">
-                <h2 class="section-title">Why Choose JalJeevan.AI?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-brain" aria-hidden="true"></i>
-                        </div>
-                        <h3>AI Calculator</h3>
-                        <p>Advanced calculations using real rainfall data and machine learning algorithms</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-map" aria-hidden="true"></i>
-                        </div>
-                        <h3>GIS + Runoff</h3>
-                        <p>Geographical analysis with precise runoff coefficient estimation</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-cube" aria-hidden="true"></i>
-                        </div>
-                        <h3>AR Preview</h3>
-                        <p>Visualize your harvesting system in 3D augmented reality</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-trophy" aria-hidden="true"></i>
-                        </div>
-                        <h3>Water Credits</h3>
-                        <p>Earn points and compete with others in water conservation</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
     </main>
     {% endblock %}
 
