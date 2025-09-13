@@ -334,10 +334,10 @@
                     <span class="label">Pit Diameter:</span>
                     <span id="resultPitDiameter" class="value">-</span>
                 </div>
-                <div class="result-item">
+                {% comment %} <div class="result-item">
                     <span class="label">Recharge Volume:</span>
                     <span id="resultRechargeVolume" class="value">-</span>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 
@@ -395,11 +395,11 @@
 
 
     <!-- API Status -->
-    <div class="api-status">
+    {% comment %} <div class="api-status">
         <span id="apiStatus" class="status-indicator">
             <i class="fas fa-circle"></i> API Status: <span id="statusText">Checking...</span>
         </span>
-    </div>
+    </div> {% endcomment %}
 </div>
 
 <script src="/static/js/calculator.js"></script>

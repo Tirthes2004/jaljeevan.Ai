@@ -15,6 +15,10 @@ def contact_view(request):
     """Contact page"""
     return render(request, 'contact.html')
 
+def leaderboard_view(request):
+    """Contact page"""
+    return render(request, 'leaderboard.html')
+
 # def technology_view(request):
 #     """Technology page"""
 #     return render(request, 'pages/technology.html')

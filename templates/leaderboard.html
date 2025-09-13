@@ -1,0 +1,66 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}About — leaderboard {% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/leaderboard.css' %}">{% endblock %}
+
+
+  
+{% block content %}
+<div class="container">
+        <div class="header">
+            <h1><i class="fas fa-trophy"></i> Community Leaderboard</h1>
+            <p>See how you rank among eco-warriors saving water with JalJeevan.AI</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active">All Time</button>
+            <button class="filter-btn">Monthly</button>
+            <button class="filter-btn">Weekly</button>
+            <button class="filter-btn">My Region</button>
+        </div>
+
+        <div class="leaderboard-container">
+            <div class="leaderboard-header">
+                <span>Rank</span>
+                <span>User</span>
+                <span>Credits</span>
+                <span>Progress</span>
+                <span>Badges</span>
+            </div>
+            
+            <div class="leaderboard-list" id="leaderboard-list">
+                <!-- Leaderboard items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="user-rank-card" id="user-rank-card">
+            <!-- User's rank will be shown here -->
+        </div>
+
+        <div class="user-stats">
+            <div class="stat-card">
+                <div class="stat-label">Total Participants</div>
+                <div class="stat-value" id="total-participants">5,281</div>
+                <div class="stat-desc">Eco-warriors worldwide</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Credits</div>
+                <div class="stat-value" id="total-credits">2.4M</div>
+                <div class="stat-desc">Points earned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Water Saved</div>
+                <div class="stat-value" id="water-saved">18.5M</div>
+                <div class="stat-desc">Liters conserved</div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+{% block js %}
+    <!-- Page-specific JS -->
+    <script src="/static/js/leaderboard.js"></script>
+{% endblock %}
+</body>
+</html>

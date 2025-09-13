@@ -63,6 +63,12 @@
                 </a>
             </li>
             <li role="none">
+                <a href="{% url 'pages:leaderboard' %}" role="menuitem" 
+                   class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                   Leaderboard
+                </a>
+            </li>
+            <li role="none">
                 <a href="{% url 'pages:contact' %}" role="menuitem" 
                    class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
                    Contact
