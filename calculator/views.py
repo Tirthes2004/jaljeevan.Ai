@@ -685,7 +685,81 @@ def rainfall_line_chart(request, district_name):
         logger.error(f"Line chart generation error: {str(e)}")
         return HttpResponse("Error generating line chart", status=500)
 
-
+def rainfall_line_chart(request, district_name):
+    """Generate monthly water harvested vs. water consumption comparison chart."""
+    try:
+        gp = GraphPlot.objects.get(district_name__iexact=district_name)
+        monthly_rainfall = dict(gp.get_monthly_values())
+        
+        # ✅ Parameters from request
+        roof_area_sqm = float(request.GET.get("area", 100))
+        roof_type = (request.GET.get("roof_type", "RCC")).upper()
+        number_of_people = int(request.GET.get("people", 1))
+        
+        # ✅ Your existing runoff coefficients
+        runoff_coefficients = {
+            'RCC': 0.85, 'TERRACE': 0.85, 'METAL SHEET': 0.85,
+            'TILE ROOF': 0.75, 'TILE': 0.75, 'ASBESTOS': 0.6,
+            'ROUGH SURFACE': 0.6, 'GREEN ROOF': 0.4, 'SOIL': 0.4,
+        }
+        runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
+        
+        # ✅ Your existing harvest calculation
+        monthly_harvest = {
+            month: rainfall_mm * roof_area_sqm * runoff_coefficient
+            for month, rainfall_mm in monthly_rainfall.items()
+        }
+        
+        # ✅ Your existing consumption data
+        consumption_data = {
+            "January": 1767, "February": 1596, "March": 1897, "April": 2070,
+            "May": 2139, "June": 2070, "July": 1860, "August": 1860,
+            "September": 1800, "October": 1897, "November": 1836, "December": 1767
+        }
+        
+        # ✅ Scale by number of people
+        months = list(monthly_harvest.keys())
+        harvested_vals = list(monthly_harvest.values())
+        consumption_vals = [consumption_data[m] * number_of_people for m in months]
+        
+        # ✅ Your existing plotting code
+        fig, ax = plt.subplots(figsize=(12, 8))
+        
+        ax.plot(months, harvested_vals, marker='o', color='blue', linewidth=2, markersize=6,
+                label=f"Harvested ({roof_area_sqm}m² {roof_type})")
+        ax.plot(months, consumption_vals, marker='s', color='red', linestyle='--', linewidth=2, markersize=6,
+                label=f"Consumption ({number_of_people} person{'s' if number_of_people > 1 else ''})")
+        
+        # ✅ Enhanced styling
+        ax.set_title(f"Monthly Water Harvest vs Consumption - {district_name.title()}", 
+                     fontsize=16, fontweight='bold', pad=20)
+        ax.set_xlabel("Month", fontsize=12)
+        ax.set_ylabel("Liters", fontsize=12)
+        ax.grid(alpha=0.3, linestyle='--')
+        ax.legend(fontsize=10)
+        
+        # ✅ Your existing labels
+        for x, y in zip(months, harvested_vals):
+            ax.text(x, y + max(harvested_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8)
+        for x, y in zip(months, consumption_vals):
+            ax.text(x, y - max(consumption_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8, color="red")
+        
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        
+        # ✅ Your existing buffer handling
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight', facecolor='white')
+        plt.close(fig)
+        buffer.seek(0)
+        
+        return HttpResponse(buffer.getvalue(), content_type="image/png")
+        
+    except GraphPlot.DoesNotExist:
+        return HttpResponse(f"No rainfall data for {district_name}", status=404)
+    except Exception as e:
+        logger.error(f"Chart generation error: {str(e)}")
+        return HttpResponse(f"Error generating chart: {str(e)}", status=500)
 
 def calculator_view(request):
     """Render calculator page with optional pre-filled district data."""
