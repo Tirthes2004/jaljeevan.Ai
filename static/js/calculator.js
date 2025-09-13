@@ -229,6 +229,13 @@ class RainwaterCalculatorDemo {
                 
                 this.displayResults(result.data);
                 this.loadRainfallChart(result.data.district_name);
+                // ✅ ADD: New harvest vs consumption chart call
+                this.loadHarvestConsumptionChart(
+                result.data.district_name,
+                result.data.roof_area_sqm,
+                result.data.roof_type,
+                result.data.number_of_dwellers
+                );
                 this.updateSaveButtonState();  // ✅ Update save button
                 this.setAPIStatus('online', 'Connected');
             } else {
@@ -501,6 +508,49 @@ class RainwaterCalculatorDemo {
         };
     }
 
+    // ✅ ADD THIS NEW METHOD HERE:
+loadHarvestConsumptionChart(districtName, roofArea, roofType, dwellers) {
+    const chartImg = document.getElementById('harvestConsumptionChart');
+    const chartLoading = document.getElementById('harvestConsumptionChartLoading');
+    const chartError = document.getElementById('harvestConsumptionChartError');
+    
+    // ✅ ADD SAFETY CHECK
+    if (!chartImg || !chartLoading || !chartError) {
+        console.error('❌ Harvest chart elements not found in DOM');
+        return;
+    }
+    
+    // Show loading state
+    chartLoading.style.display = 'block';
+    chartError.style.display = 'none';
+    chartImg.style.display = 'none';
+    
+    // Set chart source URL
+    const chartUrl = `${this.baseURL}${this.apiURL}/chart/line/${encodeURIComponent(districtName)}/?area=${roofArea}&roof_type=${encodeURIComponent(roofType)}&people=${dwellers}`;
+    
+    console.log('🔍 Loading chart URL:', chartUrl); // ✅ DEBUG LOG
+    
+    chartImg.src = chartUrl;
+    
+    // Handle successful load
+    chartImg.onload = () => {
+        console.log('✅ Harvest chart loaded successfully');
+        chartLoading.style.display = 'none';
+        chartError.style.display = 'none';
+        chartImg.style.display = 'block';
+    };
+    
+    // Handle load error
+    chartImg.onerror = () => {
+        console.error('❌ Harvest chart failed to load');
+        chartLoading.style.display = 'none';
+        chartError.style.display = 'block';
+        chartImg.style.display = 'none';
+    };
+}
+
+
+
     getWaterSecurityLevel(efficiency) {
         if (efficiency >= 100) {
             return { text: 'Complete Water Independence', class: 'excellent' };
@@ -691,6 +741,15 @@ class RainwaterCalculatorDemo {
         if (chartImg) chartImg.src = '';
         if (chartLoading) chartLoading.style.display = 'none';
         if (chartError) chartError.style.display = 'none';
+
+        const harvestChartImg = document.getElementById('harvestConsumptionChart');
+    const harvestChartLoading = document.getElementById('harvestConsumptionChartLoading');
+    const harvestChartError = document.getElementById('harvestConsumptionChartError');
+
+    if (harvestChartImg) harvestChartImg.src = '';
+    if (harvestChartLoading) harvestChartLoading.style.display = 'none';
+    if (harvestChartError) harvestChartError.style.display = 'none';
+    
         
         // Focus on district input
         document.getElementById('district')?.focus();
