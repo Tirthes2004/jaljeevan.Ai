@@ -10,5 +10,6 @@ urlpatterns = [
     path('districts/<str:district_name>/', views.get_district_info, name='district_info'),
     path('chart/<str:district_name>/', views.rainfall_chart, name='rainfall_chart'),
     path('save/', views.save_calculation_manual, name='save_calculation'), # ✅ Add this
+    path('chart/line/<str:district_name>/', views.rainfall_line_chart, name='rainfall_line_chart'),
     # Add other API endpoints here
 ]
