@@ -9,6 +9,8 @@ from django.http import HttpResponse
 from .models import RainfallData, CalculationLog, GraphPlot
 import logging
 import io
+import matplotlib
+matplotlib.use('Agg')  # Set backend before importing pyplot
 import matplotlib.pyplot as plt
 import math
 from django.utils import timezone
@@ -24,7 +26,6 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def calculate_rainwater_harvest(request):
@@ -32,7 +33,6 @@ def calculate_rainwater_harvest(request):
     try:
         data = request.data or {}
         
-        # Helper functions
         def to_float(x, default=0.0):
             try:
                 return float(x)
@@ -81,7 +81,6 @@ def calculate_rainwater_harvest(request):
         # Handle district lookup and duplicates
         if annual_rainfall_mm <= 0:
             districts = RainfallData.objects.filter(district_name__iexact=district_name)
-            # Quick one-liner to get max month
         
             if not districts.exists():
                 return Response({
@@ -102,6 +101,7 @@ def calculate_rainwater_harvest(request):
                 annual_rainfall_mm = float(district.annual_rainfall_mm)
                 state = district.state or 'Not specified'
         else:
+            district = None
             state = 'Custom'
         
         # Runoff coefficients mapping
@@ -128,72 +128,59 @@ def calculate_rainwater_harvest(request):
         
         efficiency_percent = (water_harvested_liters / annual_requirement_liters) * 100 if annual_requirement_liters > 0 else 0
         
-        # ===== CORRECTED COST PARAMETERS =====
+        # CORRECTED COST PARAMETERS
         unit_cost_per_m3_structure = 2500.0  # Realistic pit construction cost
-        tank_cost_per_l = 8.0  # ✅ CORRECTED: Market-realistic tank cost
-        installation_fixed_costs = 15000.0  # ✅ Slightly higher for quality
-        cost_per_kl = 100.0  # ✅ CORRECTED: Realistic tanker replacement cost
+        tank_cost_per_l = 8.0  # CORRECTED: Market-realistic tank cost
+        installation_fixed_costs = 15000.0  # Slightly higher for quality
+        cost_per_kl = 100.0  # CORRECTED: Realistic tanker replacement cost
         
-        # ===== PRACTICAL SIZING APPROACH =====
-        # ===== PRACTICAL SIZING APPROACH =====
+        # PRACTICAL SIZING APPROACH - FIXED: Use GraphPlot instead of RainfallData
         if district:
-            months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
-            month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            
-            rainfall_values = [getattr(district, month, 0) for month in months]
-            max_index = rainfall_values.index(max(rainfall_values))
-            
-            peak_month = month_names[max_index]
-            peak_rainfall = rainfall_values[max_index]
+            try:
+                gp = GraphPlot.objects.get(district_name__iexact=district_name)
+                months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+                month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 
-            # ✅ Extract the coefficient value first
-            runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
-            
-            # ✅ ENHANCED: Peak month based tank sizing with filtration efficiency
-            filtration_efficiency = 0.95  # Account for first flush and filtration losses
-            max_monthly_harvest = peak_rainfall * roof_area_sqm * runoff_coefficient * filtration_efficiency
-            
-            # Storage factor based on household size (practical sizing)
-            if number_of_dwellers >= 6:
-                storage_factor = 0.25  # 25% for large families
-            elif number_of_dwellers >= 4:
-                storage_factor = 0.20  # 20% for medium families  
-            elif number_of_dwellers >= 2:
-                storage_factor = 0.15  # 15% for small families
-            else:
-                storage_factor = 0.10  # 10% for single person
-            
-            # Calculate practical tank size
-            practical_tank_liters = max_monthly_harvest * storage_factor
-            
-            # Apply practical limits (2K-50K liter range)
-            practical_tank_liters = max(2000, min(practical_tank_liters, 50000))
+                rainfall_values = [float(getattr(gp, month, 0)) for month in months]
+                max_index = rainfall_values.index(max(rainfall_values))
+                
+                peak_month = month_names[max_index]
+                peak_rainfall = rainfall_values[max_index]
+                    
+                # Extract the coefficient value first
+                runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)  # Get float value
+                filtration_efficiency = 0.95  # Account for first flush and filtration losses
+                max_monthly_harvest = float(peak_rainfall) * roof_area_sqm * runoff_coefficient * filtration_efficiency
+                
+                # Storage factor based on household size (practical sizing)
+                if number_of_dwellers >= 6:
+                    storage_factor = 0.25  # 25% for large families
+                elif number_of_dwellers >= 4:
+                    storage_factor = 0.20  # 20% for medium families  
+                elif number_of_dwellers >= 2:
+                    storage_factor = 0.15  # 15% for small families
+                else:
+                    storage_factor = 0.10  # 10% for single person
+                
+                # Calculate practical tank size
+                practical_tank_liters = max_monthly_harvest * storage_factor
+                
+                # Apply practical limits (2K-50K liter range)
+                practical_tank_liters = max(2000, min(practical_tank_liters, 50000))
+            except GraphPlot.DoesNotExist:
+                # Fallback if no GraphPlot data
+                practical_tank_liters = water_harvested_liters * 0.15
         else:
             # Fallback for custom rainfall input
             practical_tank_liters = water_harvested_liters * 0.15
 
-        # ✅ Rest of your code stays exactly the same - no variable name changes
-        tank_volume_liters = practical_tank_liters
-        tank_volume_m3 = tank_volume_liters / 1000.0
-
-
-
-
-        # # Practical tank sizing based on harvest potential (instead of percentage)
-        # if water_harvested_liters >= 50000:  # Large harvest
-        #     practical_tank_liters = 10000
-        # elif water_harvested_liters >= 30000:  # Medium harvest  
-        #     practical_tank_liters = 7500
-        # else:  # Small harvest
-        #     practical_tank_liters = 5000
-
         tank_volume_liters = practical_tank_liters
         tank_volume_m3 = tank_volume_liters / 1000.0
         
-        # First flush calculation (keep existing)
+        # First flush calculation
         first_flush_liters = roof_area_sqm * 2
         
-        # Practical recharge pit sizing (overflow management, not total excess)
+        # Practical recharge pit sizing
         if roof_area_sqm >= 200:
             practical_pit_volume_m3 = 25  # Large pit
             pit_diameter_m = 4.0
@@ -207,20 +194,20 @@ def calculate_rainwater_harvest(request):
         pit_depth_m = 2.0
         pit_area_m2 = math.pi * (pit_diameter_m / 2) ** 2
         
-        # Available recharge calculation (for display purposes)
+        # Available recharge calculation
         available_recharge_liters = max(0, water_harvested_liters - first_flush_liters - tank_volume_liters)
-        required_pit_volume_liters = practical_pit_volume_m3 * 1000  # Convert back to liters for display
+        required_pit_volume_liters = practical_pit_volume_m3 * 1000
         
-        # ===== CORRECTED COST CALCULATIONS =====
+        # CORRECTED COST CALCULATIONS
         pit_construction_cost = practical_pit_volume_m3 * unit_cost_per_m3_structure
         tank_construction_cost = tank_volume_liters * tank_cost_per_l
         total_install_cost = pit_construction_cost + tank_construction_cost + installation_fixed_costs
         
-        # ===== CORRECTED BENEFITS CALCULATION =====
+        # CORRECTED BENEFITS CALCULATION
         utilization_factor = 0.6  # 60% of harvest is actually used
         annual_usage_liters = min(water_harvested_liters * utilization_factor, annual_requirement_liters)
         
-        # Multi-source benefits (not just direct water replacement)
+        # Multi-source benefits
         municipal_substitution_rate = 0.30  # 30% substitutes municipal water
         municipal_rate_per_kL = 25  # Municipal water rate
         tanker_avoidance_events = 3  # Shortage events avoided per year
@@ -231,26 +218,13 @@ def calculate_rainwater_harvest(request):
         tanker_savings = tanker_avoidance_events * tanker_cost_per_event
         annual_water_savings = municipal_savings + tanker_savings
         
-        # ===== CORRECTED MAINTENANCE & PAYBACK =====
-        annual_maintenance_cost = total_install_cost * 0.01  # ✅ CORRECTED: 1% instead of 2%
+        # CORRECTED MAINTENANCE & PAYBACK
+        annual_maintenance_cost = total_install_cost * 0.01  # 1% instead of 2%
         net_annual_savings = annual_water_savings - annual_maintenance_cost
         
         # Payback calculation
         payback_years = total_install_cost / net_annual_savings if net_annual_savings > 0 else None
-        roi_percentage = (net_annual_savings * 20 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
-        
-        # ===== VALIDATION CHECKS =====
-        warnings = []
-        
-        if total_install_cost > 200000:
-            warnings.append("⚠️ System cost exceeds typical residential budget")
-        
-        if pit_diameter_m > 4.0:
-            num_recommended_pits = math.ceil(practical_pit_volume_m3 / (math.pi * 2**2 * pit_depth_m))
-            warnings.append(f"💡 Consider {num_recommended_pits} smaller pits for easier installation")
-        
-        if payback_years and payback_years > 25:
-            warnings.append("⏳ Long payback period - primary benefits are water security & environmental")
+        roi_percentage = (net_annual_savings * 10 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
         
         # Enhanced recommendations
         enhanced_recommendations = [
@@ -261,11 +235,7 @@ def calculate_rainwater_harvest(request):
             f"🕳️ Pit specifications: {pit_diameter_m:.1f}m diameter, {pit_depth_m}m depth"
         ]
         
-        # Add warnings to recommendations if any exist
-        if warnings:
-            enhanced_recommendations.extend(warnings)
-        
-        # Generate recommendation (keep existing logic)
+        # Generate recommendation
         if efficiency_percent >= 100:
             recommendation = f"🌟 Excellent! Your {roof_area_sqm}m² roof can harvest {water_harvested_liters:,.0f}L annually, fully meeting your {number_of_dwellers}-person household's water needs."
         elif efficiency_percent >= 70:
@@ -277,7 +247,7 @@ def calculate_rainwater_harvest(request):
         else:
             recommendation = f"💡 Limited harvest potential of {water_harvested_liters:,.0f}L annually. Consider increasing roof area or improving runoff efficiency."
         
-        # Prepare response data (keep all existing fields intact)
+        # Prepare response data
         response_data = {
             'district_name': district_name,
             'state': state,
@@ -334,25 +304,6 @@ def calculate_rainwater_harvest(request):
             'error': 'Internal server error. Please try again later.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-def generate_recommendation(efficiency_percent, harvested_liters, dwellers, roof_area, rainfall):
-    """Generate expert recommendation based on calculation results."""
-    harvested_liters_int = int(harvested_liters)
-    
-    if efficiency_percent >= 100:
-        return f"🌟 Excellent! Your {roof_area}m² roof can harvest {harvested_liters_int:,}L annually, fully meeting your {dwellers}-person household's water needs. This system will provide complete water independence and significant cost savings. Consider implementing a comprehensive rainwater harvesting system with proper filtration for potable use."
-    
-    elif efficiency_percent >= 70:
-        return f"💪 Very Good! Your roof can harvest {harvested_liters_int:,}L annually, covering {efficiency_percent:.0f}% of your household water needs. This system would significantly reduce your water bills by ₹15,000-25,000 annually and provide excellent backup during water shortages. Highly recommended investment with 3-5 year payback period."
-    
-    elif efficiency_percent >= 40:
-        return f"👍 Good Potential! Your roof can harvest {harvested_liters_int:,}L annually, covering {efficiency_percent:.0f}% of your water needs. Perfect for non-potable uses like gardening, cleaning, and toilet flushing. Consider combining with water-efficient fixtures and conservation practices for maximum benefit."
-    
-    elif efficiency_percent >= 20:
-        return f"⚡ Moderate Potential. Your roof can harvest {harvested_liters_int:,}L annually, covering {efficiency_percent:.0f}% of your needs. Best utilized for specific purposes like gardening, car washing, and emergency backup. Consider increasing catchment area or supplementing with other water conservation methods."
-    
-    else:
-        return f"💡 Limited harvest potential of {harvested_liters_int:,}L annually due to {'low rainfall' if rainfall < 600 else 'small roof area'}. Consider: 1) Increasing roof area with additional structures, 2) Improving runoff coefficient with better roofing materials, 3) Using harvested water for targeted purposes like gardening, or 4) Implementing other water conservation strategies."
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def list_districts(request):
@@ -363,41 +314,21 @@ def list_districts(request):
         queryset = RainfallData.objects.all()
         
         if search:
-            # Smart filtering - prioritize exact matches, then starts-with, then contains
             queryset = queryset.filter(
                 Q(district_name__icontains=search) | 
                 Q(state__icontains=search)
             ).distinct()
         
-        # Limit results and order by relevance
-        if search:
-            # Prioritize exact matches and starts-with matches
-            exact_matches = queryset.filter(district_name__iexact=search)[:5]
-            starts_with = queryset.filter(district_name__istartswith=search).exclude(
-                id__in=[d.id for d in exact_matches]
-            )[:10]
-            contains = queryset.filter(district_name__icontains=search).exclude(
-                id__in=[d.id for d in list(exact_matches) + list(starts_with)]
-            )[:15]
-            
-            final_queryset = list(exact_matches) + list(starts_with) + list(contains)
-        else:
-            final_queryset = queryset.order_by('district_name')[:20]
-        
-        districts_data = []
-        for district in final_queryset:
-            districts_data.append({
-                'district_name': district.district_name,
-                'state': district.state or 'Not specified',
-                'annual_rainfall_mm': round(float(district.annual_rainfall_mm), 0)
-            })
-        
-        logger.info(f"Districts search '{search}': {len(districts_data)} results")
+        data = [{
+            'district_name': d.district_name,
+            'state': d.state or 'Not specified',
+            'annual_rainfall_mm': round(float(d.annual_rainfall_mm), 0)
+        } for d in queryset[:20]]
         
         return Response({
             'success': True,
-            'count': len(districts_data),
-            'districts': districts_data
+            'count': len(data),
+            'districts': data
         }, status=status.HTTP_200_OK)
         
     except Exception as e:
@@ -465,7 +396,6 @@ def save_calculation_manual(request):
             'error': 'Failed to save calculation. Please try again.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def rainfall_chart(request, district_name):
@@ -474,14 +404,12 @@ def rainfall_chart(request, district_name):
         gp = GraphPlot.objects.get(district_name__iexact=district_name)
         monthly_rainfall = dict(gp.get_monthly_values())
 
-        # ✅ Now matplotlib will use Agg backend (no GUI)
         fig, ax = plt.subplots(figsize=(10, 6))
         months = list(monthly_rainfall.keys())
         values = list(monthly_rainfall.values())
         
         bars = ax.bar(months, values, color='skyblue', edgecolor='navy', linewidth=1.2)
         
-        # Enhance chart appearance
         ax.set_title(f"Monthly Rainfall - {district_name.title()}", 
                      fontsize=16, fontweight='bold', pad=20)
         ax.set_xlabel("Month", fontsize=12)
@@ -497,17 +425,16 @@ def rainfall_chart(request, district_name):
         plt.xticks(rotation=45)
         plt.tight_layout()
 
-        # ✅ Use BytesIO to generate PNG in memory
         buffer = io.BytesIO()
         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight', 
                    facecolor='white', edgecolor='none')
-        plt.close(fig)  # ✅ IMPORTANT: Close figure to free memory
+        plt.close(fig)
         buffer.seek(0)
 
         return HttpResponse(buffer.getvalue(), content_type="image/png")
 
     except GraphPlot.DoesNotExist:
-        # Return placeholder image for districts without chart data
+        # Return placeholder image
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.text(0.5, 0.5, f'Monthly rainfall data\nnot available for\n{district_name}', 
                 ha='center', va='center', fontsize=14, 
@@ -520,7 +447,7 @@ def rainfall_chart(request, district_name):
         plt.tight_layout()
         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight',
                    facecolor='white', edgecolor='none')
-        plt.close(fig)  # ✅ Always close figures
+        plt.close(fig)
         buffer.seek(0)
         
         return HttpResponse(buffer.getvalue(), content_type="image/png")
@@ -528,339 +455,86 @@ def rainfall_chart(request, district_name):
         logger.error(f"Chart generation error: {str(e)}")
         return HttpResponse("Error generating chart", status=500)
 
-# def rainfall_line_chart(request, district_name):
-#     """Generate monthly rainfall line chart for a district."""
-#     try:
-#         gp = GraphPlot.objects.get(district_name__iexact=district_name)
-#         monthly_rainfall = dict(gp.get_monthly_values())
-
-#         # ✅ Create figure and axis
-#         fig, ax = plt.subplots(figsize=(10, 6))
-#         months = list(monthly_rainfall.keys())
-#         values = list(monthly_rainfall.values())
-        
-#         # ✅ Line plot # change color here
-#         ax.plot(months, values, marker='o', color='navy', linewidth=2, markersize=6, label="Rainfall")
-
-#         # Enhance chart appearance
-#         ax.set_title(f"Monthly Rainfall Trend - {district_name.title()}", 
-#                      fontsize=16, fontweight='bold', pad=20)
-#         ax.set_xlabel("Month", fontsize=12)
-#         ax.set_ylabel("Rainfall (mm)", fontsize=12)
-#         ax.grid(alpha=0.3, linestyle='--')
-#         ax.legend()
-
-#         # Add value labels
-#         for x, y in zip(months, values):
-#             ax.text(x, y + max(values)*0.01, f"{y:.0f}mm", 
-#                     ha='center', va='bottom', fontsize=9)
-
-#         plt.xticks(rotation=45)
-#         plt.tight_layout()
-
-#         # ✅ Save figure to memory
-#         buffer = io.BytesIO()
-#         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight',
-#                    facecolor='white', edgecolor='none')
-#         plt.close(fig)  # ✅ Always close figure
-#         buffer.seek(0)
-
-#         return HttpResponse(buffer.getvalue(), content_type="image/png")
-
-#     except GraphPlot.DoesNotExist:
-#         # Return placeholder image
-#         fig, ax = plt.subplots(figsize=(10, 6))
-#         ax.text(0.5, 0.5, f'Monthly rainfall data\nnot available for\n{district_name}', 
-#                 ha='center', va='center', fontsize=14, 
-#                 bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray"))
-#         ax.set_xlim(0, 1)
-#         ax.set_ylim(0, 1)
-#         ax.axis('off')
-
-#         buffer = io.BytesIO()
-#         plt.tight_layout()
-#         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight',
-#                    facecolor='white', edgecolor='none')
-#         plt.close(fig)
-#         buffer.seek(0)
-
-#         return HttpResponse(buffer.getvalue(), content_type="image/png")
-
-#     except Exception as e:
-#         logger.error(f"Line chart generation error: {str(e)}")
-#         return HttpResponse("Error generating line chart", status=500)
-
-
-import io
-import matplotlib
-matplotlib.use("Agg")   # ✅ Needed for Django (no GUI)
-import matplotlib.pyplot as plt
-from django.http import HttpResponse
-import logging
-
-logger = logging.getLogger(__name__)
-
 def rainfall_line_chart(request, district_name):
     """Generate monthly water harvested vs. water consumption comparison chart."""
     try:
+        logger.info(f"Attempting to load chart for district: {district_name}")
         gp = GraphPlot.objects.get(district_name__iexact=district_name)
-        monthly_rainfall = dict(gp.get_monthly_values())  # e.g. {"jan": 20, "feb": 35, ...}
-
-        # ✅ Query parameters
+        logger.info(f"Found GraphPlot data for: {gp.district_name}")
+        
+        monthly_rainfall = dict(gp.get_monthly_values())
+        
+        # Debug: Print the keys to see the format
+        logger.info(f"Monthly rainfall keys: {list(monthly_rainfall.keys())}")
+        
+        # Parameters from request
         roof_area_sqm = float(request.GET.get("area", 100))
         roof_type = (request.GET.get("roof_type", "RCC")).upper()
         number_of_people = int(request.GET.get("people", 1))
-
-        # ✅ Runoff coefficients
+        
+        # Runoff coefficients
         runoff_coefficients = {
             'RCC': 0.85, 'TERRACE': 0.85, 'METAL SHEET': 0.85,
             'TILE ROOF': 0.75, 'TILE': 0.75, 'ASBESTOS': 0.6,
             'ROUGH SURFACE': 0.6, 'GREEN ROOF': 0.4, 'SOIL': 0.4,
         }
         runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
-
-        # ✅ Month mapping (short → full)
-        month_map = {
-            "jan": "January", "feb": "February", "mar": "March",
-            "apr": "April", "may": "May", "jun": "June",
-            "jul": "July", "aug": "August", "sep": "September",
-            "oct": "October", "nov": "November", "dec": "December"
-        }
-
-        # ✅ Convert rainfall dict keys to full month names
+        
+        # Calculate harvested water
         monthly_harvest = {
-            month_map[month.lower()[:3]]: rainfall_mm * roof_area_sqm * runoff_coefficient
+            month: float(rainfall_mm) * roof_area_sqm * runoff_coefficient
             for month, rainfall_mm in monthly_rainfall.items()
         }
-
-        # ✅ Monthly water consumption (per person, liters)
+        
+        # Consumption data - FIXED: Use UPPERCASE to match GraphPlot format
         consumption_data = {
-            "January": 1767, "February": 1596, "March": 1897, "April": 2070,
-            "May": 2139, "June": 2070, "July": 1860, "August": 1860,
-            "September": 1800, "October": 1897, "November": 1836, "December": 1767
+            "JAN": 1767, "FEB": 1596, "MAR": 1897, "APR": 2070,
+            "MAY": 2139, "JUN": 2070, "JUL": 1860, "AUG": 1860,
+            "SEP": 1800, "OCT": 1897, "NOV": 1836, "DEC": 1767
         }
-
-        # ✅ Fixed order of months
-        ordered_months = list(consumption_data.keys())
-        harvested_vals = [monthly_harvest.get(m, 0) for m in ordered_months]
-        consumption_vals = [consumption_data[m] * number_of_people for m in ordered_months]
-
-        # ---- Plotting ----
+        
+        # Scale by number of people
+        months = list(monthly_harvest.keys())
+        harvested_vals = list(monthly_harvest.values())
+        consumption_vals = [consumption_data[m] * number_of_people for m in months]
+        
+        # Plotting
         fig, ax = plt.subplots(figsize=(12, 8))
-
-        ax.plot(
-            ordered_months, harvested_vals,
-            marker='o', color='blue', linewidth=2, markersize=6,
-            label=f"Harvested ({roof_area_sqm}m² {roof_type})"
-        )
-        ax.plot(
-            ordered_months, consumption_vals,
-            marker='s', color='red', linestyle='--', linewidth=2, markersize=6,
-            label=f"Consumption ({number_of_people} person{'s' if number_of_people > 1 else ''})"
-        )
-
-        ax.set_title(
-            f"Monthly Water Harvest vs Consumption - {district_name.title()}",
-            fontsize=16, fontweight='bold', pad=20
-        )
+        
+        ax.plot(months, harvested_vals, marker='o', color='blue', linewidth=2, markersize=6,
+                label=f"Harvested ({roof_area_sqm}m² {roof_type})")
+        ax.plot(months, consumption_vals, marker='s', color='red', linestyle='--', linewidth=2, markersize=6,
+                label=f"Consumption ({number_of_people} person{'s' if number_of_people > 1 else ''})")
+        
+        ax.set_title(f"Monthly Water Harvest vs Consumption - {district_name.title()}", 
+                     fontsize=16, fontweight='bold', pad=20)
         ax.set_xlabel("Month", fontsize=12)
         ax.set_ylabel("Liters", fontsize=12)
         ax.grid(alpha=0.3, linestyle='--')
         ax.legend(fontsize=10)
-
-        # ✅ Add labels above/below points
-        for x, y in zip(ordered_months, harvested_vals):
+        
+        # Add labels
+        for x, y in zip(months, harvested_vals):
             ax.text(x, y + max(harvested_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8)
-        for x, y in zip(ordered_months, consumption_vals):
+        for x, y in zip(months, consumption_vals):
             ax.text(x, y - max(consumption_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8, color="red")
-
+        
         plt.xticks(rotation=45)
         plt.tight_layout()
-
-        # ✅ Save to buffer
+        
         buffer = io.BytesIO()
         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight', facecolor='white')
         plt.close(fig)
         buffer.seek(0)
-
+        
         return HttpResponse(buffer.getvalue(), content_type="image/png")
-
+        
     except GraphPlot.DoesNotExist:
+        logger.error(f"No GraphPlot data found for district: {district_name}")
         return HttpResponse(f"No rainfall data for {district_name}", status=404)
     except Exception as e:
-        logger.error(f"Chart generation error: {str(e)}")
+        logger.error(f"Chart generation error for {district_name}: {str(e)}", exc_info=True)
         return HttpResponse(f"Error generating chart: {str(e)}", status=500)
-
-
-# def rainfall_line_chart(request, district_name):
-#     """Generate monthly water harvested line chart for a district."""
-#     try:
-#         gp = GraphPlot.objects.get(district_name__iexact=district_name)
-#         monthly_rainfall = dict(gp.get_monthly_values())  # mm data
-
-#         # ✅ Extract from query params (provide defaults if not passed)
-#         roof_area_sqm = float(request.GET.get("area", 100))  # default 100 m²
-#         roof_type = (request.GET.get("roof_type", "RCC")).upper()
-
-#         # ✅ Runoff coefficients mapping (same as calculator)
-#         runoff_coefficients = {
-#             'RCC': 0.85, 'TERRACE': 0.85, 'METAL SHEET': 0.85,
-#             'TILE ROOF': 0.75, 'TILE': 0.75, 'ASBESTOS': 0.6,
-#             'ROUGH SURFACE': 0.6, 'GREEN ROOF': 0.4, 'SOIL': 0.4,
-#         }
-#         runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
-
-#         # ✅ Calculate harvested water (Liters)
-#         # Formula: Rainfall(mm) × Roof Area(m²) × Runoff Coefficient
-#         monthly_harvest = {
-#             month: rainfall_mm * roof_area_sqm * runoff_coefficient
-#             for month, rainfall_mm in monthly_rainfall.items()
-#         }
-
-#         # ---- Plotting ----
-#         fig, ax = plt.subplots(figsize=(10, 6))
-#         months = list(monthly_harvest.keys())
-#         values = list(monthly_harvest.values())
-
-#         ax.plot(
-#             months, values,
-#             marker='o', color='blue',
-#             linewidth=2, markersize=6,
-#             label="Water Harvested (L)"
-#         )
-#         ax.set_title(
-#             f"Monthly Water Harvested - {district_name.title()}",
-#             fontsize=16, fontweight='bold', pad=20
-#         )
-#         ax.set_xlabel("Month", fontsize=12)
-#         ax.set_ylabel("Water Harvested (Liters)", fontsize=12)
-#         ax.grid(alpha=0.3, linestyle='--')
-#         ax.legend()
-
-#         # Add value labels
-#         for x, y in zip(months, values):
-#             ax.text(
-#                 x, y + max(values) * 0.01,
-#                 f"{y:.0f} L", ha='center', va='bottom', fontsize=9
-#             )
-
-#         plt.xticks(rotation=45)
-#         plt.tight_layout()
-
-#         # Save figure to memory
-#         buffer = io.BytesIO()
-#         plt.savefig(
-#             buffer, format="png", dpi=150,
-#             bbox_inches='tight', facecolor='white'
-#         )
-#         plt.close(fig)
-#         buffer.seek(0)
-
-#         return HttpResponse(buffer.getvalue(), content_type="image/png")
-
-#     except GraphPlot.DoesNotExist:
-#         # Return placeholder image if no data
-#         fig, ax = plt.subplots(figsize=(10, 6))
-#         ax.text(
-#             0.5, 0.5,
-#             f'Monthly rainfall data\nnot available for\n{district_name}',
-#             ha='center', va='center', fontsize=14,
-#             bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray")
-#         )
-#         ax.set_xlim(0, 1)
-#         ax.set_ylim(0, 1)
-#         ax.axis('off')
-
-#         buffer = io.BytesIO()
-#         plt.tight_layout()
-#         plt.savefig(
-#             buffer, format="png", dpi=150,
-#             bbox_inches='tight', facecolor='white'
-#         )
-#         plt.close(fig)
-#         buffer.seek(0)
-
-#         return HttpResponse(buffer.getvalue(), content_type="image/png")
-
-#     except Exception as e:
-#         logger.error(f"Line chart generation error: {str(e)}")
-#         return HttpResponse("Error generating line chart", status=500)
-
-# def rainfall_line_chart(request, district_name):
-#     """Generate monthly water harvested vs. water consumption comparison chart."""
-#     try:
-#         gp = GraphPlot.objects.get(district_name__iexact=district_name)
-#         monthly_rainfall = dict(gp.get_monthly_values())
-        
-#         # ✅ Parameters from request
-#         roof_area_sqm = float(request.GET.get("area", 100))
-#         roof_type = (request.GET.get("roof_type", "RCC")).upper()
-#         number_of_people = int(request.GET.get("people", 1))
-        
-#         # ✅ Your existing runoff coefficients
-#         runoff_coefficients = {
-#             'RCC': 0.85, 'TERRACE': 0.85, 'METAL SHEET': 0.85,
-#             'TILE ROOF': 0.75, 'TILE': 0.75, 'ASBESTOS': 0.6,
-#             'ROUGH SURFACE': 0.6, 'GREEN ROOF': 0.4, 'SOIL': 0.4,
-#         }
-#         runoff_coefficient = runoff_coefficients.get(roof_type, 0.8)
-        
-#         # ✅ Your existing harvest calculation
-#         monthly_harvest = {
-#             month: rainfall_mm * roof_area_sqm * runoff_coefficient
-#             for month, rainfall_mm in monthly_rainfall.items()
-#         }
-        
-#         # ✅ Your existing consumption data
-#         consumption_data = {
-#             "January": 1767, "February": 1596, "March": 1897, "April": 2070,
-#             "May": 2139, "June": 2070, "July": 1860, "August": 1860,
-#             "September": 1800, "October": 1897, "November": 1836, "December": 1767
-#         }
-        
-#         # ✅ Scale by number of people
-#         months = list(monthly_harvest.keys())
-#         harvested_vals = list(monthly_harvest.values())
-#         consumption_vals = [consumption_data[m] * number_of_people for m in months]
-        
-#         # ✅ Your existing plotting code
-#         fig, ax = plt.subplots(figsize=(12, 8))
-        
-#         ax.plot(months, harvested_vals, marker='o', color='blue', linewidth=2, markersize=6,
-#                 label=f"Harvested ({roof_area_sqm}m² {roof_type})")
-#         ax.plot(months, consumption_vals, marker='s', color='red', linestyle='--', linewidth=2, markersize=6,
-#                 label=f"Consumption ({number_of_people} person{'s' if number_of_people > 1 else ''})")
-        
-#         # ✅ Enhanced styling
-#         ax.set_title(f"Monthly Water Harvest vs Consumption - {district_name.title()}", 
-#                      fontsize=16, fontweight='bold', pad=20)
-#         ax.set_xlabel("Month", fontsize=12)
-#         ax.set_ylabel("Liters", fontsize=12)
-#         ax.grid(alpha=0.3, linestyle='--')
-#         ax.legend(fontsize=10)
-        
-#         # ✅ Your existing labels
-#         for x, y in zip(months, harvested_vals):
-#             ax.text(x, y + max(harvested_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8)
-#         for x, y in zip(months, consumption_vals):
-#             ax.text(x, y - max(consumption_vals) * 0.01, f"{y:,.0f}", ha='center', fontsize=8, color="red")
-        
-#         plt.xticks(rotation=45)
-#         plt.tight_layout()
-        
-#         # ✅ Your existing buffer handling
-#         buffer = io.BytesIO()
-#         plt.savefig(buffer, format="png", dpi=150, bbox_inches='tight', facecolor='white')
-#         plt.close(fig)
-#         buffer.seek(0)
-        
-#         return HttpResponse(buffer.getvalue(), content_type="image/png")
-        
-#     except GraphPlot.DoesNotExist:
-#         return HttpResponse(f"No rainfall data for {district_name}", status=404)
-#     except Exception as e:
-#         logger.error(f"Chart generation error: {str(e)}")
-#         return HttpResponse(f"Error generating chart: {str(e)}", status=500)
 
 def calculator_view(request):
     """Render calculator page with optional pre-filled district data."""
@@ -902,75 +576,6 @@ def calculator_view(request):
         "selected_district": district_name or "",
         "selected_district_data": selected_district_data
     })
-
-
-
-@api_view(['POST'])
-def save_calculation(request):
-    """Save calculation result to database."""
-    if not request.user.is_authenticated:
-        return Response({
-            'success': False,
-            'error': 'Please log in to save calculations'
-        }, status=status.HTTP_401_UNAUTHORIZED)
-    
-    try:
-        data = request.data
-        
-        # Check if this calculation already exists for this user
-        existing = CalculationLog.objects.filter(
-            user=request.user,
-            district_name=data.get('district_name'),
-            roof_area_sqm=data.get('roof_area_sqm'),
-            roof_type=data.get('roof_type'),
-            number_of_dwellers=data.get('number_of_dwellers'),
-            created_at__date=timezone.now().date()  # Same day
-        ).first()
-        
-        if existing:
-            # ✅ Update existing calculation instead of creating duplicate
-            existing.annual_rainfall_mm = data.get('annual_rainfall_mm')
-            existing.water_harvested_liters = data.get('water_harvested_liters')
-            existing.efficiency_percent = data.get('efficiency_percent')
-            existing.updated_at = timezone.now()
-            existing.save()
-            
-            return Response({
-                'success': True,
-                'calculation_id': existing.id,
-                'message': 'Calculation updated successfully',
-                'is_saved': True
-            }, status=status.HTTP_200_OK)
-        else:
-            # ✅ Create new calculation
-            calculation = CalculationLog.objects.create(
-                user=request.user,
-                district_name=data.get('district_name'),
-                state=data.get('state'),
-                roof_area_sqm=data.get('roof_area_sqm'),
-                roof_type=data.get('roof_type'),
-                runoff_coefficient=data.get('runoff_coefficient'),
-                annual_rainfall_mm=data.get('annual_rainfall_mm'),
-                number_of_dwellers=data.get('number_of_dwellers'),
-                water_harvested_liters=data.get('water_harvested_liters'),
-                efficiency_percent=data.get('efficiency_percent'),
-                client_ip=get_client_ip(request)
-            )
-            
-            return Response({
-                'success': True,
-                'calculation_id': calculation.id,
-                'message': 'Calculation saved successfully',
-                'is_saved': True
-            }, status=status.HTTP_201_CREATED)
-        
-    except Exception as e:
-        logger.error(f"Save calculation error: {str(e)}")
-        return Response({
-            'success': False,
-            'error': 'Failed to save calculation. Please try again.'
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 def home_view(request):
     """Render home page."""
