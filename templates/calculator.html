@@ -139,260 +139,263 @@
         </div>
     </div>
 
- <!-- Results Section -->
-<section id="resultsSection" class="results-section hidden">
-    <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
-    
-    <div class="results-grid">
-        <!-- First Row -->
-        <div class="result-card info-card">
-            <div class="card-header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Location Information</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">District:</span>
-                    <span id="resultDistrict" class="value">-</span>
+    <!-- Results Section - Updated Row-wise Layout -->
+    <section id="resultsSection" class="results-section hidden">
+        <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
+        
+        <div class="results-grid">
+            <!-- First Row: Location, Roof, and Usage Analysis -->
+            <div class="result-row">
+                <div class="result-card info-card">
+                    <div class="card-header">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location Information</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">District:</span>
+                            <span id="resultDistrict" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">State:</span>
+                            <span id="resultState" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Annual Rainfall:</span>
+                            <span id="resultRainfall" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Number of Dwellers:</span>
+                            <span id="resultDwellers" class="value">-</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <span class="label">State:</span>
-                    <span id="resultState" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Annual Rainfall:</span>
-                    <span id="resultRainfall" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Number of Dwellers:</span>
-                    <span id="resultDwellers" class="value">-</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="result-card roof-card">
-            <div class="card-header">
-                <i class="fas fa-home"></i>
-                <h3>Roof Specifications</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Roof Area:</span>
-                    <span id="resultRoofArea" class="value">-</span>
+                <div class="result-card roof-card">
+                    <div class="card-header">
+                        <i class="fas fa-home"></i>
+                        <h3>Roof Specifications</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">Roof Area:</span>
+                            <span id="resultRoofArea" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Roof Type:</span>
+                            <span id="resultRoofType" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Runoff Coefficient:</span>
+                            <span id="resultRunoffCoeff" class="value">-</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <span class="label">Roof Type:</span>
-                    <span id="resultRoofType" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Runoff Coefficient:</span>
-                    <span id="resultRunoffCoeff" class="value">-</span>
-                </div>
-            </div>
-        </div>
 
-        <div class="result-card usage-card">
-            <div class="card-header">
-                <i class="fas fa-chart-line"></i>
-                <h3>Water Usage Analysis</h3>
+                <div class="result-card usage-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Water Usage Analysis</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">Daily Requirement:</span>
+                            <span id="resultDailyUsage" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Annual Requirement:</span>
+                            <span id="resultAnnualUsage" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Water Security:</span>
+                            <span id="resultWaterSecurity" class="value security-level">-</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Daily Requirement:</span>
-                    <span id="resultDailyUsage" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Annual Requirement:</span>
-                    <span id="resultAnnualUsage" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Water Security:</span>
-                    <span id="resultWaterSecurity" class="value security-level">-</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Second Row -->
-        <div class="result-card harvest-card highlight">
-            <div class="card-header">
-                <i class="fas fa-tint"></i>
-                <h3>Water Harvesting Potential</h3>
+            <!-- Second Row: Water Harvesting Potential and Monthly Rainfall Pattern -->
+            <div class="result-row">
+                <div class="result-card harvest-card highlight">
+                    <div class="card-header">
+                        <i class="fas fa-tint"></i>
+                        <h3>Water Harvesting Potential</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item main-result">
+                            <span class="label">Annual Water Harvest:</span>
+                            <span id="resultWaterLiters" class="value big">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">In Gallons:</span>
+                            <span id="resultWaterGallons" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">System Efficiency:</span>
+                            <span id="resultEfficiency" class="value efficiency">-</span>
+                        </div>
+                        <div class="water-visual">
+                            <div class="water-tank">
+                                <div id="waterLevel" class="water-fill"></div>
+                                <span class="tank-label">Harvest Efficiency</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card chart-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Monthly Rainfall Pattern</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart-container">
+                            <img id="rainfallChart" 
+                                 src="" 
+                                 alt="Monthly rainfall chart will appear here" 
+                                 style="width: 100%; height: auto; display: none;">
+                            <div id="chartLoading" class="chart-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Loading rainfall chart...</span>
+                            </div>
+                            <div id="chartError" class="chart-error" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Chart not available for this district</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-content">
-                <div class="result-item main-result">
-                    <span class="label">Annual Water Harvest:</span>
-                    <span id="resultWaterLiters" class="value big">-</span>
+
+            <!-- Third Row: Harvest vs Consumption Analysis (full width) -->
+            <div class="result-row">
+                <div class="result-card cost-card highlight">
+                    <div class="card-header">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>💰 Cost Analysis & ROI</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">Installation Cost:</span>
+                            <span id="resultInstallCost" class="value big">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Annual Savings:</span>
+                            <span id="resultAnnualSavings" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Payback Period:</span>
+                            <span id="resultPayback" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">20-Year ROI:</span>
+                            <span id="resultROI" class="value">-</span>
+                        </div>
+                        <div class="cost-breakdown">
+                            <small id="resultCostBreakdown" class="help-text">-</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <span class="label">In Gallons:</span>
-                    <span id="resultWaterGallons" class="value">-</span>
+                <div class="result-card chart-card full-width-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>📊 Harvest vs Consumption Analysis</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart-container">
+                            <img id="harvestConsumptionChart" 
+                                 src="" 
+                                 alt="Harvest vs consumption chart will appear here" 
+                                 style="width: 100%; height: auto; display: none;">
+                            <div id="harvestConsumptionChartLoading" class="chart-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Loading harvest vs consumption chart...</span>
+                            </div>
+                            <div id="harvestConsumptionChartError" class="chart-error" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Chart not available for this district</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <span class="label">System Efficiency:</span>
-                    <span id="resultEfficiency" class="value efficiency">-</span>
+            </div>
+
+            <!-- Fourth Row: Cost Analysis, Technical Specs, Enhanced Analysis, and Calculation Details -->
+            <div class="result-row">
+                
+
+                <div class="result-card tech-card">
+                    <div class="card-header">
+                        <i class="fas fa-cogs"></i>
+                        <h3>🔧 Technical Specifications</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">Tank Volume:</span>
+                            <span id="resultTankVolume" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">First Flush Diversion:</span>
+                            <span id="resultFirstFlush" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Pit Diameter:</span>
+                            <span id="resultPitDiameter" class="value">-</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="water-visual">
-                    <div class="water-tank">
-                        <div id="waterLevel" class="water-fill"></div>
-                        <span class="tank-label">Harvest Efficiency</span>
+
+                <div class="result-card enhanced-rec-card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Enhanced Analysis</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="resultEnhancedRecommendations" class="enhanced-recommendations">-</div>
+                    </div>
+                </div>
+
+                <div id="calculationMeta" class="result-card meta-card" style="display: none;">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Calculation Details</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="result-item">
+                            <span class="label">Calculation ID:</span>
+                            <span id="resultCalculationId" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Saved for User:</span>
+                            <span id="resultUser" class="value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Calculated on:</span>
+                            <span id="resultTimestamp" class="value">-</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="result-card chart-card">
-            <div class="card-header">
-                <i class="fas fa-chart-bar"></i>
-                <h3>Monthly Rainfall Pattern</h3>
-            </div>
-            <div class="card-content">
-                <div class="chart-container">
-                    <img id="rainfallChart" 
-                         src="" 
-                         alt="Monthly rainfall chart will appear here" 
-                         style="width: 100%; height: auto; display: none;">
-                    <div id="chartLoading" class="chart-loading">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <span>Loading rainfall chart...</span>
-                    </div>
-                    <div id="chartError" class="chart-error" style="display: none;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Chart not available for this district</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="newCalculation" class="btn btn-secondary">
+                <i class="fas fa-redo"></i> New Calculation
+            </button>
+            {% if user.is_authenticated %}
+            <button id="saveResults" class="btn btn-success">
+                <i class="fas fa-save"></i> Save Results
+            </button>
+            {% endif %}
+            <button id="downloadResults" class="btn btn-info">
+                <i class="fas fa-download"></i> Download Report
+            </button>
+            <button id="shareResults" class="btn btn-primary">
+                <i class="fas fa-share-alt"></i> Share Results
+            </button>
         </div>
-
-       <!-- ✅ ADD THIS COMPLETE CARD to your HTML -->
-<div class="result-card chart-card">
-    <div class="card-header">
-        <i class="fas fa-chart-line"></i>
-        <h3>📊 Harvest vs Consumption Analysis</h3>
-    </div>
-    <div class="card-content">
-        <div class="chart-container">
-            <img id="harvestConsumptionChart" 
-                 src="" 
-                 alt="Harvest vs consumption chart will appear here" 
-                 style="width: 100%; height: auto; display: none;">
-            <div id="harvestConsumptionChartLoading" class="chart-loading">
-                <i class="fas fa-spinner fa-spin"></i>
-                <span>Loading harvest vs consumption chart...</span>
-            </div>
-            <div id="harvestConsumptionChartError" class="chart-error" style="display: none;">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span>Chart not available for this district</span>
-            </div>
-        </div>
-    </div>
-</div> <!-- ✅ MAKE SURE THIS CLOSING TAG EXISTS -->
-
-        <!-- Third Row -->
-        <div class="result-card cost-card highlight">
-            <div class="card-header">
-                <i class="fas fa-money-bill-wave"></i>
-                <h3>💰 Cost Analysis & ROI</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Installation Cost:</span>
-                    <span id="resultInstallCost" class="value big">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Annual Savings:</span>
-                    <span id="resultAnnualSavings" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Payback Period:</span>
-                    <span id="resultPayback" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">20-Year ROI:</span>
-                    <span id="resultROI" class="value">-</span>
-                </div>
-                <div class="cost-breakdown">
-                    <small id="resultCostBreakdown" class="help-text">-</small>
-                </div>
-            </div>
-        </div>
-
-        <div class="result-card tech-card">
-            <div class="card-header">
-                <i class="fas fa-cogs"></i>
-                <h3>🔧 Technical Specifications</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Tank Volume:</span>
-                    <span id="resultTankVolume" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">First Flush Diversion:</span>
-                    <span id="resultFirstFlush" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Pit Diameter:</span>
-                    <span id="resultPitDiameter" class="value">-</span>
-                </div>
-                {% comment %} <div class="result-item">
-                    <span class="label">Recharge Volume:</span>
-                    <span id="resultRechargeVolume" class="value">-</span>
-                </div> {% endcomment %}
-            </div>
-        </div>
-
-        <!-- Fourth Row - Enhanced Analysis and Calculation Details Side by Side -->
-        <div class="result-card enhanced-rec-card">
-            <div class="card-header">
-                <i class="fas fa-star"></i>
-                <h3>Enhanced Analysis</h3>
-            </div>
-            <div class="card-content">
-                <div id="resultEnhancedRecommendations" class="enhanced-recommendations">-</div>
-            </div>
-        </div>
-
-        <div id="calculationMeta" class="result-card meta-card" style="display: none;">
-            <div class="card-header">
-                <i class="fas fa-info-circle"></i>
-                <h3>Calculation Details</h3>
-            </div>
-            <div class="card-content">
-                <div class="result-item">
-                    <span class="label">Calculation ID:</span>
-                    <span id="resultCalculationId" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Saved for User:</span>
-                    <span id="resultUser" class="value">-</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">Calculated on:</span>
-                    <span id="resultTimestamp" class="value">-</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button id="newCalculation" class="btn btn-secondary">
-            <i class="fas fa-redo"></i> New Calculation
-        </button>
-        {% if user.is_authenticated %}
-        <button id="saveResults" class="btn btn-success">
-            <i class="fas fa-save"></i> Save Results
-        </button>
-        {% endif %}
-        <button id="downloadResults" class="btn btn-info">
-            <i class="fas fa-download"></i> Download Report
-        </button>
-        <button id="shareResults" class="btn btn-primary">
-            <i class="fas fa-share-alt"></i> Share Results
-        </button>
-    </div>
-</section>
-
+    </section>
 
     <!-- API Status -->
     {% comment %} <div class="api-status">
