@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pages.urls')),
+    path('vendor/', include('vendorRegistration.urls')),          # Vendor registration pages
     
     # ✅ Fixed: Use different namespaces
     path('calculator/', include('calculator.urls')),              # Calculator pages
