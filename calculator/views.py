@@ -224,7 +224,7 @@ def calculate_rainwater_harvest(request):
         
         # Payback calculation
         payback_years = total_install_cost / net_annual_savings if net_annual_savings > 0 else None
-        roi_percentage = (net_annual_savings * 20 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
+        roi_percentage = (net_annual_savings * 30 - total_install_cost) / total_install_cost * 100 if total_install_cost > 0 else 0
         
         # Enhanced recommendations
         enhanced_recommendations = [
