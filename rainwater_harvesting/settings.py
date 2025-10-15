@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'pages',
     'chatbot',
+    'vendorRegistration',
 ]
 
 MIDDLEWARE = [
