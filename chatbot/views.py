@@ -12,7 +12,7 @@ from django.conf import settings
 # CHATBOT CONFIGURATION
 # ================================
 
-GEMINI_API_KEY = getattr(settings, 'GEMINI_API_KEY', 'your-api-key-here')
+GEMINI_API_KEY = getattr(settings, 'GEMINI_API_KEY', 'AIzaSyAeV7pKkw41E9GclxTl7g8scmoTvpvFH6M')
 FAISS_INDEX_FILE = os.path.join(settings.BASE_DIR, "faiss_index.bin")
 DOCS_META_FILE = os.path.join(settings.BASE_DIR, "docs.json")
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
@@ -85,7 +85,7 @@ def retrieve_documents(query: str, k: int = 4):
 
 def call_gemini_api(prompt: str) -> str:
     """Call Google Gemini API"""
-    if not GEMINI_API_KEY or GEMINI_API_KEY == 'your-api-key-here':
+    if not GEMINI_API_KEY or GEMINI_API_KEY == 'AIzaSyAeV7pKkw41E9GclxTl7g8scmoTvpvFH6M':
         return "I need a valid Gemini API key to provide intelligent responses. Please configure GEMINI_API_KEY in your environment variables."
     
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_API_KEY}"
