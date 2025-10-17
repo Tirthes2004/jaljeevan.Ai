@@ -1,6 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Vendor
+from django.http import JsonResponse
+from django.db.models import Q
+from .models import Vendor
+
+# vendorRegistration/views.py
+from django.http import JsonResponse
+from django.db.models import Q
+from .models import Vendor
 
 # Create your views here.
 
@@ -115,14 +123,7 @@ def vendor_register(request):
     
     return redirect('vendorRegistration:vendorRegistration')
 
-from django.http import JsonResponse
-from django.db.models import Q
-from .models import Vendor
 
-# vendorRegistration/views.py
-from django.http import JsonResponse
-from django.db.models import Q
-from .models import Vendor
 
 # ... your existing views ...
 
