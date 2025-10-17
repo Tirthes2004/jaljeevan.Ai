@@ -6,4 +6,5 @@ app_name = 'vendorRegistration'
 
 urlpatterns = [
     path('', views.vendorRegistration, name='vendorRegistration'),
+    path('submit/', views.vendor_register, name='vendor_register'),
 ]
