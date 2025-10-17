@@ -116,18 +116,3 @@ def vendor_register(request):
     
     return redirect('vendorRegistration:vendorRegistration')
 
-def searchFromDataBase():
-    objects = Vendor.objects.all()
-    data = {}
-    for obj in objects:
-       data[obj.district] = {
-              'shop_name': obj.shop_name,
-              'owner_name': obj.owner_name,
-              'phone_number': obj.phone_number,
-              'whatsapp_number': obj.whatsapp_number,
-              'service_type': obj.service_type,
-              'pincode': obj.pincode,
-              'PAN_Number': obj.PAN_Number,
-              'GSTIN_Number': obj.GSTIN_Number
-        }
-    return JsonResponse(data)
