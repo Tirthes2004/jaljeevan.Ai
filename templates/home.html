@@ -57,18 +57,6 @@
                 </a>
             </li>
             <li role="none">
-                {% if user.is_authenticated %}
-                <a href="{% url 'pages:vendor' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
-                   Vendor
-                </a>
-                {% else %}
-                <a type="button" onclick="openModal('login-modal'); closeSidebar();">
-                Vendors
-                </a>
-                {% endif %}
-            </li>
-            <li role="none">
                 <a href="{% url 'pages:about' %}" role="menuitem" 
                    class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
                    About
