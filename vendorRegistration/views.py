@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Vendor
-from django.http import JsonResponse
 
 # Create your views here.
 
@@ -83,7 +82,7 @@ def vendor_register(request):
             
             # If any duplicate found, prevent registration
             if duplicate_checks:
-                error_msg = f'⚠️ This vendor is already registered with the same {" and ".join(duplicate_checks)}. '
+                error_msg = f'⚠ This vendor is already registered with the same {" and ".join(duplicate_checks)}. '
                 error_msg += 'If you need to update your details, please contact support.'
                 messages.error(request, error_msg)
                 return redirect('vendorRegistration:vendorRegistration')
@@ -116,3 +115,58 @@ def vendor_register(request):
     
     return redirect('vendorRegistration:vendorRegistration')
 
+# vendorRegistration/views.py (add this function)
+from django.http import JsonResponse
+from django.db.models import Q
+from .models import Vendor
+
+# vendorRegistration/views.py
+from django.http import JsonResponse
+from django.db.models import Q
+from .models import Vendor
+
+# ... your existing views ...
+
+def search_vendors(request):
+    """
+    API endpoint to search vendors by district or pincode
+    Returns JSON response with vendor data
+    """
+    query = request.GET.get('query', '').strip()
+    
+    if not query:
+        return JsonResponse({
+            'success': False, 
+            'error': 'No search query provided',
+            'vendors': []
+        })
+    
+    try:
+        # Search by district OR pincode (case-insensitive)
+        vendors = Vendor.objects.filter(
+            Q(district_icontains=query) | Q(pincode_icontains=query)
+        ).values(
+            'id', 
+            'shop_name', 
+            'owner_name', 
+            'phone_number', 
+            'whatsapp_number', 
+            'service_type', 
+            'district', 
+            'pincode'
+        )
+        
+        vendors_list = list(vendors)
+        
+        return JsonResponse({
+            'success': True,
+            'vendors': vendors_list,
+            'count': len(vendors_list)
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e),
+            'vendors': []
+        })
