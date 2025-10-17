@@ -82,7 +82,7 @@ def vendor_register(request):
             
             # If any duplicate found, prevent registration
             if duplicate_checks:
-                error_msg = f'⚠️ This vendor is already registered with the same {" and ".join(duplicate_checks)}. '
+                error_msg = f'⚠ This vendor is already registered with the same {" and ".join(duplicate_checks)}. '
                 error_msg += 'If you need to update your details, please contact support.'
                 messages.error(request, error_msg)
                 return redirect('vendorRegistration:vendorRegistration')
