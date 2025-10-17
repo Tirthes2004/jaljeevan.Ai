@@ -12,7 +12,7 @@ urlpatterns = [
     path('leaderboard/', views.leaderboard_view, name='leaderboard'),
     path('contact/', views.contact_view, name='contact'),
     path('calculator/', include('calculator.urls')),
-    path('vendor/', views.vendor_view, name='vendor'),
+    # path('features/', views.about_view, name='features'),  # Same as about
     # path('technology/', views.technology_view, name='technology'),
     # path('leaderboard/', views.leaderboard_view, name='leaderboard'),
 ]

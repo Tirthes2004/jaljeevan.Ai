@@ -19,9 +19,9 @@ def leaderboard_view(request):
     """Contact page"""
     return render(request, 'leaderboard.html')
 
-def vendor_view(request):
-    """Vendor page"""
-    return render(request, 'vendor.html')
+# def technology_view(request):
+#     """Technology page"""
+#     return render(request, 'pages/technology.html')
 
 # def leaderboard_view(request):
 #     """LeaderBoard page"""
