@@ -1,0 +1,425 @@
+{% extends "home.html" %}
+{% load static %}
+
+{% block title %}Vendor Search — Find Rainwater Harvesting Vendors{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+<style>
+    /* Search Bar Styles */
+    .search-section {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+    
+    .search-container {
+        position: relative;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .search-input {
+        flex: 1;
+        padding: 15px 20px;
+        font-size: 16px;
+        border: 2px solid #00d4ff;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s;
+    }
+    
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .search-input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+    }
+    
+    .search-btn {
+        padding: 15px 30px;
+        background: linear-gradient(135deg, #00d4ff, #0099cc);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+    }
+    
+    .search-filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+    
+    .filter-btn {
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid #00d4ff;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+        background: #00d4ff;
+        transform: translateY(-2px);
+    }
+    
+    .results-count {
+        text-align: center;
+        color: #00d4ff;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .loading {
+        text-align: center;
+        color: white;
+        padding: 40px;
+        font-size: 18px;
+    }
+    
+    .no-results {
+        text-align: center;
+        color: white;
+        padding: 40px;
+    }
+    
+    .no-results i {
+        font-size: 60px;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+    
+    /* Update card styles for vendor data */
+    .vendor-contact {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 8px 0;
+        font-size: 14px;
+    }
+    
+    .contact-item i {
+        color: #00d4ff;
+    }
+
+    /* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Team Card - Flip Animation */
+.team-card {
+    perspective: 1000px;
+    height: 400px;
+}
+
+.team-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1.2s ease;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+/* Hover/Click to flip */
+.team-card:hover .team-card-inner,
+.team-card.flipped .team-card-inner {
+    transform: rotateY(180deg);
+}
+
+.team-card-front,
+.team-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.team-card-front {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.team-card-back {
+    background: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.member-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid #00d4ff;
+    margin-bottom: 20px;
+}
+
+.member-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.member-role {
+    font-size: 14px;
+    color: #00d4ff;
+    margin-bottom: 15px;
+}
+
+/* Vendor Contact Info */
+.vendor-contact {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    text-align: left;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+.contact-item i {
+    color: #00d4ff;
+    font-size: 18px;
+    min-width: 20px;
+}
+
+.contact-item a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-item a:hover {
+    color: #00d4ff;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Contact Content -->
+<div class="contact-container">
+    <div class="page-header">
+        <h1>Search your district</h1>
+        <p>Get details of nearby vendors</p>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="Enter district or pincode (e.g., Mumbai, 400001)"
+                onkeypress="if(event.key === 'Enter') searchVendors()">
+            <button class="search-btn" onclick="searchVendors()">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+        
+        <!-- Service Filters -->
+        <div class="search-filters" id="serviceFilters">
+            <button class="filter-btn active" data-service="all">All Services</button>
+            <button class="filter-btn" data-service="Tank Supply & Installation">Tanks</button>
+            <button class="filter-btn" data-service="Plumbing & Installation">Plumbing</button>
+            <button class="filter-btn" data-service="Recharge Pit Construction">Recharge Pit</button>
+            <button class="filter-btn" data-service="Maintenance & Cleaning">Maintenance</button>
+        </div>
+        
+        <div class="results-count" id="resultsCount"></div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading" id="loadingState" style="display: none;">
+        <i class="fas fa-spinner fa-spin"></i> Searching vendors...
+    </div>
+
+    <!-- No Results State -->
+    <div class="no-results" id="noResults" style="display: none;">
+        <i class="fas fa-search"></i>
+        <h3>No vendors found</h3>
+        <p>Try searching with a different district or pincode</p>
+    </div>
+
+    <!-- Vendor Cards Grid -->
+    <div class="team-grid" id="vendorGrid">
+        <!-- Vendor cards will be dynamically loaded here -->
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+let allVendors = [];
+let currentService = 'all';
+
+// Filter button click handlers
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentService = this.getAttribute('data-service');
+        filterVendors();
+    });
+});
+
+// Search vendors function
+async function searchVendors() {
+    const searchInput = document.getElementById('searchInput').value.trim();
+    
+    if (!searchInput) {
+        alert('Please enter a district or pincode to search');
+        return;
+    }
+    
+    // Show loading state
+    document.getElementById('loadingState').style.display = 'block';
+    document.getElementById('noResults').style.display = 'none';
+    document.getElementById('vendorGrid').innerHTML = '';
+    document.getElementById('resultsCount').textContent = '';
+    
+    try {
+        // Make API call to backend
+        const response = await fetch(`/vendor/search/?query=${encodeURIComponent(searchInput)}`);
+        const data = await response.json();
+        
+        document.getElementById('loadingState').style.display = 'none';
+        
+        if (data.success && data.vendors.length > 0) {
+            allVendors = data.vendors;
+            filterVendors();
+        } else {
+            document.getElementById('noResults').style.display = 'block';
+            allVendors = [];
+        }
+    } catch (error) {
+        console.error('Search error:', error);
+        document.getElementById('loadingState').style.display = 'none';
+        alert('Error searching vendors. Please try again.');
+    }
+}
+
+// Filter vendors by service
+function filterVendors() {
+    let filteredVendors = allVendors;
+    
+    if (currentService !== 'all') {
+        filteredVendors = allVendors.filter(vendor => 
+            vendor.service_type && vendor.service_type.includes(currentService)
+        );
+    }
+    
+    displayVendors(filteredVendors);
+}
+
+// Display vendors in cards
+function displayVendors(vendors) {
+    const grid = document.getElementById('vendorGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    
+    if (vendors.length === 0) {
+        document.getElementById('noResults').style.display = 'block';
+        resultsCount.textContent = '';
+        grid.innerHTML = '';
+        return;
+    }
+    
+    document.getElementById('noResults').style.display = 'none';
+    resultsCount.textContent = `Found ${vendors.length} vendor${vendors.length > 1 ? 's' : ''}`;
+    
+    grid.innerHTML = vendors.map(vendor => `
+        <div class="team-card">
+            <div class="team-card-inner">
+                <div class="team-card-front">
+                    <img src="/static/assets/default-avatar.png" alt="Vendor" class="member-image">
+                    <h3 class="member-name">${vendor.shop_name}</h3>
+                    <p class="member-role">${vendor.district}, ${vendor.pincode}</p>
+                    <p>Click to learn more</p>
+                </div>
+                <div class="team-card-back">
+                    <h3 class="member-name">${vendor.shop_name}</h3>
+                    <p class="member-role"><strong>Owner:</strong> ${vendor.owner_name}</p>
+                    
+                    <div class="vendor-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:${vendor.phone_number}" style="color: white;">${vendor.phone_number}</a>
+                        </div>
+                        ${vendor.whatsapp_number ? `
+                        <div class="contact-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <a href="https://wa.me/91${vendor.whatsapp_number}" target="_blank" style="color: white;">${vendor.whatsapp_number}</a>
+                        </div>
+                        ` : ''}
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${vendor.district} - ${vendor.pincode}</span>
+                        </div>
+                        <div class="contact-item" style="margin-top: 10px;">
+                            <i class="fas fa-tools"></i>
+                            <span style="font-size: 12px;">${vendor.service_type}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Add click event to flip cards
+document.addEventListener('click', function(e) {
+    const card = e.target.closest('.team-card');
+    if (card) {
+        card.classList.toggle('flipped');
+    }
+});
+
+</script>
+<script src="/static/js/contact.js"></script>
+{% endblock %}
