@@ -898,27 +898,426 @@ class RainwaterCalculatorDemo {
         }
     }
 
-    downloadResults() {
-        if (!this.currentCalculationData) {
-            this.showNotification('No data to download. Please perform a calculation first.', 'warning');
+downloadResults() {
+    if (!this.currentCalculationData) {
+        this.showNotification('No data to download. Please perform a calculation first.', 'warning');
+        return;
+    }
+
+    try {
+        if (typeof window.jspdf === 'undefined') {
+            this.showNotification('PDF library not loaded. Please refresh the page.', 'warning');
             return;
         }
 
-        // Create downloadable content
-        const content = this.generateReportContent();
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = window.URL.createObjectURL(blob);
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
         
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Rainwater_Harvest_Report_${this.currentCalculationData.district_name}_${new Date().toISOString().split('T')[0]}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        const data = this.currentCalculationData;
         
-        this.showNotification('📄 Report downloaded successfully!', 'success');
+        // ✅ EXTRACT CORRECT VALUES FROM ENHANCED RECOMMENDATIONS
+        const costData = this.extractCostFromEnhanced(data);
+        
+        console.log('📊 Using cost data:', costData);
+        
+        const currentDate = new Date().toLocaleDateString('en-IN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        doc.setProperties({
+            title: 'Rainwater Harvesting Report',
+            subject: 'Calculation Results',
+            author: 'JalJeevan.AI',
+            keywords: 'rainwater, harvesting, calculator',
+            creator: 'JalJeevan.AI'
+        });
+
+        // ============ HEADER - CENTERED WITHOUT LOGO ============
+        doc.setFillColor(30, 60, 114);
+        doc.rect(0, 0, 210, 40, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(32);
+        doc.setFont('helvetica', 'bold');
+        doc.text('JALJEEVAN.AI', 105, 20, { align: 'center' });
+
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Smart Rainwater Harvesting Calculator', 105, 32, { align: 'center' });
+
+
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'italic');
+        doc.text(`Report Generated: ${currentDate}`, 14, 50);
+
+        let yPos = 60;
+
+        // ============ LOCATION ============
+        this.addSectionHeader(doc, 'LOCATION INFORMATION', yPos);
+        yPos += 8;
+
+        doc.autoTable({
+            startY: yPos,
+            body: [
+                ['District:', data.district_name || 'Not specified'],
+                ['State:', data.state || 'Not specified'],
+                ['Annual Rainfall:', `${this.formatNumber(data.annual_rainfall_mm)} mm/year`],
+                ['Number of Dwellers:', `${data.number_of_dwellers} persons`]
+            ],
+            theme: 'plain',
+            styles: { fontSize: 10, cellPadding: 4 },
+            columnStyles: {
+                0: { fontStyle: 'bold', cellWidth: 70 },
+                1: { cellWidth: 110 }
+            },
+            margin: { left: 18 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 12;
+
+        // ============ ROOF ============
+        this.addSectionHeader(doc, 'ROOF SPECIFICATIONS', yPos);
+        yPos += 8;
+
+        doc.autoTable({
+            startY: yPos,
+            body: [
+                ['Roof Area:', `${this.formatNumber(data.roof_area_sqm)} m²`],
+                ['Roof Type:', data.roof_type || 'Not specified'],
+                ['Runoff Coefficient:', data.runoff_coefficient || 'Not specified']
+            ],
+            theme: 'plain',
+            styles: { fontSize: 10, cellPadding: 4 },
+            columnStyles: {
+                0: { fontStyle: 'bold', cellWidth: 70 },
+                1: { cellWidth: 110 }
+            },
+            margin: { left: 18 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 12;
+
+        // ============ WATER HARVESTING ============
+        doc.setFillColor(46, 125, 50);
+        doc.rect(14, yPos - 6, 182, 10, 'F');
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255);
+        doc.text('WATER HARVESTING RESULTS', 105, yPos, { align: 'center' });
+        yPos += 8;
+
+        doc.autoTable({
+            startY: yPos,
+            body: [
+                ['Annual Water Harvest:', `${this.formatNumber(data.water_harvested_liters)} L/year`],
+                ['In Gallons:', `${this.formatNumber(data.water_harvested_gallons)} gal/year`],
+                ['System Efficiency:', `${(data.efficiency_percent || 0).toFixed(1)}%`]
+            ],
+            theme: 'striped',
+            styles: { fontSize: 11, cellPadding: 5, fillColor: [232, 245, 233] },
+            columnStyles: {
+                0: { fontStyle: 'bold', cellWidth: 70, fillColor: [200, 230, 201] },
+                1: { fontStyle: 'bold', cellWidth: 110, fontSize: 13 }
+            },
+            margin: { left: 18 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 12;
+
+        // Page break check
+        if (yPos > 200) {
+            doc.addPage();
+            yPos = 20;
+        }
+
+        // ============ COST ANALYSIS (USE EXTRACTED DATA) ============
+        if (costData.installCost) {
+            doc.setFillColor(255, 152, 0);
+            doc.rect(14, yPos - 6, 182, 10, 'F');
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(255, 255, 255);
+            doc.text('COST ANALYSIS & ROI', 105, yPos, { align: 'center' });
+            yPos += 8;
+
+            doc.autoTable({
+                startY: yPos,
+                body: [
+                    ['Total Installation Cost:', `Rs ${this.formatNumber(costData.installCost)}`],
+                    ['Annual Water Savings:', `Rs ${this.formatNumber(costData.annualSavings)}`],
+                    ['Payback Period:', `${costData.paybackYears} years`],
+                    ['30-Year ROI:', `${costData.roi}%`]
+                ],
+                theme: 'striped',
+                styles: { fontSize: 10, cellPadding: 5, fillColor: [255, 248, 225] },
+                columnStyles: {
+                    0: { fontStyle: 'bold', cellWidth: 70, fillColor: [255, 243, 224] },
+                    1: { fontStyle: 'bold', cellWidth: 110 }
+                },
+                margin: { left: 18 }
+            });
+
+            yPos = doc.lastAutoTable.finalY + 5;
+
+            // Cost breakdown
+            if (data.costs) {
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'italic');
+                doc.setTextColor(100, 100, 100);
+                doc.text(
+                    `Breakdown: Tank Rs ${this.formatNumber(data.costs.tank_construction_cost || 0)}, ` +
+                    `Pit Rs ${this.formatNumber(data.costs.pit_construction_cost || 0)}, ` +
+                    `Installation Rs ${this.formatNumber(data.costs.installation_fixed_costs || 0)}`,
+                    20, yPos
+                );
+                yPos += 12;
+            }
+        }
+
+        // Page break check
+        if (yPos > 210) {
+            doc.addPage();
+            yPos = 20;
+        }
+
+        // ============ WATER USAGE ============
+        this.addSectionHeader(doc, 'WATER USAGE ANALYSIS', yPos);
+        yPos += 8;
+
+        doc.autoTable({
+            startY: yPos,
+            body: [
+                ['Daily Requirement:', `${this.formatNumber(data.daily_requirement_liters)} L/day`],
+                ['Annual Requirement:', `${this.formatNumber(data.annual_requirement_liters)} L/year`],
+                ['Available Recharge:', `${this.formatNumber(data.available_recharge_liters)} L/year`],
+                ['Water Security Level:', this.getWaterSecurityLevel(data.efficiency_percent || 0).text]
+            ],
+            theme: 'plain',
+            styles: { fontSize: 10, cellPadding: 4 },
+            columnStyles: {
+                0: { fontStyle: 'bold', cellWidth: 70 },
+                1: { cellWidth: 110 }
+            },
+            margin: { left: 18 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 12;
+
+        // Page break check
+        if (yPos > 210) {
+            doc.addPage();
+            yPos = 20;
+        }
+
+        // ============ TECHNICAL SPECS ============
+        if (data.tank_volume_liters) {
+            this.addSectionHeader(doc, 'TECHNICAL SPECIFICATIONS', yPos);
+            yPos += 8;
+
+            const techData = [
+                ['Recommended Tank Volume:', `${this.formatNumber(data.tank_volume_liters)} L (${data.tank_volume_m3} m³)`],
+                ['First Flush Diversion:', `${data.first_flush_liters} L`],
+                ['Pit Specifications:', `${data.pit_diameter_m}m diameter, ${data.pit_depth_m}m depth`],
+                ['Required Pit Volume:', `${this.formatNumber(data.required_pit_volume_liters)} L`]
+            ];
+
+            doc.autoTable({
+                startY: yPos,
+                body: techData,
+                theme: 'plain',
+                styles: { fontSize: 10, cellPadding: 4 },
+                columnStyles: {
+                    0: { fontStyle: 'bold', cellWidth: 70 },
+                    1: { cellWidth: 110 }
+                },
+                margin: { left: 18 }
+            });
+
+            yPos = doc.lastAutoTable.finalY + 12;
+        }
+
+        // Page break check
+        if (yPos > 230) {
+            doc.addPage();
+            yPos = 20;
+        }
+
+        // ============ RECOMMENDATION ============
+        this.addSectionHeader(doc, 'EXPERT RECOMMENDATION', yPos);
+        yPos += 8;
+
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+        
+        let recommendation = data.recommendation || 'No recommendation available';
+        recommendation = recommendation.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').replace(/[^\x00-\x7F]/g, ' ').trim();
+        
+        const splitRecommendation = doc.splitTextToSize(recommendation, 168);
+        
+        const recHeight = splitRecommendation.length * 6 + 8;
+        doc.setFillColor(255, 248, 225);
+        doc.setDrawColor(255, 193, 7);
+        doc.setLineWidth(0.5);
+        doc.rect(18, yPos - 3, 174, recHeight, 'FD');
+        doc.text(splitRecommendation, 22, yPos + 2);
+        yPos += recHeight + 10;
+
+        // ============ CALCULATION DETAILS ============
+        if (data.user || data.calculation_id) {
+            if (yPos > 260) {
+                doc.addPage();
+                yPos = 20;
+            }
+
+            this.addSectionHeader(doc, 'CALCULATION DETAILS', yPos);
+            yPos += 10;
+
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(80, 80, 80);
+            
+            if (data.calculation_id) {
+                doc.text(`Calculation ID: ${data.calculation_id}`, 20, yPos);
+                yPos += 5;
+            }
+            if (data.user) {
+                doc.text(`Saved for User: ${data.user}`, 20, yPos);
+                yPos += 5;
+            }
+            doc.text(`Generated: ${currentDate}`, 20, yPos);
+        }
+
+        // ============ FOOTER ============
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            
+            doc.setDrawColor(200, 200, 200);
+            doc.line(14, 282, 196, 282);
+            
+            doc.setFontSize(8);
+            doc.setTextColor(120, 120, 120);
+            doc.setFont('helvetica', 'italic');
+            doc.text(
+                'JalJeevan.AI - Empowering Sustainable Water Management',
+                105,
+                287,
+                { align: 'center' }
+            );
+            doc.text(
+                `Page ${i} of ${pageCount}`,
+                105,
+                292,
+                { align: 'center' }
+            );
+        }
+
+        const filename = `Rainwater_Report_${data.district_name}_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(filename);
+        
+        this.showNotification('PDF report downloaded successfully!', 'success');
+
+    } catch (error) {
+        console.error('PDF generation error:', error);
+        this.showNotification('Failed to generate PDF: ' + error.message, 'warning');
     }
+}
+
+// ✅ NEW HELPER: Extract correct cost data from enhanced_recommendations string
+// ✅ FIXED: Extract correct cost data with proper type checking
+extractCostFromEnhanced(data) {
+    // Convert enhanced_recommendations to string if it's not
+    let enhanced = '';
+    if (data.enhanced_recommendations) {
+        if (typeof data.enhanced_recommendations === 'string') {
+            enhanced = data.enhanced_recommendations;
+        } else if (typeof data.enhanced_recommendations === 'object') {
+            enhanced = JSON.stringify(data.enhanced_recommendations);
+        } else {
+            enhanced = String(data.enhanced_recommendations);
+        }
+    }
+    
+    console.log('🔍 Enhanced type:', typeof data.enhanced_recommendations);
+    console.log('🔍 Enhanced value:', enhanced);
+    
+    // Extract using regex
+    const costMatch = enhanced.match(/Total system cost:\s*[₹Rs.]*\s*([\d,]+)/i);
+    const savingsMatch = enhanced.match(/Annual water savings:\s*[₹Rs.]*\s*([\d,]+)/i);
+    const paybackMatch = enhanced.match(/Payback period:\s*([\d.]+)\s*years/i);
+    
+    const installCost = costMatch 
+        ? parseInt(costMatch[1].replace(/,/g, '')) 
+        : (data.costs?.total_install_cost || 0);
+    
+    const annualSavings = savingsMatch 
+        ? parseInt(savingsMatch[1].replace(/,/g, '')) 
+        : (data.costs?.annual_water_savings || 0);
+    
+    const paybackYears = paybackMatch 
+        ? paybackMatch[1] 
+        : (installCost && annualSavings ? (installCost / annualSavings).toFixed(1) : 'N/A');
+    
+    // Calculate ROI
+    const roi = annualSavings > 0 && installCost > 0
+        ? (((annualSavings * 30) - installCost) / installCost * 100).toFixed(1)
+        : '0.0';
+    
+    console.log('💰 Extracted cost data:', { installCost, annualSavings, paybackYears, roi });
+    
+    return {
+        installCost,
+        annualSavings,
+        paybackYears,
+        roi
+    };
+}
+
+
+// Helper method for section headers
+addSectionHeader(doc, title, yPos) {
+    doc.setFillColor(240, 248, 255);
+    doc.rect(14, yPos - 6, 182, 9, 'F');
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 60, 114);
+    doc.text(title, 18, yPos);
+}
+
+// Helper method for section headers
+addSectionHeader(doc, title, yPos) {
+    doc.setFillColor(240, 248, 255);
+    doc.rect(14, yPos - 6, 182, 9, 'F');
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(30, 60, 114);
+    doc.text(title, 18, yPos);
+}
+
+
+// ============ FALLBACK TEXT DOWNLOAD (Keep your old method as backup) ============
+downloadTextReport() {
+    const content = this.generateReportContent();
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Rainwater_Harvest_Report_${this.currentCalculationData.district_name}_${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    this.showNotification('📄 Text report downloaded successfully!', 'success');
+}
+
 
     generateReportContent() {
         const data = this.currentCalculationData;
