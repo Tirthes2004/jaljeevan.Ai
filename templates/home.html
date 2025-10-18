@@ -58,7 +58,7 @@
             </li>
             <li role="none">
                 {% if user.is_authenticated %}
-                <a href="{% url 'pages:vendor' %}" role="menuitem" 
+                <a href="{% url 'pages:vendor_section' %}" role="menuitem" 
                    class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
                    Vendor
                 </a>
@@ -89,17 +89,32 @@
         </ul>
 
         <div class="nav-right">
-            <div class="language-selector">
-                <button class="language-btn" aria-haspopup="true" aria-expanded="false">
-                    English <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="language-dropdown" role="menu">
-                    <a href="#" role="menuitem">हिन्दी</a>
-                    <a href="#" role="menuitem">বাংলা</a>
-                    <a href="#" role="menuitem">தமிழ்</a>
-                    <a href="#" role="menuitem">मराठी</a>
+            <div class="nav-right">
+                <div class="language-selector">
+                    <button class="language-btn" id="languageBtn" aria-haspopup="true" aria-expanded="false">
+                        <span id="currentLanguage">English</span> 
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    <div class="language-dropdown" id="languageDropdown" role="menu">
+                        <a href="#" class="language-option" data-lang="en" data-name="English" role="menuitem">
+                            🇬🇧 English
+                        </a>
+                        <a href="#" class="language-option" data-lang="hi" data-name="हिन्दी" role="menuitem">
+                            🇮🇳 हिन्दी (Hindi)
+                        </a>
+                        <a href="#" class="language-option" data-lang="bn" data-name="বাংলা" role="menuitem">
+                            🇧🇩 বাংলা (Bengali)
+                        </a>
+                        <a href="#" class="language-option" data-lang="ta" data-name="தமிழ்" role="menuitem">
+                            🇮🇳 தமிழ் (Tamil)
+                        </a>
+                        <a href="#" class="language-option" data-lang="mr" data-name="मराठी" role="menuitem">
+                            🇮🇳 मराठी (Marathi)
+                        </a>
+                    </div>
                 </div>
             </div>
+
             
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
@@ -1033,7 +1048,6 @@ document.addEventListener('keydown', function(event) {
 });
 </script>
 
-
-
+<script src="{% static 'js/translator.js' %}"></script>
 </body>
 </html>
