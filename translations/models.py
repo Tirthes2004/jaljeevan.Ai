@@ -7,6 +7,7 @@ class TranslationCache(models.Model):
     target_language = models.CharField(max_length=10)
     translated_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         unique_together = ('original_text', 'target_language')

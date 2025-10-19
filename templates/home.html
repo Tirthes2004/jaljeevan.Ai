@@ -97,19 +97,19 @@
                     </button>
                     <div class="language-dropdown" id="languageDropdown" role="menu">
                         <a href="#" class="language-option" data-lang="en" data-name="English" role="menuitem">
-                            🇬🇧 English
+                            English
                         </a>
                         <a href="#" class="language-option" data-lang="hi" data-name="हिन्दी" role="menuitem">
-                            🇮🇳 हिन्दी (Hindi)
+                            हिन्दी (Hindi)
                         </a>
                         <a href="#" class="language-option" data-lang="bn" data-name="বাংলা" role="menuitem">
-                            🇧🇩 বাংলা (Bengali)
+                            বাংলা (Bengali)
                         </a>
                         <a href="#" class="language-option" data-lang="ta" data-name="தமிழ்" role="menuitem">
-                            🇮🇳 தமிழ் (Tamil)
+                            தமிழ் (Tamil)
                         </a>
                         <a href="#" class="language-option" data-lang="mr" data-name="मराठी" role="menuitem">
-                            🇮🇳 मराठी (Marathi)
+                            मराठी (Marathi)
                         </a>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                         Assess Your <span class="highlight">Rainwater Harvesting</span> Potential
                     </h1>
                     <h2 class="hero-subheading">
-                        AI-Powered Analysis for Sustainable Water Management
+                        AI-Powered Analysis for Sustainable Water Management 
                     </h2>
                     <p class="hero-description">
                         Our advanced application helps you evaluate the potential for rooftop rainwater 
@@ -868,6 +868,8 @@
     30% { transform: translateY(-10px); }
 }
 </style>
+{% load django_browser_reload %}
+    {% django_browser_reload_script %}
 
 <!-- Chatbot JavaScript -->
 <script>
@@ -1049,5 +1051,6 @@ document.addEventListener('keydown', function(event) {
 </script>
 
 <script src="{% static 'js/translator.js' %}"></script>
+
 </body>
 </html>
