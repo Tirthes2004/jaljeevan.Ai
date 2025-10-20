@@ -143,7 +143,7 @@
     <section id="resultsSection" class="results-section hidden">
         <h2><i class="fas fa-chart-bar"></i> Your Rainwater Harvesting Results</h2>
         
-        <div class="results-grid">
+        <div class="results-container">
             <!-- First Row: Location, Roof, and Usage Analysis -->
             <div class="result-row">
                 <div class="result-card info-card">
@@ -214,7 +214,7 @@
                 </div>
             </div>
 
-            <!-- Second Row: Water Harvesting Potential and Monthly Rainfall Pattern -->
+            <!-- Second Row: Water Harvesting Potential and a button to show monthly rainfall pattern as a modal-->
             <div class="result-row">
                 <div class="result-card harvest-card highlight">
                     <div class="card-header">
@@ -242,33 +242,23 @@
                         </div>
                     </div>
                 </div>
-                {% comment %}
-                <div class="result-card chart-card">
+                <div class="result-card modal-trigger-card">
                     <div class="card-header">
                         <i class="fas fa-chart-bar"></i>
                         <h3>Monthly Rainfall Pattern</h3>
                     </div>
                     <div class="card-content">
-                        <div class="chart-container">
-                            <img id="rainfallChart" 
-                                 src="" 
-                                 alt="Monthly rainfall chart will appear here" 
-                                 style="width: 100%; height: auto; display: none;">
-                            <div id="chartLoading" class="chart-loading">
-                                <i class="fas fa-spinner fa-spin"></i>
-                                <span>Loading rainfall chart...</span>
-                            </div>
-                            <div id="chartError" class="chart-error" style="display: none;">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <span>Chart not available for this district</span>
-                            </div>
-                        </div>
+                        <p>View detailed monthly rainfall data and patterns for your district.</p>
+                        <button class="modal-trigger-btn" data-modal="rainfallModal">
+                            <i class="fas fa-chart-line"></i>
+                            Show Rainfall Chart
+                        </button>
                     </div>
                 </div>
-            {% endcomment %}
+    
             </div>
 
-            <!-- Third Row: Harvest vs Consumption Analysis (full width) -->
+            <!-- Third Row:cost analysis & roi and  Harvest vs Consumption Analysis graph -->
             <div class="result-row">
                 <div class="result-card cost-card highlight">
                     <div class="card-header">
@@ -298,7 +288,7 @@
                     </div>
                 </div>
               
-                <div class="result-card chart-card full-width-card">
+                <div class="result-card chart-card">
                     <div class="card-header">
                         <i class="fas fa-chart-line"></i>
                         <h3>📊 Harvest vs Consumption Analysis</h3>
@@ -358,7 +348,7 @@
                     </div>
                 </div>
 
-                <div id="calculationMeta" class="result-card meta-card" style="display: none;">
+                <div id="calculationMeta" class="result-card meta-card">
                     <div class="card-header">
                         <i class="fas fa-info-circle"></i>
                         <h3>Calculation Details</h3>
@@ -381,6 +371,31 @@
             </div>
         </div>
 
+        {% comment %}
+                <div class="result-card chart-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Monthly Rainfall Pattern</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart-container">
+                            <img id="rainfallChart" 
+                                 src="" 
+                                 alt="Monthly rainfall chart will appear here" 
+                                 style="width: 100%; height: auto; display: none;">
+                            <div id="chartLoading" class="chart-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span>Loading rainfall chart...</span>
+                            </div>
+                            <div id="chartError" class="chart-error" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Chart not available for this district</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endcomment %}
+        
         <!-- Action Buttons -->
         <div class="action-buttons">
             <button id="newCalculation" class="btn btn-secondary">
