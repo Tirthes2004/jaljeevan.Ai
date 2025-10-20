@@ -148,6 +148,7 @@ body {
 .form-group label {
     position: absolute;
     top: -25px;
+    left: 0px;
     display: block;
     font-weight: 600;
     margin-bottom: 12px;
