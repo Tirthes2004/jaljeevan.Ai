@@ -8,8 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pages.urls')),      # Vendor registration pages
     path('vendor/', include('vendorRegistration.urls')),          # Vendor registration pages
+    path('officer/', include('GovtApplications.urls')),          # Vendor registration pages
     path('api/', include('translations.urls')),
-    # ✅ Fixed: Use different namespaces
     path('calculator/', include('calculator.urls')),              # Calculator pages
     path('api/v1/', include('calculator.api_urls')),              # API endpoints (separate file)
     path('chatbot/', include('chatbot.urls')),                    # Chatbot API

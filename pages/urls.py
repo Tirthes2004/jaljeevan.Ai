@@ -13,6 +13,6 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('calculator/', include('calculator.urls')),
     path('vendor_section/', views.vendor_view, name='vendor_section'),
-    # path('technology/', views.technology_view, name='technology'),
+    path('applications/', include('GovtApplications.urls'), name='applications'),
     # path('leaderboard/', views.leaderboard_view, name='leaderboard'),
 ]
