@@ -5,172 +5,315 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Registration - JalJeevan.AI</title>
     <style>
+                 :root {
+            --primary-dark: #0a1929;
+            --primary-medium: #0d2337;
+            --primary-light: #143d66;
+            --accent-blue: #2196f3;
+            --accent-teal: #00e5ff;
+            --text-primary: #e6f7ff;
+            --text-secondary: #b3e0ff;
+            --glow-color: rgba(33, 150, 243, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
             min-height: 100vh;
+            position: relative;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+
+        /* Snow animation */
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            padding: 40px;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowfall linear infinite;
         }
-        
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(13, 35, 55, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
         h1 {
-            color: #333;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
             text-align: center;
             margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent-teal), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 3s infinite;
         }
-        
+
         .subtitle {
             text-align: center;
-            color: #666;
+            color: var(--text-secondary);
             margin-bottom: 30px;
-            font-size: 14px;
+            font-size: 1.1rem;
         }
-        
-        .form-group {
+
+        /* Settings Spinning Animation */
+        .settings-container {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
-        
+
+        .spinning-settings {
+            font-size: 3.5rem;
+            animation: spin 4s linear infinite;
+            color: var(--accent-teal);
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
+            filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            animation: fadeIn 0.8s ease;
+        }
+
         label {
             display: block;
-            color: #333;
+            color: var(--text-primary);
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 1rem;
         }
-        
+
         label .required {
-            color: #e74c3c;
+            color: #ff6b6b;
             margin-left: 3px;
         }
-        
+
         label .optional {
-            color: #7f8c8d;
+            color: var(--text-secondary);
             font-weight: 400;
-            font-size: 12px;
+            font-size: 0.85rem;
         }
-        
+
         input[type="text"],
         input[type="tel"],
         select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 14px 18px;
+            background: rgba(20, 61, 102, 0.3);
+            border: 2px solid rgba(179, 224, 255, 0.2);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
-        
+
         input:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            background: rgba(20, 61, 102, 0.5);
         }
-        
+
         .checkbox-group {
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 15px;
-            background: #f8f9fa;
+            border: 2px solid rgba(179, 224, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            background: rgba(20, 61, 102, 0.2);
         }
-        
+
         .checkbox-item {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
         }
-        
+
         .checkbox-item:last-child {
             margin-bottom: 0;
         }
-        
+
         .checkbox-item input[type="checkbox"] {
             width: auto;
-            margin-right: 10px;
+            margin-right: 12px;
             cursor: pointer;
+            transform: scale(1.2);
+            accent-color: var(--accent-teal);
         }
-        
+
         .checkbox-item label {
             margin: 0;
             font-weight: 400;
             cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
         }
-        
+
+        .checkbox-item:hover label {
+            color: var(--text-primary);
+        }
+
         .verification-section {
-            border: 2px dashed #667eea;
-            border-radius: 6px;
-            padding: 20px;
-            background: #f0f4ff;
-            margin-bottom: 20px;
+            border: 2px dashed var(--accent-teal);
+            border-radius: 8px;
+            padding: 25px;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 25px;
+            animation: pulseBorder 3s infinite;
         }
-        
+
+        @keyframes pulseBorder {
+            0% { border-color: rgba(0, 229, 255, 0.5); }
+            50% { border-color: rgba(0, 229, 255, 0.9); }
+            100% { border-color: rgba(0, 229, 255, 0.5); }
+        }
+
         .verification-title {
             font-weight: 600;
-            color: #667eea;
+            color: var(--accent-teal);
             margin-bottom: 10px;
-            font-size: 14px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
+
         .verification-note {
-            font-size: 12px;
-            color: #666;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
             margin-bottom: 15px;
-            padding: 8px;
-            background: white;
-            border-radius: 4px;
+            padding: 12px;
+            background: rgba(20, 61, 102, 0.3);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-teal);
         }
-        
+
         .btn-submit {
             width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
+            color: var(--primary-dark);
+            padding: 16px;
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
         }
-        
+
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.6);
         }
-        
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-submit:hover::after {
+            left: 100%;
+        }
+
         .help-text {
-            font-size: 12px;
-            color: #7f8c8d;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
             margin-top: 5px;
         }
 
         .messages {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .alert {
             padding: 15px 20px;
             margin-bottom: 15px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             animation: slideDown 0.3s ease;
+            border-left: 4px solid;
         }
         
         @keyframes slideDown {
@@ -185,36 +328,31 @@
         }
         
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 2px solid #c3e6cb;
-            border-left: 5px solid #28a745;
+            background: rgba(40, 167, 69, 0.15);
+            color: #8affa8;
+            border-color: #28a745;
         }
         
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 2px solid #f5c6cb;
-            border-left: 5px solid #dc3545;
+            background: rgba(220, 53, 69, 0.15);
+            color: #ff8a8a;
+            border-color: #dc3545;
         }
         
         .alert-warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 2px solid #ffeaa7;
-            border-left: 5px solid #ffc107;
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffd166;
+            border-color: #ffc107;
         }
         
         .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 2px solid #bee5eb;
-            border-left: 5px solid #17a2b8;
+            background: rgba(23, 162, 184, 0.15);
+            color: #7ae1ff;
+            border-color: #17a2b8;
         }
         
         .alert-icon {
             font-size: 20px;
-            font-weight: bold;
         }
         
         .close-btn {
@@ -223,31 +361,91 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
-            opacity: 0.5;
+            color: inherit;
+            opacity: 0.7;
             transition: opacity 0.2s;
         }
         
         .close-btn:hover {
             opacity: 1;
         }
-        
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px var(--glow-color); }
+            50% { text-shadow: 0 0 20px var(--accent-teal), 0 0 30px var(--glow-color); }
+            100% { text-shadow: 0 0 10px var(--glow-color); }
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .spinning-settings {
+                font-size: 3rem;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .checkbox-group {
+                padding: 15px;
+            }
+            
+            .verification-section {
+                padding: 20px;
+            }
+        }
+
     </style>
 </head>
 <body>
+    <!-- Snow Animation -->
+    <div class="snow-container" id="snowContainer"></div>
+
     <div class="container">
-        <h1>🌧️ Vendor Registration</h1>
+         <div class="settings-container">
+            <div class="spinning-settings">⚙️</div>
+        </div>
+        <h1> Vendor Registration</h1>
         <p class="subtitle">Join our rainwater harvesting service providers network</p>
         {% if messages %}
         <div class="messages">
@@ -389,6 +587,33 @@
 
     <script>
         
+        // Create snowflakes
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snowContainer');
+            const snowflakeCount = 100;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                
+                // Random properties for each snowflake
+                const size = 2 + Math.random() * 8;
+                const left = Math.random() * 100;
+                const animationDuration = 5 + Math.random() * 10;
+                const animationDelay = Math.random() * 10;
+                const opacity = 0.5 + Math.random() * 0.5;
+                
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${left}%`;
+                snowflake.style.animationDuration = `${animationDuration}s`;
+                snowflake.style.animationDelay = `${animationDelay}s`;
+                snowflake.style.opacity = opacity;
+                
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
         // Close message function
         function closeMessage(id) {
             const element = document.getElementById(id);
@@ -445,6 +670,11 @@
                 alert('Please provide either PAN Number or GSTIN Number for verification');
                 return;
             }
+        });
+
+         // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createSnowflakes();
         });
     </script>
 </body>
