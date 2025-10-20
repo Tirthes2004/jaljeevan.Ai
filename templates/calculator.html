@@ -47,7 +47,7 @@
                        name="district_name" 
                        placeholder="Enter district name (e.g., Mumbai)" 
                        required>
-                <small class="help-text">Use the search above to find available districts</small>
+                {% comment %} <small class="help-text">Use the search above to find available districts</small> {% endcomment %}
             </div>
 
             <div class="form-row">
@@ -291,9 +291,9 @@
                         <span class="label">30-Year ROI:</span>
                         <span id="resultROI" class="value">-</span>
                     </div>
-                    <div class="cost-breakdown">
+                    {% comment %} <div class="cost-breakdown">
                         <small id="resultCostBreakdown" class="help-text">-</small>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
 
