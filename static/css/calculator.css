@@ -146,6 +146,8 @@ body {
 }
 
 .form-group label {
+    position: absolute;
+    top: -25px;
     display: block;
     font-weight: 600;
     margin-bottom: 12px;
@@ -287,9 +289,10 @@ body {
     flex-direction: row;
     gap: 20px;
     width: 100%;
+    align-items: stretch; /* Ensure cards stretch to same height */
 }
 
-/* Card Base Styles */
+/* Card Base Styles - Consistent Height */
 .result-card {
     background: rgba(10, 25, 41, 0.8);
     border-radius: 16px;
@@ -299,8 +302,9 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    min-height: 280px;
-    height: fit-content;
+    min-height: 400px; /* Consistent base height */
+    height: 100%; /* Take full available height */
+    flex: 1; /* Equal flex distribution */
 }
 
 .result-card:hover {
@@ -308,42 +312,21 @@ body {
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
-/* First Row: Equal width cards */
+/* First Row: Three equal width cards */
 .result-row:nth-child(1) .result-card {
     flex: 1;
-    min-width: 0; /* Allow cards to shrink properly */
-}
-
-/* Second Row: Water Harvesting (2/3) + Modal Button (1/3) */
-.result-row:nth-child(2) .harvest-card {
-    flex: 2;
     min-width: 0;
 }
 
-.result-row:nth-child(2) .modal-trigger-card {
+/* Second Row: Two equal width cards - FIXED EQUAL HEIGHT */
+.result-row:nth-child(2) .result-card {
     flex: 1;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(135deg, rgba(10, 25, 41, 0.9) 0%, rgba(33, 150, 243, 0.1) 100%);
+    min-height: 500px; /* Specific equal height for second row */
 }
 
-/* Third Row: Cost Analysis (1/3) + Harvest vs Consumption (2/3) */
-.result-row:nth-child(3) .cost-card {
-    flex: 1;
-    min-width: 0;
-}
-
-.result-row:nth-child(3) .chart-card {
-    flex: 2;
-    min-width: 0;
-}
-
-/* Fourth Row: Equal width cards */
-.result-row:nth-child(4) .result-card {
+/* Third Row: Three equal width cards */
+.result-row:nth-child(3) .result-card {
     flex: 1;
     min-width: 0;
 }
@@ -355,6 +338,7 @@ body {
     gap: 12px;
     margin-bottom: 20px;
     color: var(--accent-teal);
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .card-header i {
@@ -366,11 +350,21 @@ body {
     font-weight: 600;
 }
 
-/* Card Content */
+/* Card Content - Flexible growth */
 .card-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+/* Special styling for harvest card content */
+.harvest-card .card-content {
+    justify-content: space-between; /* Distribute space evenly */
+}
+
+/* Special styling for chart card content */
+.chart-card .card-content {
+    justify-content: flex-start; /* Chart doesn't need space distribution */
 }
 
 .result-item {
@@ -427,29 +421,6 @@ body {
     background: linear-gradient(135deg, rgba(10, 25, 41, 0.8) 0%, rgba(20, 61, 102, 0.4) 100%);
     border-top: 3px solid var(--accent-teal);
     border-bottom: 3px solid var(--accent-teal);
-}
-
-/* Modal Trigger Button */
-.modal-trigger-btn {
-    background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
-    color: var(--primary-dark);
-    border: none;
-    padding: 15px 25px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-    margin-top: 20px;
-}
-
-.modal-trigger-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
 }
 
 /* Modal Styles */
@@ -520,15 +491,18 @@ body {
     background: rgba(179, 224, 255, 0.1);
 }
 
+/* Chart Container - Adjusted for consistent height */
 .chart-container {
     position: relative;
-    min-height: 400px;
+    min-height: 300px; /* Reduced from 400px for better balance */
+    height: 100%; /* Take full available height */
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(10, 25, 41, 0.5);
     border-radius: 8px;
     border: 1px solid rgba(179, 224, 255, 0.1);
+    flex: 1; /* Take available space */
 }
 
 .chart-loading, .chart-error {
@@ -550,15 +524,16 @@ body {
     color: #dc3545;
 }
 
-/* Water Visualization */
+/* Water Visualization - Adjusted for consistent height */
 .water-visual {
     margin-top: 20px;
     text-align: center;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .water-tank {
     width: 100%;
-    height: 200px;
+    height: 180px; /* Slightly reduced height */
     background: rgba(179, 224, 255, 0.1);
     border-radius: 8px;
     position: relative;
@@ -841,14 +816,12 @@ body {
     border-left: 4px solid #FFD700;
 }
 
-.meta-card {
-    background: rgba(10, 25, 41, 0.75);
-    border: 1px dashed rgba(179, 224, 255, 0.3);
-}
-
-.harvest-card .water-visual {
-    margin-top: auto;
-    padding-top: 20px;
+/* Ensure consistent content distribution */
+.enhanced-recommendations {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center recommendations vertically */
 }
 
 /* Number input styling */
@@ -872,23 +845,21 @@ input[type="number"] {
     background-size: 16px;
 }
 
-/* FIXED: Responsive Design for Flexbox Layout */
+/* Responsive Design for Flexbox Layout */
 @media (max-width: 1024px) {
     .result-row {
         flex-wrap: wrap;
     }
     
     .result-row:nth-child(1) .result-card,
-    .result-row:nth-child(4) .result-card {
+    .result-row:nth-child(3) .result-card {
         flex: 1 1 calc(50% - 20px);
         min-width: 250px;
     }
     
-    .result-row:nth-child(2) .harvest-card,
-    .result-row:nth-child(2) .modal-trigger-card,
-    .result-row:nth-child(3) .cost-card,
-    .result-row:nth-child(3) .chart-card {
+    .result-row:nth-child(2) .result-card {
         flex: 1 1 100%;
+        min-height: 400px; /* Adjust for tablet */
     }
 }
 
@@ -920,8 +891,12 @@ input[type="number"] {
     }
     
     .result-card {
-        min-height: auto;
+        min-height: auto; /* Allow natural height on mobile */
         padding: 20px;
+    }
+    
+    .result-row:nth-child(2) .result-card {
+        min-height: auto; /* Remove fixed height on mobile */
     }
     
     .modal-content {
@@ -930,7 +905,7 @@ input[type="number"] {
     }
     
     .chart-container {
-        min-height: 300px;
+        min-height: 250px; /* Smaller on mobile */
     }
     
     .action-buttons {
@@ -996,11 +971,6 @@ input[type="number"] {
     
     .result-card {
         padding: 15px;
-    }
-    
-    .modal-trigger-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
     }
 }
 
