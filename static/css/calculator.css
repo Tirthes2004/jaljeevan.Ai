@@ -98,7 +98,7 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 1.8rem;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     color: var(--accent-teal);
 }
 
@@ -133,7 +133,7 @@ body {
 .form-row {
     display: flex;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     align-items: flex-start;
     flex-wrap: wrap;
 }
@@ -141,7 +141,7 @@ body {
 .form-group {
     flex: 1 1 320px;
     min-width: 220px;
-    margin-bottom: 25px;
+    margin-bottom: 45px;
     position: relative;
 }
 
@@ -613,6 +613,8 @@ body {
 .btn-primary {
     background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
     color: var(--primary-dark);
+    margin-top: 0x;
+    margin-left: 0px;
 }
 
 .btn-primary:hover {
