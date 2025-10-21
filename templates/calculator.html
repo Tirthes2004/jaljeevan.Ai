@@ -328,7 +328,44 @@
                 </div>
             </div>
         </div>
+        <!-- 3D Model Section -->
+        <div class="model-link-section">
+            <button id="view3dModelLink" class="btn btn-info model-link-btn">
+                <i class="fas fa-cube"></i> Click here to see 3D model 
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div id="3d-model-view" class="model-view-section hidden">
+            <h3><i class="fas fa-cube"></i> 3D Model Visualization</h3>
+            <button id="close3dModel" class="btn btn-danger close-model-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="sketchfab-embed-wrapper">
+                <iframe title="Casa VC 2 Pisos" frameborder="0" allowfullscreen mozallowfullscreen="true" 
+                        webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" 
+                        xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered 
+                        web-share src="https://sketchfab.com/models/02d4f5a4052946308adb9e5dfe950a3c/embed">
+                </iframe>
+                <p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+                    <a href="https://sketchfab.com/3d-models/casa-vc-2-pisos-02d4f5a4052946308adb9e5dfe950a3c?utm_medium=embed&utm_campaign=share-popup&utm_content=02d4f5a4052946308adb9e5dfe950a3c" 
+                       target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
+                        Casa VC 2 Pisos
+                    </a> by 
+                    <a href="https://sketchfab.com/stev_moon?utm_medium=embed&utm_campaign=share-popup&utm_content=02d4f5a4052946308adb9e5dfe950a3c" 
+                       target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
+                        stev_moon
+                    </a> on 
+                    <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=02d4f5a4052946308adb9e5dfe950a3c" 
+                       target="_blank" rel="nofollow" style="font-weight: bold; color: #1CAAD9;">
+                        Sketchfab
+                    </a>
+                </p>
+            </div>
+        </div>
     </div>
+
+    
 
     <!-- Action Buttons -->
     <div class="action-buttons">
@@ -355,6 +392,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
 <script src="/static/js/calculator.js"></script>
+<script>
+    // 3D Model toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const view3dModelLink = document.getElementById('view3dModelLink');
+    const close3dModelBtn = document.getElementById('close3dModel');
+    const modelViewSection = document.getElementById('3d-model-view');
+    
+    if (view3dModelLink && modelViewSection) {
+        view3dModelLink.addEventListener('click', function() {
+            modelViewSection.classList.remove('hidden');
+            // Smooth scroll to the 3D model section
+            modelViewSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+    
+    if (close3dModelBtn && modelViewSection) {
+        close3dModelBtn.addEventListener('click', function() {
+            modelViewSection.classList.add('hidden');
+        });
+    }
+});
+</script>
 {% endblock %}
 
     <!-- API Status -->

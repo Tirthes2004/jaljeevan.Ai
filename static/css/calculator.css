@@ -982,3 +982,167 @@ input[type="number"] {
 .container {
     padding-top: 20px;
 }
+/* 3D Model Section Styles */
+.model-link-section {
+    text-align: center;
+    margin: 30px 0 20px 0;
+    padding: 20px;
+    background: rgba(10, 25, 41, 0.5);
+    border-radius: 12px;
+    border: 2px dashed rgba(0, 229, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.model-link-section:hover {
+    border-color: var(--accent-teal);
+    background: rgba(10, 25, 41, 0.7);
+}
+
+.model-link-btn {
+    background: linear-gradient(45deg, #17a2b8, #20c997);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.model-link-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(23, 162, 184, 0.4);
+    color: white;
+}
+
+.model-view-section {
+    background: rgba(10, 25, 41, 0.9);
+    border-radius: 16px;
+    padding: 25px;
+    margin: 20px 0 30px 0;
+    box-shadow: var(--card-shadow);
+    border: 2px solid var(--accent-teal);
+    position: relative;
+}
+
+.model-view-section.hidden {
+    display: none;
+}
+
+.model-view-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--accent-teal);
+    justify-content: center;
+}
+
+.close-model-btn {
+    position: absolute;
+    top: 25px;
+    right: 65px;
+    background: linear-gradient(45deg, #f5f5f5, #00defc);
+    color: black;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.close-model-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+    background: linear-gradient(45deg, #000000, #fffefe);
+    color: black;
+}
+
+.sketchfab-embed-wrapper {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
+}
+
+.sketchfab-embed-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.sketchfab-embed-wrapper p {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(10, 25, 41, 0.6);
+    border-radius: 6px;
+    border: 1px solid rgba(179, 224, 255, 0.1);
+}
+
+.sketchfab-embed-wrapper a {
+    color: var(--accent-blue) !important;
+    transition: color 0.3s ease;
+}
+
+.sketchfab-embed-wrapper a:hover {
+    color: var(--accent-teal) !important;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Responsive design for 3D model */
+@media (max-width: 768px) {
+    .model-link-btn {
+        font-size: 1rem;
+        padding: 12px 20px;
+    }
+    
+    .sketchfab-embed-wrapper {
+        height: 300px;
+    }
+    
+    .model-view-section h3 {
+        font-size: 1.3rem;
+    }
+    
+    .close-model-btn {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 15px;
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .sketchfab-embed-wrapper {
+        height: 250px;
+    }
+    
+    .model-link-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .model-view-section {
+        padding: 20px 15px;
+    }
+}
