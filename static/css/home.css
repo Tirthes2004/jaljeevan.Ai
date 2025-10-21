@@ -243,8 +243,8 @@ html {
 }
 
 .floating-image {
-    max-width: 120%;
-    max-height: 120%;
+    max-width: 110%;
+    max-height: 110%;
     animation: float 3s ease-in-out infinite;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
