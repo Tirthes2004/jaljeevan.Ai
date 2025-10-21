@@ -1,0 +1,371 @@
+/* ============================================
+   OFFICER AUTHENTICATION MODAL STYLES
+   Complete CSS for login/register modals
+   ============================================ */
+
+/* Modal Container - Hidden by default */
+.auth-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show modal when active */
+.auth-modal[style*="display: flex"],
+.auth-modal[aria-hidden="false"] {
+    display: flex !important;
+    opacity: 1;
+}
+
+/* Dark backdrop overlay */
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+}
+
+/* Modal content container */
+.modal-container {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal card */
+.modal-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Close button */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
+}
+
+.modal-close i {
+    font-size: 18px;
+    color: #666;
+}
+
+/* Modal header */
+.modal-header {
+    padding: 40px 40px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+}
+
+.modal-header h2 {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.modal-header p {
+    margin: 0;
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* Form styling */
+.auth-form {
+    padding: 40px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Input wrapper */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Input fields */
+.form-control {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: white;
+    color: #333;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+
+/* Input icons */
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #667eea;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+/* Form options (remember me, forgot password) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+/* Remember me checkbox */
+.remember-me {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.remember-me .checkmark {
+    margin-left: 5px;
+}
+
+/* Forgot password link */
+.forgot-password {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Submit button */
+.btn-auth {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+.btn-auth:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-auth i {
+    font-size: 18px;
+}
+
+/* Auth switch (login/register toggle) */
+.auth-switch {
+    text-align: center;
+    padding: 20px 40px 40px;
+    font-size: 14px;
+    color: #666;
+}
+
+.auth-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Message container (success/error messages) */
+.message-container {
+    margin: 15px 0;
+    animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Filled state for inputs */
+.form-group.filled .form-label {
+    color: #667eea;
+}
+
+.form-group.focused .form-control {
+    border-color: #667eea;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .modal-container {
+        width: 95%;
+        max-width: none;
+    }
+
+    .modal-card {
+        border-radius: 16px;
+    }
+
+    .modal-header {
+        padding: 30px 24px 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 24px;
+    }
+
+    .auth-form {
+        padding: 24px;
+    }
+
+    .form-control {
+        padding: 12px 14px 12px 44px;
+        font-size: 14px;
+    }
+
+    .btn-auth {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .auth-switch {
+        padding: 16px 24px 24px;
+    }
+}
+
+/* Scrollbar styling for modal */
+.modal-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Loading spinner for button */
+.btn-auth .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

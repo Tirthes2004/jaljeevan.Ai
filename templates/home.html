@@ -316,7 +316,7 @@
                         <!-- Second Row: Apply Now and Track Application -->
                         <div class="hero-buttons-row">
                             {% if user.is_authenticated %}
-                            <a href="{% url 'GovtApplications:application_form' %}" class="btn-third">
+                            <a href="{% url 'applications:form' %}" class="btn-third">
                                 <span>Apply Now</span>
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>

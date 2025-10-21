@@ -1,16 +1,19 @@
-# pages/urls.py (create this file)
+# GovtApplications/urls.py (Officer-specific routes)
 from django.urls import path
-from django.urls import include
 from . import views
 
-
-app_name = 'GovtApplications'
+app_name = 'officer'
 
 urlpatterns = [
-    path('', views.application_dashboard, name='application_dashboard'),
-    path('form/',views.application_form, name='application_form'),
-    path('track/', views.track_applications, name='track_applications'),
-    path('api/submit/', views.submit_application, name='submit_application'),
-    path('register/', views.registerOfficer, name='registerOfficer'),
-    path('login/', views.loginOfficer, name='loginOfficer'),
+    # Officer dashboard at /officer/
+    path('', views.application_dashboard, name='dashboard'),
+    
+    # Officer registration at /officer/register/
+    path('register/', views.registerOfficer, name='register'),
+    
+    # Officer login at /officer/login/
+    path('login/', views.loginOfficer, name='login'),
+    
+    # Officer logout at /officer/logout/
+    path('logout/', views.logoutOfficer, name='logout'),
 ]

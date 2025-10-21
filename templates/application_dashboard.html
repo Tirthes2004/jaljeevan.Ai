@@ -8,7 +8,7 @@
     <title>Officer Dashboard - JalJeevan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/officerAuth.css' %}">
     <style>
         :root {
             --primary-color: #667eea;
@@ -319,7 +319,7 @@
                     <p>Register as a government officer to manage applications</p>
                 </div>
 
-                <form class="auth-form" id="officer-signup-form" method="POST" action="{% url 'GovtApplications:registerOfficer' %}"
+                <form class="auth-form" id="officer-signup-form" method="POST" action="{% url 'officer:register' %}"
                     novalidate>
                     {% csrf_token %}
 
@@ -409,6 +409,7 @@
             </div>
         </div>
     </div>
+
     <!-- Officer Login Modal -->
     <div id="officer-login-modal" class="auth-modal" role="dialog" aria-labelledby="officer-login-title"
         aria-hidden="true">
@@ -424,7 +425,7 @@
                     <p>Access the application management dashboard</p>
                 </div>
 
-                <form class="auth-form" id="officer-login-form" method="POST" action="{% url 'GovtApplications:loginOfficer' %}"
+                <form class="auth-form" id="officer-login-form" method="POST" action="{% url 'officer:login' %}"
                     novalidate>
                     {% csrf_token %}
 
@@ -481,6 +482,7 @@
             </div>
         </div>
     </div>
+
     <div class="dashboard-container">
         <!-- Dashboard Header -->
         <div class="dashboard-header">
@@ -491,13 +493,26 @@
                     <p>Manage Rainwater Harvesting Subsidy Applications</p>
                 </div>
             </div>
+            {% if request.session.is_officer %}
+            <!-- Logged in officer -->
             <div class="officer-info">
-                <p><strong>{{ request.user.email }}</strong></p>
-                <p><small>District Officer</small></p>
-                <a href="{% url 'logoutUser' %}" class="btn btn-sm btn-outline-danger mt-2">
+                <p><strong>{{ request.session.officer_email }}</strong></p>
+                <p><small>District Officer - {{ request.session.officer_name }}</small></p>
+                <button onclick="handleLogout(event)" class="btn btn-sm btn-outline-danger mt-2" type="button">
                     <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
+                </button>
             </div>
+            {% else %}
+            <!-- Not logged in - show login button -->
+            <div class="officer-info">
+                <p><strong>Guest</strong></p>
+                <p><small>Please login to continue</small></p>
+                <button onclick="openModal('officer-login-modal')" class="btn btn-sm btn-outline-primary mt-2"
+                    type="button">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Stats Cards -->
@@ -641,28 +656,104 @@
         </div>
     </div>
 
+    <!-- Load officerAuth.js -->
+    <script src="{% static 'js/officerAuth.js' %}"></script>
+
+    <!-- Auto-open login modal if not logged in -->
     <script>
-        function viewApplication(appId) {
-            alert('Viewing application: ' + appId);
-            // TODO: Open modal or navigate to detail page
-        }
-
-        function approveApplication(appId) {
-            if (confirm('Are you sure you want to approve this application?')) {
-                // TODO: Send approval request to backend
-                alert('Application ' + appId + ' approved!');
+        (function() {
+            var isOfficerLoggedIn = {% if request.session.is_officer %}true{% else %}false{% endif %};
+            
+            if (!isOfficerLoggedIn) {
+                setTimeout(function() {
+                    if (typeof openModal === 'function') {
+                        openModal('officer-login-modal');
+                    }
+                }, 800);
             }
-        }
+        })();
+    </script>
 
-        function rejectApplication(appId) {
-            const reason = prompt('Enter rejection reason:');
-            if (reason) {
-                // TODO: Send rejection request to backend
-                alert('Application ' + appId + ' rejected. Reason: ' + reason);
+       <!-- Handle logout -->
+    <script>
+        function handleLogout(event) {
+            event.preventDefault();
+            
+            if (!confirm('Are you sure you want to logout?')) {
+                return;
             }
+            
+            fetch('{% url "officer:logout" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url || '/';
+                } else {
+                    alert('Logout failed: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                window.location.href = '/';
+            });
         }
     </script>
-    <script src="{% static 'js/officerAuth.js' %}"></script>
-</body>
 
+    <!-- CRITICAL FIX: Force backdrop fix to work -->
+    <script>
+        // Wait for page to fully load
+        window.addEventListener('load', function() {
+            // Override closeModal with fixed version
+            var originalCloseModal = window.closeModal;
+            
+            window.closeModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = 'auto';
+                    
+                    // CRITICAL: Disable ALL backdrops
+                    const allBackdrops = document.querySelectorAll('.modal-backdrop');
+                    allBackdrops.forEach(function(backdrop) {
+                        backdrop.style.pointerEvents = 'none';
+                        backdrop.style.display = 'none';
+                    });
+                    
+                    // Reset form
+                    const form = modal.querySelector('.auth-form');
+                    if (form) form.reset();
+                    
+                    // Clear messages
+                    const messageContainer = modal.querySelector('.message-container');
+                    if (messageContainer) messageContainer.remove();
+                }
+            };
+            
+            // Override openModal to re-enable backdrop
+            window.openModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Re-enable THIS modal's backdrop
+                    const backdrop = modal.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.style.pointerEvents = 'auto';
+                        backdrop.style.display = 'block';
+                    }
+                }
+            };
+        });
+    </script>
+
+</body>
 </html>

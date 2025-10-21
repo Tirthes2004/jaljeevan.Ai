@@ -1,13 +1,13 @@
 // ============================================
-// OFFICER DASHBOARD - STANDALONE JS
-// Complete dashboard functionality independent of other files
+// OFFICER DASHBOARD - COMPLETE STANDALONE JS
+// All functionality including backdrop fix
 // ============================================
 
 (function() {
     'use strict';
 
     // ============================================
-    // MODAL CONTROL FUNCTIONS
+    // MODAL CONTROL FUNCTIONS (FIXED)
     // ============================================
 
     function openModal(modalId) {
@@ -16,6 +16,12 @@
             modal.style.display = 'flex';
             modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            
+            // Re-enable backdrop clicks for THIS modal
+            const backdrop = modal.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.style.pointerEvents = 'auto';
+            }
             
             // Prevent mobile scroll
             if ('ontouchstart' in window) {
@@ -27,14 +33,23 @@
     function closeModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
+            // Hide modal
             modal.style.display = 'none';
             modal.setAttribute('aria-hidden', 'true');
+            
+            // Restore body scroll
             document.body.style.overflow = 'auto';
+            document.body.classList.remove('modal-open');
             
             // Remove touch event listener
             if ('ontouchstart' in window) {
                 document.removeEventListener('touchmove', preventScroll);
             }
+            
+            // ✅ CRITICAL FIX: Disable ALL modal backdrops from blocking clicks
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                backdrop.style.pointerEvents = 'none';
+            });
             
             // Clear messages
             const messageContainer = modal.querySelector('.message-container');
@@ -55,10 +70,26 @@
     }
 
     function switchAuthModal(targetModalId) {
-        document.querySelectorAll('.auth-modal').forEach(modal => {
-            modal.style.display = 'none';
-        });
-        setTimeout(() => openModal(targetModalId), 300);
+        // Get current open modal
+        const currentModal = document.querySelector('.auth-modal[style*="display: flex"]');
+        
+        if (currentModal) {
+            // Fade out current modal
+            currentModal.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Close current modal
+                closeModal(currentModal.id);
+                
+                // Open target modal
+                setTimeout(() => {
+                    openModal(targetModalId);
+                }, 100);
+            }, 200);
+        } else {
+            // No modal open, just open target
+            openModal(targetModalId);
+        }
     }
 
     function preventScroll(e) {
@@ -348,7 +379,6 @@
                 const filter = this.textContent.trim().toLowerCase();
                 
                 // Filter applications (for now just show all)
-                // You can implement custom filtering logic here
                 applicationCards.forEach(card => {
                     card.style.display = 'block';
                 });

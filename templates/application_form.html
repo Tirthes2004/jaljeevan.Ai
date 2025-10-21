@@ -1003,7 +1003,7 @@ document.querySelector('.file-display-area').addEventListener('click', function(
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
             try {
-                const response = await fetch('{% url "GovtApplications:submit_application" %}', {
+                const response = await fetch('{% url "applications:submit" %}', {
                     method: 'POST',
                     body: formData
                 });

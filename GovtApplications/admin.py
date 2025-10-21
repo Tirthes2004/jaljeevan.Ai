@@ -25,6 +25,8 @@ class SubsidyApplicationAdmin(admin.ModelAdmin):
         self.message_user(request, f'{queryset.count()} applications rejected')
     reject_applications.short_description = 'Reject selected'
 
+
+@admin.register(Officer)
 class OfficerAdmin(admin.ModelAdmin):
     list_display = ('officer_name', 'officer_email', 'assigned_district', 'govt_id')
     search_fields = ('officer_name', 'officer_email', 'govt_id')
