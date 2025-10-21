@@ -10,6 +10,7 @@ def application_form(request):
 
 
 def application_dashboard(request):
+    
     return render(request, 'application_dashboard.html')
 
 
@@ -79,3 +80,5 @@ def track_applications(request):
         'applications': data,
         'count': len(data)
     })
+
+
