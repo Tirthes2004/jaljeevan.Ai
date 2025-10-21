@@ -300,11 +300,18 @@ function showMessage(container, message, type) {
     // Insert message appropriately
     if (container === document.body) {
         // For logout messages, show at top of page
-        messageDiv.style.position = 'fixed';
-        messageDiv.style.top = '20px';
-        messageDiv.style.left = '50%';
+         const navbar = document.querySelector('.navbar');
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        
+        messageDiv.style.position = 'absolute';
+        messageDiv.style.top = `${navbarHeight + 20}px`; 
+        
+        messageDiv.style.right = `${0}px`;
         messageDiv.style.transform = 'translateX(-50%)';
-        messageDiv.style.zIndex = '10000';
+        messageDiv.style.zIndex = '9999';
+        messageDiv.style.width = '90%';
+        messageDiv.style.maxWidth = '600px';
+        messageDiv.style.color = 'yellow';
         document.body.appendChild(messageDiv);
     } else {
         // For form messages, insert after button

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Registration - JalJeevan.AI</title>
     <style>
-                 :root {
+                    :root {
             --primary-dark: #0a1929;
             --primary-medium: #0d2337;
             --primary-light: #143d66;
@@ -36,8 +36,8 @@
             align-items: center;
         }
 
-        /* Snow animation */
-        .snow-container {
+        /* Rain animation */
+        .rain-container {
             position: fixed;
             top: 0;
             left: 0;
@@ -48,28 +48,22 @@
             overflow: hidden;
         }
 
-        .snowflake {
+        .rain-drop {
             position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: snowfall linear infinite;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, transparent, var(--accent-teal));
+            border-radius: 0 0 5px 5px;
+            opacity: 0.6;
+            animation: rain linear infinite;
         }
 
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 0;
+        @keyframes rain {
+            from {
+                transform: translateY(-100px);
             }
-            10% {
-                opacity: 0.8;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
+            to {
+                transform: translateY(calc(100vh + 100px));
             }
         }
 
@@ -116,24 +110,74 @@
             font-size: 1.1rem;
         }
 
-        /* Settings Spinning Animation */
-        .settings-container {
+        /* Cloud with Rain Animation */
+        .cloud-container {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
 
-        .spinning-settings {
-            font-size: 3.5rem;
-            animation: spin 4s linear infinite;
+        .cloud-rain-icon {
+            font-size: 4rem;
+            animation: float 3s ease-in-out infinite;
             color: var(--accent-teal);
-            text-shadow: 0 0 15px rgba(0, 229, 255, 0.7);
-            filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+            position: relative;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .rain-drops {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rain-drops span {
+            display: block;
+            width: 2px;
+            height: 8px;
+            background: var(--accent-teal);
+            margin: 2px 0;
+            animation: rainDrops 1.5s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .rain-drops span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .rain-drops span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes rainDrops {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(15px);
+                opacity: 0;
+            }
         }
 
         .form-group {
@@ -408,8 +452,8 @@
                 font-size: 1rem;
             }
             
-            .spinning-settings {
-                font-size: 3rem;
+            .cloud-rain-icon {
+                font-size: 3.5rem;
             }
         }
 
@@ -433,17 +477,28 @@
             .verification-section {
                 padding: 20px;
             }
+            
+            .cloud-rain-icon {
+                font-size: 3rem;
+            }
         }
 
     </style>
 </head>
 <body>
-    <!-- Snow Animation -->
-    <div class="snow-container" id="snowContainer"></div>
+    <!-- Rain Animation -->
+    <div class="rain-container" id="rainContainer"></div>
 
     <div class="container">
-         <div class="settings-container">
-            <div class="spinning-settings">⚙️</div>
+          <div class="cloud-container">
+            <div class="cloud-rain-icon">
+                ☁️
+                <div class="rain-drops">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </div>
         <h1> Vendor Registration</h1>
         <p class="subtitle">Join our rainwater harvesting service providers network</p>
@@ -587,30 +642,29 @@
 
     <script>
         
-        // Create snowflakes
-        function createSnowflakes() {
-            const snowContainer = document.getElementById('snowContainer');
-            const snowflakeCount = 100;
+        // Create raindrops
+        function createRaindrops() {
+            const rainContainer = document.getElementById('rainContainer');
+            const raindropCount = 100;
             
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
+            for (let i = 0; i < raindropCount; i++) {
+                const raindrop = document.createElement('div');
+                raindrop.className = 'rain-drop';
                 
-                // Random properties for each snowflake
-                const size = 2 + Math.random() * 8;
+                // Random properties for each raindrop
                 const left = Math.random() * 100;
-                const animationDuration = 5 + Math.random() * 10;
-                const animationDelay = Math.random() * 10;
-                const opacity = 0.5 + Math.random() * 0.5;
+                const animationDuration = 0.5 + Math.random() * 0.5;
+                const animationDelay = Math.random() * 2;
+                const opacity = 0.3 + Math.random() * 0.4;
+                const height = 15 + Math.random() * 15;
                 
-                snowflake.style.width = `${size}px`;
-                snowflake.style.height = `${size}px`;
-                snowflake.style.left = `${left}%`;
-                snowflake.style.animationDuration = `${animationDuration}s`;
-                snowflake.style.animationDelay = `${animationDelay}s`;
-                snowflake.style.opacity = opacity;
+                raindrop.style.left = `${left}%`;
+                raindrop.style.animationDuration = `${animationDuration}s`;
+                raindrop.style.animationDelay = `${animationDelay}s`;
+                raindrop.style.opacity = opacity;
+                raindrop.style.height = `${height}px`;
                 
-                snowContainer.appendChild(snowflake);
+                rainContainer.appendChild(raindrop);
             }
         }
 
@@ -674,7 +728,7 @@
 
          // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            createSnowflakes();
+            createRaindrops();
         });
     </script>
 </body>

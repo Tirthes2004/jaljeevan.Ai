@@ -551,3 +551,50 @@
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
+/* Enhanced message container styling */
+.message-container {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.alert-error {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    border: 1px solid #f44336;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+    border: 1px solid #ff9800;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    color: white;
+    border: 1px solid #2196f3;
+}
