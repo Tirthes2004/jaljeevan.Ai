@@ -87,7 +87,7 @@ html {
     gap: 4rem;
     align-items: center;
     position: relative;
-    left: -20px;
+    left: -40px;
 }
 
 .hero-text {
@@ -152,6 +152,7 @@ html {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-bottom: 10px;
+    border-radius: 10px;
 }
 
 .btn-primary {
@@ -179,6 +180,7 @@ html {
     background:linear-gradient(45deg, green, greenyellow); ;
     color: white;
     border: 1px solid greenyellow;
+    border-radius: 10px;
 
 }
 
@@ -237,7 +239,7 @@ html {
     justify-content: center;
     align-items: center;
     position: relative;
-    right: -30px;
+    right: 0px;
 }
 
 .floating-image {
@@ -548,7 +550,7 @@ html {
 /* Firefox Scrollbar Styling */
 .track-content {
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-blue) rgba(10, 25, 41, 0.8);
+    scrollbar-color: rgba(10, 25, 41,0.9) transparent;
 }
 
 /* Track Empty State */

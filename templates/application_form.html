@@ -499,6 +499,106 @@
             transition: all 0.3s ease;
         }
 
+        /* File Display Area Styling */
+.file-display-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 12px 15px;
+    background: rgba(10, 25, 41, 0.6);
+    border: 1px solid var(--accent-blue);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.3s ease;
+}
+
+.file-display-area.has-file {
+    background: rgba(33, 150, 243, 0.1);
+    border-color: var(--accent-teal);
+    box-shadow: 0 2px 10px rgba(0, 229, 255, 0.2);
+}
+
+.file-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    flex: 1;
+}
+
+.file-name i {
+    color: var(--accent-teal);
+    font-size: 16px;
+}
+
+.file-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.file-display-area.has-file .file-name-text {
+    color: var(--accent-teal);
+    font-weight: 600;
+}
+
+.file-clear-btn {
+    background: rgba(220, 53, 69, 0.2);
+    border: 1px solid #dc3545;
+    color: #ff6b6b;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+}
+
+.file-clear-btn:hover {
+    background: rgba(220, 53, 69, 0.4);
+    transform: scale(1.1);
+}
+
+/* File type icons based on extension */
+.file-name[data-file-type="pdf"] i {
+    color: #f40f02;
+}
+
+.file-name[data-file-type="image"] i {
+    color: #4caf50;
+}
+
+.file-name[data-file-type="document"] i {
+    color: #2196f3;
+}
+
+.file-name[data-file-type="other"] i {
+    color: var(--accent-teal);
+}
+/* File validation states */
+.file-input-container.valid .file-display-area {
+    border-color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.file-input-container.invalid .file-display-area {
+    border-color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* File drag and drop area */
+.file-display-area.drag-over {
+    background: rgba(33, 150, 243, 0.2);
+    border-color: var(--accent-teal);
+    border-style: dashed;
+    transform: scale(1.02);
+}
         .btn-home:hover {
             background: rgba(0, 229, 255, 0.1);
             transform: translateY(-2px);
@@ -551,7 +651,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Full Name *</label>
-                        <input type="text" name="full_name" class="form-control" required>
+                        <input type="text" name="full_name" class="form-control" placeholder="eg-john doe" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Mobile Number *</label>
@@ -640,24 +740,35 @@
             </div>
 
             <!-- Technical Proposal -->
-             <div class="section-header">
-                <i class="fas fa-file-pdf"></i>
-                <h4 class="mb-0">Technical Proposal</h4>
-            </div>
-            <div class="form-section">
-                <label class="form-label">Upload Calculation PDF *</label>
-                <p class="text-muted small">Upload the PDF downloaded from our Calculator</p>
-                
-                <div class="file-input-container">
-                    <input type="file" name="calculation_pdf" id="calculation_pdf" class="custom-file-input" accept=".pdf" required>
-                    <label for="calculation_pdf" class="custom-file-label">
-                        <i class="fas fa-file-upload"></i> Choose PDF File
-                        <span class="file-type-badge">PDF Only</span>
-                    </label>
-                    
-                    <div class="file-input-hint">Maximum file size: 10MB • Supported format: PDF</div>
-                </div>
-            </div>
+<div class="section-header">
+    <i class="fas fa-file-pdf"></i>
+    <h4 class="mb-0">Technical Proposal</h4>
+</div>
+<div class="form-section">
+    <label class="form-label">Upload Calculation PDF *</label>
+    <p class="text-muted small">Upload the PDF downloaded from our Calculator</p>
+    
+    <div class="file-input-container">
+        <input type="file" name="calculation_pdf" id="calculation_pdf" class="custom-file-input" accept=".pdf" required>
+        <label for="calculation_pdf" class="custom-file-label">
+            <i class="fas fa-file-upload"></i> Choose PDF File
+            <span class="file-type-badge">PDF Only</span>
+        </label>
+        
+        <!-- File name display area -->
+        <div class="file-display-area">
+            <span class="file-name" id="fileNameDisplay">
+                <i class="fas fa-file"></i>
+                <span class="file-name-text">No file chosen</span>
+            </span>
+            <button type="button" class="file-clear-btn" id="fileClearBtn" style="display: none;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="file-input-hint">Maximum file size: 10MB • Supported format: PDF</div>
+    </div>
+</div>
 
 
             <!-- Consent -->
@@ -717,6 +828,120 @@
                 rainContainer.appendChild(drop);
             }
         }
+        // File input handling
+document.getElementById('calculation_pdf').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const fileClearBtn = document.getElementById('fileClearBtn');
+    const fileDisplayArea = document.querySelector('.file-display-area');
+    
+    if (file) {
+        // Update file name display
+        document.querySelector('.file-name-text').textContent = file.name;
+        
+        // Set file type for icon
+        const fileType = getFileType(file.name);
+        fileNameDisplay.setAttribute('data-file-type', fileType);
+        
+        // Update icon based on file type
+        const fileIcon = fileNameDisplay.querySelector('i');
+        fileIcon.className = getFileIcon(fileType);
+        
+        // Show clear button and add active state
+        fileClearBtn.style.display = 'flex';
+        fileDisplayArea.classList.add('has-file');
+        
+        // Add file size information
+        const fileSize = formatFileSize(file.size);
+        const sizeElement = document.createElement('span');
+        sizeElement.className = 'file-size';
+        sizeElement.textContent = ` • ${fileSize}`;
+        sizeElement.style.color = 'var(--text-secondary)';
+        sizeElement.style.fontSize = '12px';
+        sizeElement.style.marginLeft = '8px';
+        
+        // Remove existing size element if any
+        const existingSize = fileNameDisplay.querySelector('.file-size');
+        if (existingSize) {
+            existingSize.remove();
+        }
+        
+        fileNameDisplay.appendChild(sizeElement);
+        
+    } else {
+        // Reset to default state
+        resetFileDisplay();
+    }
+});
+
+// Clear file button functionality
+document.getElementById('fileClearBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const fileInput = document.getElementById('calculation_pdf');
+    fileInput.value = '';
+    resetFileDisplay();
+});
+
+// Function to reset file display
+function resetFileDisplay() {
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const fileClearBtn = document.getElementById('fileClearBtn');
+    const fileDisplayArea = document.querySelector('.file-display-area');
+    
+    document.querySelector('.file-name-text').textContent = 'No file chosen';
+    fileNameDisplay.setAttribute('data-file-type', 'other');
+    
+    const fileIcon = fileNameDisplay.querySelector('i');
+    fileIcon.className = 'fas fa-file';
+    
+    fileClearBtn.style.display = 'none';
+    fileDisplayArea.classList.remove('has-file');
+    
+    // Remove file size element
+    const existingSize = fileNameDisplay.querySelector('.file-size');
+    if (existingSize) {
+        existingSize.remove();
+    }
+}
+
+// Helper function to determine file type
+function getFileType(fileName) {
+    const extension = fileName.split('.').pop().toLowerCase();
+    
+    if (extension === 'pdf') return 'pdf';
+    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
+    if (['doc', 'docx', 'txt', 'rtf'].includes(extension)) return 'document';
+    return 'other';
+}
+
+// Helper function to get appropriate file icon
+function getFileIcon(fileType) {
+    switch (fileType) {
+        case 'pdf': return 'fas fa-file-pdf';
+        case 'image': return 'fas fa-file-image';
+        case 'document': return 'fas fa-file-word';
+        default: return 'fas fa-file';
+    }
+}
+
+// Helper function to format file size
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+// Add click event to file display area to trigger file input
+document.querySelector('.file-display-area').addEventListener('click', function(e) {
+    if (!e.target.closest('.file-clear-btn')) {
+        document.getElementById('calculation_pdf').click();
+    }
+});
         // GPS Location Capture
         function captureLocation() {
             const statusDiv = document.getElementById('gpsStatus');
@@ -818,6 +1043,8 @@
             document.getElementById('applicationForm').style.display = 'block';
             document.getElementById('successBox').classList.remove('show');
             document.getElementById('gpsStatus').style.display = 'none';
+            // Reset file display
+    resetFileDisplay();
             window.location.reload(); // Reload to show new application in list
         }
         // Celebration effect
