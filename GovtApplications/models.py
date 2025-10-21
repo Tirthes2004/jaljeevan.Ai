@@ -58,7 +58,7 @@ class SubsidyApplication(models.Model):
     consent_given = models.BooleanField(default=False)
     
     # Decision
-    decided_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='decided_applications')
+    decided_by = models.ForeignKey('Officer', on_delete=models.SET_NULL, null=True, blank=True, related_name='decided_applications')
     decided_at = models.DateTimeField(null=True, blank=True)
     rejection_code = models.CharField(max_length=50, blank=True)
     rejection_reason = models.TextField(blank=True)
@@ -76,3 +76,15 @@ class SubsidyApplication(models.Model):
             timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
             self.application_id = f'RWH{timestamp}'
         super().save(*args, **kwargs)
+
+
+class Officer(models.Model):
+    officer_name = models.CharField(max_length=50)
+    officer_email = models.EmailField(unique=True)
+    officer_phone = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$')])
+    assigned_district = models.CharField(max_length=100)
+    govt_id = models.CharField(max_length=10, unique=True, blank=False, null=False)
+    password = models.CharField(max_length=128)
+
+    def __str__(self):
+        return f"{self.officer_name} - {self.assigned_district}"

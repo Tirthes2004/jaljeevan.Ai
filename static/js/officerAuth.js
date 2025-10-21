@@ -1,0 +1,457 @@
+// ============================================
+// OFFICER DASHBOARD - STANDALONE JS
+// Complete dashboard functionality independent of other files
+// ============================================
+
+(function() {
+    'use strict';
+
+    // ============================================
+    // MODAL CONTROL FUNCTIONS
+    // ============================================
+
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            
+            // Prevent mobile scroll
+            if ('ontouchstart' in window) {
+                document.addEventListener('touchmove', preventScroll, { passive: false });
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'auto';
+            
+            // Remove touch event listener
+            if ('ontouchstart' in window) {
+                document.removeEventListener('touchmove', preventScroll);
+            }
+            
+            // Clear messages
+            const messageContainer = modal.querySelector('.message-container');
+            if (messageContainer) {
+                messageContainer.remove();
+            }
+            
+            // Reset form
+            const form = modal.querySelector('.auth-form');
+            if (form) {
+                form.reset();
+                const button = form.querySelector('.btn-auth');
+                if (button) {
+                    resetButton(button, modalId);
+                }
+            }
+        }
+    }
+
+    function switchAuthModal(targetModalId) {
+        document.querySelectorAll('.auth-modal').forEach(modal => {
+            modal.style.display = 'none';
+        });
+        setTimeout(() => openModal(targetModalId), 300);
+    }
+
+    function preventScroll(e) {
+        e.preventDefault();
+    }
+
+    function resetButton(button, modalId) {
+        button.disabled = false;
+        if (modalId.includes('login')) {
+            button.innerHTML = '<span>Sign In</span><i class="fas fa-arrow-right"></i>';
+        } else {
+            button.innerHTML = '<span>Register Officer</span><i class="fas fa-user-check"></i>';
+        }
+    }
+
+    // ============================================
+    // MESSAGE DISPLAY FUNCTIONS
+    // ============================================
+
+    function showMessage(container, message, type) {
+        // Remove existing messages
+        const existingMessage = container.querySelector('.message-container');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message-container';
+        messageDiv.innerHTML = `
+            <div style="padding: 15px; margin: 15px 0; border-radius: 8px; 
+                        background: ${type === 'success' ? '#d4edda' : '#f8d7da'}; 
+                        color: ${type === 'success' ? '#155724' : '#721c24'}; 
+                        border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};">
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${message}
+            </div>
+        `;
+        
+        // Insert message
+        const button = container.querySelector('.btn-auth');
+        if (button) {
+            button.parentNode.insertBefore(messageDiv, button.nextSibling);
+        } else {
+            container.appendChild(messageDiv);
+        }
+        
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            if (messageDiv && messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 4000);
+    }
+
+    function setLoadingState(button, loading, text, icon = 'fas fa-spinner fa-spin') {
+        button.disabled = loading;
+        button.innerHTML = `<span>${text}</span><i class="${icon}"></i>`;
+    }
+
+    // ============================================
+    // FORM VALIDATION FUNCTIONS
+    // ============================================
+
+    function validateOfficerSignup(formData) {
+        const email = formData.get('officer_email');
+        const phone = formData.get('officer_phone');
+        const govtId = formData.get('govt_id');
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirm_password');
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return { valid: false, message: 'Please enter a valid email address' };
+        }
+        
+        // Phone validation
+        const phoneRegex = /^\d{10}$/;
+        if (!phoneRegex.test(phone)) {
+            return { valid: false, message: 'Phone number must be exactly 10 digits' };
+        }
+        
+        // Govt ID validation
+        if (govtId.length !== 10) {
+            return { valid: false, message: 'Government ID must be exactly 10 characters' };
+        }
+        
+        // Password validation
+        if (password.length < 6) {
+            return { valid: false, message: 'Password must be at least 6 characters' };
+        }
+        
+        if (password !== confirmPassword) {
+            return { valid: false, message: 'Passwords do not match' };
+        }
+        
+        return { valid: true };
+    }
+
+    function validateRequiredFields(form) {
+        const requiredFields = form.querySelectorAll('input[required]');
+        for (let field of requiredFields) {
+            if (!field.value.trim()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // ============================================
+    // FORM SUBMISSION HANDLERS
+    // ============================================
+
+    function handleOfficerAuth(form, config) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const button = form.querySelector('.btn-auth');
+            const formData = new FormData(form);
+            
+            // Validate required fields
+            if (!validateRequiredFields(form)) {
+                showMessage(form, 'Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Special validation for signup
+            if (config.isSignup) {
+                const validation = validateOfficerSignup(formData);
+                if (!validation.valid) {
+                    showMessage(form, validation.message, 'error');
+                    return;
+                }
+            }
+            
+            // Show loading state
+            setLoadingState(button, true, config.loadingText);
+            
+            try {
+                const response = await fetch(config.submitUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(form, data.message, 'success');
+                    
+                    setTimeout(() => {
+                        closeModal(config.modalId);
+                        if (data.redirect_url) {
+                            window.location.href = data.redirect_url;
+                        }
+                    }, 1500);
+                } else {
+                    showMessage(form, data.message, 'error');
+                    setLoadingState(button, false, config.defaultText, config.defaultIcon);
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showMessage(form, 'An error occurred. Please try again.', 'error');
+                setLoadingState(button, false, config.defaultText, config.defaultIcon);
+            }
+        });
+    }
+
+    // ============================================
+    // APPLICATION ACTION HANDLERS
+    // ============================================
+
+    async function viewApplication(appId) {
+        // Create modal for detailed view
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                        background: rgba(0,0,0,0.7); z-index: 9999; display: flex; 
+                        align-items: center; justify-content: center; padding: 20px;">
+                <div style="background: white; padding: 30px; border-radius: 15px; 
+                            max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <h3 style="margin: 0; color: #667eea;">
+                            <i class="fas fa-file-alt"></i> ${appId}
+                        </h3>
+                        <button onclick="this.closest('[role=dialog]').remove()" 
+                                style="border: none; background: none; font-size: 24px; 
+                                       cursor: pointer; color: #999;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                        <p style="text-align: center; color: #666;">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i><br>
+                            Loading application details...
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+        modal.setAttribute('role', 'dialog');
+        document.body.appendChild(modal);
+    }
+
+    async function approveApplication(appId) {
+        if (!confirm('Are you sure you want to approve this application?')) {
+            return;
+        }
+        
+        try {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            const response = await fetch('/officer/approve/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: 'application_id=' + encodeURIComponent(appId)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('✅ Application approved successfully!');
+                location.reload();
+            } else {
+                alert('❌ ' + (data.message || 'Failed to approve application'));
+            }
+        } catch (error) {
+            console.error('Approval error:', error);
+            alert('❌ An error occurred. Please try again.');
+        }
+    }
+
+    async function rejectApplication(appId) {
+        const reason = prompt('Enter rejection reason:');
+        if (!reason || !reason.trim()) {
+            return;
+        }
+        
+        try {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            const response = await fetch('/officer/reject/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: 'application_id=' + encodeURIComponent(appId) + '&reason=' + encodeURIComponent(reason)
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('✅ Application rejected.');
+                location.reload();
+            } else {
+                alert('❌ ' + (data.message || 'Failed to reject application'));
+            }
+        } catch (error) {
+            console.error('Rejection error:', error);
+            alert('❌ An error occurred. Please try again.');
+        }
+    }
+
+    // ============================================
+    // FILTER FUNCTIONALITY
+    // ============================================
+
+    function initFilters() {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const applicationCards = document.querySelectorAll('.application-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.textContent.trim().toLowerCase();
+                
+                // Filter applications (for now just show all)
+                // You can implement custom filtering logic here
+                applicationCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            });
+        });
+    }
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+
+    function init() {
+        // Initialize modal close buttons
+        document.querySelectorAll('.modal-backdrop, .modal-close').forEach(element => {
+            element.addEventListener('click', function(e) {
+                if (e.target === this || e.target.closest('.modal-close')) {
+                    const modal = this.closest('.auth-modal');
+                    if (modal) {
+                        closeModal(modal.id);
+                    }
+                }
+            });
+        });
+        
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.auth-modal[style*="display: flex"]').forEach(modal => {
+                    closeModal(modal.id);
+                });
+            }
+        });
+        
+        // Initialize officer registration form
+        const officerSignupForm = document.getElementById('officer-signup-form');
+        if (officerSignupForm) {
+            handleOfficerAuth(officerSignupForm, {
+                submitUrl: officerSignupForm.getAttribute('action'),
+                loadingText: 'Creating Account...',
+                defaultText: 'Register Officer',
+                defaultIcon: 'fas fa-user-check',
+                isSignup: true,
+                modalId: 'officer-signup-modal'
+            });
+        }
+        
+        // Initialize officer login form
+        const officerLoginForm = document.getElementById('officer-login-form');
+        if (officerLoginForm) {
+            handleOfficerAuth(officerLoginForm, {
+                submitUrl: officerLoginForm.getAttribute('action'),
+                loadingText: 'Signing In...',
+                defaultText: 'Sign In',
+                defaultIcon: 'fas fa-arrow-right',
+                isSignup: false,
+                modalId: 'officer-login-modal'
+            });
+        }
+        
+        // Initialize form field interactions
+        const formInputs = document.querySelectorAll('.form-group input');
+        formInputs.forEach(input => {
+            if (input.value) {
+                input.parentElement.classList.add('filled');
+            }
+            
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+                if (this.value) {
+                    this.parentElement.classList.add('filled');
+                } else {
+                    this.parentElement.classList.remove('filled');
+                }
+            });
+        });
+        
+        // Initialize filters
+        initFilters();
+    }
+
+    // ============================================
+    // EXPOSE GLOBAL FUNCTIONS
+    // ============================================
+
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.switchAuthModal = switchAuthModal;
+    window.viewApplication = viewApplication;
+    window.approveApplication = approveApplication;
+    window.rejectApplication = rejectApplication;
+
+    // ============================================
+    // START APPLICATION
+    // ============================================
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();

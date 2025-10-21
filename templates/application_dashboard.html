@@ -1,0 +1,668 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Officer Dashboard - JalJeevan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-title i {
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+
+        .dashboard-title h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .dashboard-title p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .officer-info {
+            text-align: right;
+        }
+
+        .officer-info p {
+            margin: 0;
+            color: #666;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+        }
+
+        .stat-icon.pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+
+        .stat-icon.approved {
+            background: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .stat-icon.rejected {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+        }
+
+        .stat-content h3 {
+            margin: 0;
+            font-size: 32px;
+            color: #333;
+        }
+
+        .stat-content p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .applications-table {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-header h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .filter-btn:not(.active) {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .application-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .application-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .app-id {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .app-status {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--warning-color);
+            color: #333;
+        }
+
+        .app-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-item i {
+            color: var(--primary-color);
+            width: 20px;
+        }
+
+        .detail-item strong {
+            color: #333;
+        }
+
+        .detail-item span {
+            color: #666;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-view {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-approve {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-approve:hover {
+            opacity: 0.9;
+        }
+
+        .btn-reject {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Officer Registration Modal -->
+    <div id="officer-signup-modal" class="auth-modal" role="dialog" aria-labelledby="officer-signup-title"
+        aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeModal('officer-signup-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close">
+                    <i class="fas fa-times" aria-hidden="true" onclick="closeModal('officer-signup-modal')"></i>
+                </div>
+
+                <div class="modal-header">
+                    <h2 id="officer-signup-title">Officer Registration</h2>
+                    <p>Register as a government officer to manage applications</p>
+                </div>
+
+                <form class="auth-form" id="officer-signup-form" method="POST" action="{% url 'GovtApplications:registerOfficer' %}"
+                    novalidate>
+                    {% csrf_token %}
+
+                    <!-- Officer Name -->
+                    <div class="form-group">
+                        <label for="officer-name" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="text" name="officer_name" id="officer-name" class="form-control"
+                                placeholder="Enter full name" required autocomplete="name" maxlength="50">
+                            <i class="fas fa-user-tie input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Government ID -->
+                    <div class="form-group">
+                        <label for="govt-id" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="text" name="govt_id" id="govt-id" class="form-control"
+                                placeholder="Enter government ID (10 characters)" required autocomplete="off"
+                                maxlength="10">
+                            <i class="fas fa-id-card input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Officer Email -->
+                    <div class="form-group">
+                        <label for="officer-email" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="email" name="officer_email" id="officer-email" class="form-control"
+                                placeholder="Enter official email" required autocomplete="email">
+                            <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Officer Phone -->
+                    <div class="form-group">
+                        <label for="officer-phone" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="tel" name="officer_phone" id="officer-phone" class="form-control"
+                                placeholder="Enter 10-digit phone number" required autocomplete="tel"
+                                pattern="[0-9]{10}" maxlength="10">
+                            <i class="fas fa-phone input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Assigned District -->
+                    <div class="form-group">
+                        <label for="assigned-district" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="text" name="assigned_district" id="assigned-district" class="form-control"
+                                placeholder="Enter assigned district" required autocomplete="off" maxlength="100">
+                            <i class="fas fa-map-marker-alt input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="officer-password" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="password" name="password" id="officer-password" class="form-control"
+                                placeholder="Create password" required autocomplete="new-password">
+                            <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label for="officer-confirm-password" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="password" name="confirm_password" id="officer-confirm-password"
+                                class="form-control" placeholder="Confirm password" required
+                                autocomplete="new-password">
+                            <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-auth">
+                        <span>Register Officer</span>
+                        <i class="fas fa-user-check" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    Already registered?
+                    <a href="#" onclick="switchAuthModal('officer-login-modal')" class="auth-link">Officer Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Officer Login Modal -->
+    <div id="officer-login-modal" class="auth-modal" role="dialog" aria-labelledby="officer-login-title"
+        aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeModal('officer-login-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close">
+                    <i class="fas fa-times" aria-hidden="true" onclick="closeModal('officer-login-modal')"></i>
+                </div>
+
+                <div class="modal-header">
+                    <h2 id="officer-login-title">Officer Login</h2>
+                    <p>Access the application management dashboard</p>
+                </div>
+
+                <form class="auth-form" id="officer-login-form" method="POST" action="{% url 'GovtApplications:loginOfficer' %}"
+                    novalidate>
+                    {% csrf_token %}
+
+                    <!-- Officer Name -->
+                    <div class="form-group">
+                        <label for="officer-login-name" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="text" name="officer_name" id="officer-login-name" class="form-control"
+                                placeholder="Enter your name" required autocomplete="name">
+                            <i class="fas fa-user-tie input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Government ID -->
+                    <div class="form-group">
+                        <label for="officer-login-govt-id" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="text" name="govt_id" id="officer-login-govt-id" class="form-control"
+                                placeholder="Enter government ID" required autocomplete="off">
+                            <i class="fas fa-id-card input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="officer-login-password" class="form-label"></label>
+                        <div class="input-wrapper">
+                            <input type="password" name="password" id="officer-login-password" class="form-control"
+                                placeholder="Enter password" required autocomplete="current-password">
+                            <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember_me">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-auth">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    Not registered yet?
+                    <a href="#" onclick="switchAuthModal('officer-signup-modal')" class="auth-link">Register as
+                        Officer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fas fa-tachometer-alt"></i>
+                <div>
+                    <h1>Officer Dashboard</h1>
+                    <p>Manage Rainwater Harvesting Subsidy Applications</p>
+                </div>
+            </div>
+            <div class="officer-info">
+                <p><strong>{{ request.user.email }}</strong></p>
+                <p><small>District Officer</small></p>
+                <a href="{% url 'logoutUser' %}" class="btn btn-sm btn-outline-danger mt-2">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>{{ data|length }}</h3>
+                    <p>Pending Applications</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon approved">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>0</h3>
+                    <p>Approved This Month</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon rejected">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3>0</h3>
+                    <p>Rejected This Month</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications Table -->
+        <div class="applications-table">
+            <div class="table-header">
+                <h3><i class="fas fa-list"></i> Submitted Applications</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">New</button>
+                    <button class="filter-btn">Urgent</button>
+                </div>
+            </div>
+
+            {% if data %}
+            {% for app in data %}
+            <div class="application-card">
+                <div class="app-header">
+                    <div>
+                        <div class="app-id">
+                            <i class="fas fa-file-alt"></i> {{ app.application_id }}
+                        </div>
+                        <div class="mt-2">
+                            {% if app.geo_latitude and app.geo_longitude %}
+                            <span class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i>
+                                GPS Verified (±{{ app.gps_accuracy_meters|floatformat:0 }}m)
+                            </span>
+                            {% else %}
+                            <span class="location-badge">
+                                <i class="fas fa-map-marker"></i>
+                                Manual Location
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="app-status">
+                        <i class="fas fa-paper-plane"></i> SUBMITTED
+                    </span>
+                </div>
+
+                <div class="app-details">
+                    <div class="detail-item">
+                        <i class="fas fa-user"></i>
+                        <div>
+                            <strong>{{ app.full_name }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>{{ app.email }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span>{{ app.mobile }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <i class="fas fa-id-card"></i>
+                        <span>{{ app.aadhar_or_id }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ app.district }}, {{ app.pincode }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                        <i class="far fa-clock"></i>
+                        <span>{{ app.created_at }}</span>
+                    </div>
+                </div>
+
+                <div class="detail-item" style="margin-bottom: 15px;">
+                    <i class="fas fa-home"></i>
+                    <span>{{ app.property_address }}</span>
+                </div>
+
+                <div class="app-actions">
+                    <button class="btn-action btn-view" onclick="viewApplication('{{ app.application_id }}')">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+
+                    {% if app.calculation_pdf_url %}
+                    <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view">
+                        <i class="fas fa-file-pdf"></i> View PDF
+                    </a>
+                    {% endif %}
+
+                    <button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+
+                    <button class="btn-action btn-reject" onclick="rejectApplication('{{ app.application_id }}')">
+                        <i class="fas fa-times"></i> Reject
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h4>No Pending Applications</h4>
+                <p>There are no submitted applications for your district at this time.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function viewApplication(appId) {
+            alert('Viewing application: ' + appId);
+            // TODO: Open modal or navigate to detail page
+        }
+
+        function approveApplication(appId) {
+            if (confirm('Are you sure you want to approve this application?')) {
+                // TODO: Send approval request to backend
+                alert('Application ' + appId + ' approved!');
+            }
+        }
+
+        function rejectApplication(appId) {
+            const reason = prompt('Enter rejection reason:');
+            if (reason) {
+                // TODO: Send rejection request to backend
+                alert('Application ' + appId + ' rejected. Reason: ' + reason);
+            }
+        }
+    </script>
+    <script src="{% static 'js/officerAuth.js' %}"></script>
+</body>
+
+</html>

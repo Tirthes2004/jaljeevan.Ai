@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SubsidyApplication
+from .models import *
 
 # Register your models here.
 
@@ -24,3 +24,8 @@ class SubsidyApplicationAdmin(admin.ModelAdmin):
         queryset.update(status='REJECTED', decided_by=request.user, decided_at=timezone.now())
         self.message_user(request, f'{queryset.count()} applications rejected')
     reject_applications.short_description = 'Reject selected'
+
+class OfficerAdmin(admin.ModelAdmin):
+    list_display = ('officer_name', 'officer_email', 'assigned_district', 'govt_id')
+    search_fields = ('officer_name', 'officer_email', 'govt_id')
+    list_filter = ('assigned_district',)
