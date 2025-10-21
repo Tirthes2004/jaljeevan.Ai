@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'chatbot',
     'vendorRegistration',
     'translations',
+    'GovtApplications',
 ]
 
 MIDDLEWARE = [
