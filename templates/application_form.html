@@ -150,6 +150,10 @@
             <p class="mb-3">Your Application ID: <strong id="successAppId"></strong></p>
             <p>Status: <span class="status-badge status-SUBMITTED">SUBMITTED</span></p>
             <button onclick="resetForm()" class="btn btn-primary mt-3">Submit Another Application</button>
+            <button onclick="window.location.href='{% url 'pages:home' %}'" class="btn btn-primary mt-3">
+                Back to home
+            </button>
+
         </div>
 
         <!-- Alert Box -->
