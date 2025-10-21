@@ -284,38 +284,41 @@
                         <a href="{% url 'GovtApplications:application_form' %}" class="btn-secondary">
                             <span>Apply Now</span>
                         </a>
+                        <button onclick="openTrackModal()" class="btn-secondary" type="button" style="border: none;">
+                            <i class="fas fa-search"></i> Track Application
+                        </button>
                         {% else %}
                         <a class="btn btn-login sidebar-btn" onclick="openModal('login-modal'); closeSidebar();" type="button">
                             <span>Apply Now</span>
                         </a>
                         {% endif %}
                                <!-- Track Applications Modal -->
-<div class="modal fade" id="trackModal" tabindex="-1" style="display: none;">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="fas fa-search"></i> Track My Applications</h5>
-                <button type="button" class="btn-close btn-close-white" onclick="closeTrackModal()"></button>
-            </div>
-            <div class="modal-body">
-                <div id="trackLoadingDiv" class="text-center py-5">
-                    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
-                    <p class="mt-3">Loading applications...</p>
-                </div>
-                
-                <div id="trackContentDiv" style="display: none;">
-                    <div id="applicationsListDiv"></div>
-                </div>
-                
-                <div id="trackEmptyDiv" class="text-center py-5" style="display: none;">
-                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                    <h5>No Applications Found</h5>
-                    <p class="text-muted">You haven't submitted any applications yet.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                        <div class="modal fade" id="trackModal" tabindex="-1" style="display: none;">
+                            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title"><i class="fas fa-search"></i> Track My Applications</h5>
+                                        <button type="button" class="btn-close btn-close-white" onclick="closeTrackModal()"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="trackLoadingDiv" class="text-center py-5">
+                                            <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+                                            <p class="mt-3">Loading applications...</p>
+                                        </div>
+                                        
+                                        <div id="trackContentDiv" style="display: none;">
+                                            <div id="applicationsListDiv"></div>
+                                        </div>
+                                        
+                                        <div id="trackEmptyDiv" class="text-center py-5" style="display: none;">
+                                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                            <h5>No Applications Found</h5>
+                                            <p class="text-muted">You haven't submitted any applications yet.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
