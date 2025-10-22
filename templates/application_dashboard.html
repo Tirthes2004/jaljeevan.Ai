@@ -301,10 +301,21 @@
             color: var(--primary-color);
             font-weight: 600;
         }
+
+        .btn-under-review {
+    background: #17a2b8;  /* Teal/cyan color */
+    color: white;
+}
+
+.btn-under-review:hover {
+    opacity: 0.9;
+}
+
     </style>
 </head>
 
 <body>
+    {% csrf_token %}
     <!-- Officer Registration Modal -->
     <div id="officer-signup-modal" class="auth-modal" role="dialog" aria-labelledby="officer-signup-title"
         aria-hidden="true">
@@ -628,6 +639,12 @@
         </p>
     {% endif %}
 </div>
+
+{% if app.status != 'UNDER_REVIEW' %}
+    <button class="btn-action btn-under-review" onclick="underReviewApplication('{{ app.application_id }}')">
+        <i class="fas fa-check"></i> Under Review
+    </button>
+{% endif %}
 <button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
     <i class="fas fa-check"></i> Approve
 </button>

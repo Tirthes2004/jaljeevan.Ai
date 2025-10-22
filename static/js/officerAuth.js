@@ -325,21 +325,28 @@
     document.body.appendChild(modal);
 }
 
-  async function approveApplication(appId) {
+async function approveApplication(appId) {
     if (!confirm('Are you sure you want to approve this application?')) {
         return;
     }
     
     try {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Get CSRF token from cookie or meta tag
+        const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
         
-        const response = await fetch(`/officer/approve/${appId}/`, {
+        if (!csrfToken) {
+            alert('❌ Security token missing. Please refresh the page.');
+            return;
+        }
+        
+        const response = await fetch('/officer/approve/', {  // ✅ Changed from /api/approve/
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken,
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: 'application_id=' + encodeURIComponent(appId)
         });
         
         const data = await response.json();
@@ -363,16 +370,22 @@ async function rejectApplication(appId) {
     }
     
     try {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // Get CSRF token from cookie or meta tag
+        const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
         
-        const response = await fetch('/officer/reject/' + encodeURIComponent(appId) + '/', {
+        if (!csrfToken) {
+            alert('❌ Security token missing. Please refresh the page.');
+            return;
+        }
+        
+        const response = await fetch('/officer/reject/', {  // ✅ Changed from /api/reject/
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken,
                 'X-Requested-With': 'XMLHttpRequest',
             },
-            body: 'reason=' + encodeURIComponent(reason)
+            body: 'application_id=' + encodeURIComponent(appId) + '&reason=' + encodeURIComponent(reason)
         });
         
         const data = await response.json();
@@ -387,6 +400,60 @@ async function rejectApplication(appId) {
         console.error('Rejection error:', error);
         alert('❌ An error occurred. Please try again.');
     }
+}
+
+async function underReviewApplication(appId) {
+    if (!confirm('Are you sure you want to mark this application as under review?')) {
+        return;
+    }
+
+    try {
+        // Get CSRF token from cookie or meta tag
+        const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        if (!csrfToken) {
+            alert('❌ Security token missing. Please refresh the page.');
+            return;
+        }
+
+        const response = await fetch('/officer/under-review/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: 'application_id=' + encodeURIComponent(appId)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('✅ Application marked as under review.');
+            location.reload();
+        } else {
+            alert('❌ ' + (data.message || 'Failed to mark application as under review'));
+        }
+    } catch (error) {
+        console.error('Under review error:', error);
+        alert('❌ An error occurred. Please try again.');
+    }
+}
+
+// Helper function to get CSRF token from cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 
@@ -501,7 +568,7 @@ async function rejectApplication(appId) {
     window.viewApplication = viewApplication;
     window.approveApplication = approveApplication;
     window.rejectApplication = rejectApplication;
-
+    window.underReviewApplication = underReviewApplication; 
     // ============================================
     // START APPLICATION
     // ============================================
