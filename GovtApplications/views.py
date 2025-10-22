@@ -48,7 +48,7 @@ def submit_application(request):
             account_number=request.POST.get('account_number'),
             ifsc_code=request.POST.get('ifsc_code'),
             property_address=request.POST.get('property_address'),
-            district=request.POST.get('district'),
+            district=request.POST.get('district').upper(),
             pincode=request.POST.get('pincode'),
             geo_latitude=request.POST.get('geo_latitude') or None,
             geo_longitude=request.POST.get('geo_longitude') or None,
@@ -178,7 +178,7 @@ def registerOfficer(request):
     govt_id = request.POST.get('govt_id')
     officer_email = request.POST.get('officer_email')
     officer_phone = request.POST.get('officer_phone')
-    assigned_district = request.POST.get('assigned_district')
+    assigned_district = request.POST.get('assigned_district').upper()
     password = request.POST.get('password')
     confirm_password = request.POST.get('confirm_password')
     
@@ -223,7 +223,7 @@ def registerOfficer(request):
         return JsonResponse({
             'success': True,
             'message': 'Officer account created successfully! Please login.',
-            'redirect_url': '/'
+            'redirect_url': '/officer/'
         })
     except Exception as e:
         return JsonResponse({
