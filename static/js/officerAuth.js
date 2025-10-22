@@ -265,37 +265,65 @@
     // APPLICATION ACTION HANDLERS
     // ============================================
 
-    async function viewApplication(appId) {
-        // Create modal for detailed view
-        const modal = document.createElement('div');
-        modal.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-                        background: rgba(0,0,0,0.7); z-index: 9999; display: flex; 
-                        align-items: center; justify-content: center; padding: 20px;">
-                <div style="background: white; padding: 30px; border-radius: 15px; 
-                            max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                        <h3 style="margin: 0; color: #667eea;">
-                            <i class="fas fa-file-alt"></i> ${appId}
-                        </h3>
-                        <button onclick="this.closest('[role=dialog]').remove()" 
-                                style="border: none; background: none; font-size: 24px; 
-                                       cursor: pointer; color: #999;">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
-                        <p style="text-align: center; color: #666;">
-                            <i class="fas fa-spinner fa-spin fa-2x"></i><br>
-                            Loading application details...
-                        </p>
-                    </div>
+    function viewApplication(appId) {
+    // Get the hidden details div
+    const detailsDiv = document.getElementById('applicationDetails_' + appId);
+    
+    if (!detailsDiv) {
+        alert('Application details not found!');
+        return;
+    }
+    
+    // Get the content from hidden div
+    const detailsContent = detailsDiv.innerHTML;
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                    background: rgba(0,0,0,0.8); z-index: 99999; display: flex; 
+                    align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: white; padding: 30px; border-radius: 15px; 
+                        max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; color: #667eea; font-size: 24px;">
+                        <i class="fas fa-file-alt"></i> Application: ${appId}
+                    </h3>
+                    <button onclick="this.closest('div[role=dialog]').remove()" 
+                            style="border: none; background: none; font-size: 28px; 
+                                   cursor: pointer; color: #999; transition: color 0.3s;"
+                            onmouseover="this.style.color='#dc3545'" 
+                            onmouseout="this.style.color='#999'">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    ${detailsContent}
                 </div>
             </div>
-        `;
-        modal.setAttribute('role', 'dialog');
-        document.body.appendChild(modal);
-    }
+        </div>
+    `;
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    
+    // Close modal when clicking backdrop
+    modal.querySelector('div[style*="background: rgba"]').addEventListener('click', function(e) {
+        if (e.target === this) {
+            modal.remove();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function closeOnEscape(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', closeOnEscape);
+        }
+    });
+    
+    document.body.appendChild(modal);
+}
 
     async function approveApplication(appId) {
         if (!confirm('Are you sure you want to approve this application?')) {
@@ -305,7 +333,7 @@
         try {
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             
-            const response = await fetch('/officer/approve/', {
+            const response = await fetch(`/officer/approve/${appId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

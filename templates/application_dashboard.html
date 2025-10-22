@@ -248,6 +248,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
 
         .btn-view {
@@ -323,7 +324,6 @@
                     novalidate>
                     {% csrf_token %}
 
-                    <!-- Officer Name -->
                     <div class="form-group">
                         <label for="officer-name" class="form-label"></label>
                         <div class="input-wrapper">
@@ -333,7 +333,6 @@
                         </div>
                     </div>
 
-                    <!-- Government ID -->
                     <div class="form-group">
                         <label for="govt-id" class="form-label"></label>
                         <div class="input-wrapper">
@@ -344,7 +343,6 @@
                         </div>
                     </div>
 
-                    <!-- Officer Email -->
                     <div class="form-group">
                         <label for="officer-email" class="form-label"></label>
                         <div class="input-wrapper">
@@ -354,7 +352,6 @@
                         </div>
                     </div>
 
-                    <!-- Officer Phone -->
                     <div class="form-group">
                         <label for="officer-phone" class="form-label"></label>
                         <div class="input-wrapper">
@@ -365,7 +362,6 @@
                         </div>
                     </div>
 
-                    <!-- Assigned District -->
                     <div class="form-group">
                         <label for="assigned-district" class="form-label"></label>
                         <div class="input-wrapper">
@@ -375,7 +371,6 @@
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div class="form-group">
                         <label for="officer-password" class="form-label"></label>
                         <div class="input-wrapper">
@@ -385,7 +380,6 @@
                         </div>
                     </div>
 
-                    <!-- Confirm Password -->
                     <div class="form-group">
                         <label for="officer-confirm-password" class="form-label"></label>
                         <div class="input-wrapper">
@@ -429,7 +423,6 @@
                     novalidate>
                     {% csrf_token %}
 
-                    <!-- Officer Name -->
                     <div class="form-group">
                         <label for="officer-login-name" class="form-label"></label>
                         <div class="input-wrapper">
@@ -439,7 +432,6 @@
                         </div>
                     </div>
 
-                    <!-- Government ID -->
                     <div class="form-group">
                         <label for="officer-login-govt-id" class="form-label"></label>
                         <div class="input-wrapper">
@@ -449,7 +441,6 @@
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div class="form-group">
                         <label for="officer-login-password" class="form-label"></label>
                         <div class="input-wrapper">
@@ -494,7 +485,6 @@
                 </div>
             </div>
             {% if request.session.is_officer %}
-            <!-- Logged in officer -->
             <div class="officer-info">
                 <p><strong>{{ request.session.officer_email }}</strong></p>
                 <p><small>District Officer - {{ request.session.officer_name }}</small></p>
@@ -503,7 +493,6 @@
                 </button>
             </div>
             {% else %}
-            <!-- Not logged in - show login button -->
             <div class="officer-info">
                 <p><strong>Guest</strong></p>
                 <p><small>Please login to continue</small></p>
@@ -589,9 +578,7 @@
                 <div class="app-details">
                     <div class="detail-item">
                         <i class="fas fa-user"></i>
-                        <div>
-                            <strong>{{ app.full_name }}</strong>
-                        </div>
+                        <div><strong>{{ app.full_name }}</strong></div>
                     </div>
 
                     <div class="detail-item">
@@ -630,11 +617,17 @@
                         <i class="fas fa-eye"></i> View Details
                     </button>
 
-                    {% if app.calculation_pdf_url %}
-                    <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view">
-                        <i class="fas fa-file-pdf"></i> View PDF
-                    </a>
-                    {% endif %}
+                    <div style="margin-top: 15px;">
+    {% if app.calculation_pdf_url %}
+        <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view" style="display: inline-flex;">
+            <i class="fas fa-file-pdf"></i> View Calculation PDF
+        </a>
+    {% else %}
+        <p style="color: #999; font-style: italic;">
+            <i class="fas fa-info-circle"></i> No calculation PDF available
+        </p>
+    {% endif %}
+</div>
 
                     <button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
                         <i class="fas fa-check"></i> Approve
@@ -645,6 +638,62 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Hidden details for modal -->
+            <div id="applicationDetails_{{ app.application_id }}" style="display: none;">
+                <h4 style="color: #667eea; margin-bottom: 15px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
+                    <i class="fas fa-info-circle"></i> Full Application Details
+                </h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <p><strong><i class="fas fa-user"></i> Applicant Name:</strong><br>{{ app.full_name }}</p>
+                    </div>
+                    <div>
+                        <p><strong><i class="fas fa-envelope"></i> Email:</strong><br>{{ app.email }}</p>
+                    </div>
+                    <div>
+                        <p><strong><i class="fas fa-phone"></i> Mobile Number:</strong><br>{{ app.mobile }}</p>
+                    </div>
+                    <div>
+                        <p><strong><i class="fas fa-id-card"></i> Aadhar/ID:</strong><br>{{ app.aadhar_or_id }}</p>
+                    </div>
+                    <div>
+                        <p><strong><i class="fas fa-map-marker-alt"></i> District:</strong><br>{{ app.district }}</p>
+                    </div>
+                    <div>
+                        <p><strong><i class="fas fa-map-pin"></i> Pincode:</strong><br>{{ app.pincode }}</p>
+                    </div>
+                    
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <p><strong><i class="fas fa-home"></i> Property Address:</strong><br>{{ app.property_address }}</p>
+                </div>
+
+                {% if app.calculation_pdf_url %}
+                <div style="margin-top: 15px;">
+                    <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view" style="display: inline-flex;">
+                        <i class="fas fa-file-pdf"></i> View Calculation PDF
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if app.geo_latitude and app.geo_longitude %}
+                <div style="margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 5px;">
+                    <p><strong><i class="fas fa-map-marked-alt"></i> GPS Coordinates:</strong><br>
+                    Latitude: {{ app.geo_latitude }}, Longitude: {{ app.geo_longitude }}</p>
+                    <p><strong><i class="fas fa-crosshairs"></i> GPS Accuracy:</strong> ±{{ app.gps_accuracy_meters|floatformat:0 }} meters</p>
+                </div>
+                {% endif %}
+                
+                <div style="margin-top: 15px;">
+                    <p><strong><i class="far fa-clock"></i> Submitted At:</strong><br>{{ app.created_at }}</p>
+                </div>
+                
+                
+            </div>
+
             {% endfor %}
             {% else %}
             <div class="empty-state">
@@ -674,7 +723,7 @@
         })();
     </script>
 
-       <!-- Handle logout -->
+    <!-- Handle logout -->
     <script>
         function handleLogout(event) {
             event.preventDefault();
@@ -707,11 +756,7 @@
 
     <!-- CRITICAL FIX: Force backdrop fix to work -->
     <script>
-        // Wait for page to fully load
         window.addEventListener('load', function() {
-            // Override closeModal with fixed version
-            var originalCloseModal = window.closeModal;
-            
             window.closeModal = function(modalId) {
                 const modal = document.getElementById(modalId);
                 if (modal) {
@@ -719,24 +764,20 @@
                     modal.setAttribute('aria-hidden', 'true');
                     document.body.style.overflow = 'auto';
                     
-                    // CRITICAL: Disable ALL backdrops
                     const allBackdrops = document.querySelectorAll('.modal-backdrop');
                     allBackdrops.forEach(function(backdrop) {
                         backdrop.style.pointerEvents = 'none';
                         backdrop.style.display = 'none';
                     });
                     
-                    // Reset form
                     const form = modal.querySelector('.auth-form');
                     if (form) form.reset();
                     
-                    // Clear messages
                     const messageContainer = modal.querySelector('.message-container');
                     if (messageContainer) messageContainer.remove();
                 }
             };
             
-            // Override openModal to re-enable backdrop
             window.openModal = function(modalId) {
                 const modal = document.getElementById(modalId);
                 if (modal) {
@@ -744,7 +785,6 @@
                     modal.setAttribute('aria-hidden', 'false');
                     document.body.style.overflow = 'hidden';
                     
-                    // Re-enable THIS modal's backdrop
                     const backdrop = modal.querySelector('.modal-backdrop');
                     if (backdrop) {
                         backdrop.style.pointerEvents = 'auto';

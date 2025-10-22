@@ -13,4 +13,7 @@ urlpatterns = [
 
     # Track applications at /applications/track/
     path('track/', views.track_applications, name='track_applications'),
+
+
+
 ]

@@ -7,6 +7,9 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth import logout
 from functools import wraps
 from .models import *
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils import timezone
 
 # ============================================
 # CUSTOM DECORATOR FOR OFFICER AUTHENTICATION
@@ -290,6 +293,7 @@ def application_dashboard(request):
             'geo_latitude': app.geo_latitude,
             'geo_longitude': app.geo_longitude,
             'gps_accuracy_meters': app.gps_accuracy_meters,
+            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
         } for app in applications]
     
     context = {
@@ -351,3 +355,17 @@ def reject_application(request):
             'success': False,
             'message': 'Application not found'
         }, status=404)
+
+
+
+@require_POST
+def approve_application(request, application_id):
+    try:
+        app = SubsidyApplication.objects.get(pk=application_id)
+        app.status = 'approved'
+        app.approved_at = timezone.now()  # optional: track approval time
+        app.save()
+        return JsonResponse({'success': True})
+    except SubsidyApplication.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Application not found'}, status=404)
+
