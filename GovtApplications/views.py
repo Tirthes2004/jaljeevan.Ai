@@ -307,16 +307,13 @@ def application_dashboard(request):
 # ============================================
 
 @officer_login_required
-@csrf_exempt
-def approve_application(request):
+def approve_application(request, appId):
     """Officers - Approve an application"""
     if request.method != 'POST':
         return JsonResponse({'success': False, 'message': 'POST required'}, status=400)
     
-    application_id = request.POST.get('application_id')
-    
     try:
-        application = SubsidyApplication.objects.get(application_id=application_id)
+        application = SubsidyApplication.objects.get(application_id=appId)
         application.status = 'APPROVED'
         application.save()
         
@@ -330,9 +327,9 @@ def approve_application(request):
             'message': 'Application not found'
         }, status=404)
 
+
 @officer_login_required
-@csrf_exempt
-def reject_application(request):
+def reject_application(request,appId):
     """Officers - Reject an application"""
     if request.method != 'POST':
         return JsonResponse({'success': False, 'message': 'POST required'}, status=400)
@@ -355,17 +352,4 @@ def reject_application(request):
             'success': False,
             'message': 'Application not found'
         }, status=404)
-
-
-
-@require_POST
-def approve_application(request, application_id):
-    try:
-        app = SubsidyApplication.objects.get(pk=application_id)
-        app.status = 'approved'
-        app.approved_at = timezone.now()  # optional: track approval time
-        app.save()
-        return JsonResponse({'success': True})
-    except SubsidyApplication.DoesNotExist:
-        return JsonResponse({'success': False, 'error': 'Application not found'}, status=404)
 

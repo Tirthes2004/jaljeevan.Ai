@@ -628,12 +628,13 @@
         </p>
     {% endif %}
 </div>
+<button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
+    <i class="fas fa-check"></i> Approve
+</button>
 
-                    <button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
-                        <i class="fas fa-check"></i> Approve
-                    </button>
 
-                    <button class="btn-action btn-reject" onclick="rejectApplication('{{ app.application_id }}')">
+
+                    <button class="btn-action btn-reject"  onclick="rejectApplication('{{ app.application_id }}')">
                         <i class="fas fa-times"></i> Reject
                     </button>
                 </div>

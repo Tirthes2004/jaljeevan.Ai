@@ -325,70 +325,70 @@
     document.body.appendChild(modal);
 }
 
-    async function approveApplication(appId) {
-        if (!confirm('Are you sure you want to approve this application?')) {
-            return;
-        }
-        
-        try {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
-            const response = await fetch(`/officer/approve/${appId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: 'application_id=' + encodeURIComponent(appId)
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                alert('✅ Application approved successfully!');
-                location.reload();
-            } else {
-                alert('❌ ' + (data.message || 'Failed to approve application'));
-            }
-        } catch (error) {
-            console.error('Approval error:', error);
-            alert('❌ An error occurred. Please try again.');
-        }
+  async function approveApplication(appId) {
+    if (!confirm('Are you sure you want to approve this application?')) {
+        return;
     }
+    
+    try {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const response = await fetch(`/officer/approve/${appId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ Application approved successfully!');
+            location.reload();
+        } else {
+            alert('❌ ' + (data.message || 'Failed to approve application'));
+        }
+    } catch (error) {
+        console.error('Approval error:', error);
+        alert('❌ An error occurred. Please try again.');
+    }
+}
 
-    async function rejectApplication(appId) {
-        const reason = prompt('Enter rejection reason:');
-        if (!reason || !reason.trim()) {
-            return;
-        }
-        
-        try {
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
-            const response = await fetch('/officer/reject/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': csrfToken,
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                body: 'application_id=' + encodeURIComponent(appId) + '&reason=' + encodeURIComponent(reason)
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                alert('✅ Application rejected.');
-                location.reload();
-            } else {
-                alert('❌ ' + (data.message || 'Failed to reject application'));
-            }
-        } catch (error) {
-            console.error('Rejection error:', error);
-            alert('❌ An error occurred. Please try again.');
-        }
+async function rejectApplication(appId) {
+    const reason = prompt('Enter rejection reason:');
+    if (!reason || !reason.trim()) {
+        return;
     }
+    
+    try {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        const response = await fetch('/officer/reject/' + encodeURIComponent(appId) + '/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: 'reason=' + encodeURIComponent(reason)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ Application rejected.');
+            location.reload();
+        } else {
+            alert('❌ ' + (data.message || 'Failed to reject application'));
+        }
+    } catch (error) {
+        console.error('Rejection error:', error);
+        alert('❌ An error occurred. Please try again.');
+    }
+}
+
 
     // ============================================
     // FILTER FUNCTIONALITY
