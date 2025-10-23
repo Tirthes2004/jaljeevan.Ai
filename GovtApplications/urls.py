@@ -18,8 +18,8 @@ urlpatterns = [
     path('logout/', views.logoutOfficer, name='logout'),
 
     # Officers - Approve/Reject applications
-    path('approve/<str:appId>', views.approve_application, name='approve'),
-    path('reject/<str:appId>', views.reject_application, name='reject'),
-        
+    path('approve/', views.approve_application, name='approve'),
+    path('reject/', views.reject_application, name='reject'),
+    path('under-review/', views.under_review_application, name='under_review'),
 
 ]

@@ -1,7 +1,18 @@
 /* ============================================
    OFFICER AUTHENTICATION MODAL STYLES
-   Complete CSS for login/register modals
+   Updated to match home.css theme
    ============================================ */
+
+:root {
+    --primary-dark: #0a1929;
+    --primary-medium: #0d2337;
+    --primary-light: #143d66;
+    --accent-blue: #2196f3;
+    --accent-teal: #00e5ff;
+    --text-primary: #e6f7ff;
+    --text-secondary: #b3e0ff;
+    --glow-color: rgba(33, 150, 243, 0.6);
+}
 
 /* Modal Container - Hidden by default */
 .auth-modal {
@@ -61,11 +72,13 @@
 
 /* Modal card */
 .modal-card {
-    background: white;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 50%, var(--primary-light) 100%);
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     position: relative;
+    border: 1px solid var(--accent-blue);
+    color: var(--text-primary);
 }
 
 /* Close button */
@@ -81,38 +94,42 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
+    border: 1px solid var(--accent-teal);
 }
 
 .modal-close:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 229, 255, 0.2);
     transform: rotate(90deg);
 }
 
 .modal-close i {
     font-size: 18px;
-    color: #666;
+    color: var(--accent-teal);
 }
 
 /* Modal header */
 .modal-header {
     padding: 40px 40px 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%);
+    color: var(--primary-dark);
     text-align: center;
+    position: relative;
 }
 
 .modal-header h2 {
     margin: 0 0 10px;
     font-size: 28px;
     font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .modal-header p {
     margin: 0;
     font-size: 15px;
     opacity: 0.9;
+    color: var(--primary-dark);
 }
 
 /* Form styling */
@@ -130,7 +147,7 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-primary);
     font-size: 14px;
 }
 
@@ -145,29 +162,32 @@
 .form-control {
     width: 100%;
     padding: 14px 16px 14px 48px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid rgba(33, 150, 243, 0.3);
     border-radius: 12px;
     font-size: 15px;
     transition: all 0.3s ease;
-    background: white;
-    color: #333;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    backdrop-filter: blur(10px);
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: var(--accent-teal);
+    box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .form-control::placeholder {
-    color: #999;
+    color: var(--text-secondary);
+    opacity: 0.7;
 }
 
 /* Input icons */
 .input-icon {
     position: absolute;
     left: 16px;
-    color: #667eea;
+    color: var(--accent-teal);
     font-size: 16px;
     pointer-events: none;
 }
@@ -187,6 +207,7 @@
     align-items: center;
     cursor: pointer;
     user-select: none;
+    color: var(--text-primary);
 }
 
 .remember-me input[type="checkbox"] {
@@ -194,23 +215,19 @@
     height: 18px;
     margin-right: 8px;
     cursor: pointer;
-    accent-color: #667eea;
-}
-
-.remember-me .checkmark {
-    margin-left: 5px;
+    accent-color: var(--accent-teal);
 }
 
 /* Forgot password link */
 .forgot-password {
-    color: #667eea;
+    color: var(--accent-teal);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-    color: #764ba2;
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
@@ -218,8 +235,8 @@
 .btn-auth {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
+    color: var(--primary-dark);
     border: none;
     border-radius: 12px;
     font-size: 16px;
@@ -230,12 +247,13 @@
     justify-content: center;
     gap: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+    font-family: 'Exo 2', sans-serif;
 }
 
 .btn-auth:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
 }
 
 .btn-auth:active {
@@ -250,6 +268,11 @@
 
 .btn-auth i {
     font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.btn-auth:hover i {
+    transform: translateX(3px);
 }
 
 /* Auth switch (login/register toggle) */
@@ -257,11 +280,11 @@
     text-align: center;
     padding: 20px 40px 40px;
     font-size: 14px;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .auth-link {
-    color: #667eea;
+    color: var(--accent-teal);
     text-decoration: none;
     font-weight: 700;
     margin-left: 5px;
@@ -269,7 +292,7 @@
 }
 
 .auth-link:hover {
-    color: #764ba2;
+    color: var(--text-primary);
     text-decoration: underline;
 }
 
@@ -292,11 +315,11 @@
 
 /* Filled state for inputs */
 .form-group.filled .form-label {
-    color: #667eea;
+    color: var(--accent-teal);
 }
 
 .form-group.focused .form-control {
-    border-color: #667eea;
+    border-color: var(--accent-teal);
 }
 
 /* Mobile responsiveness */
@@ -347,12 +370,12 @@
 }
 
 .modal-container::-webkit-scrollbar-thumb {
-    background: rgba(102, 126, 234, 0.3);
+    background: rgba(0, 229, 255, 0.3);
     border-radius: 3px;
 }
 
 .modal-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(102, 126, 234, 0.5);
+    background: rgba(0, 229, 255, 0.5);
 }
 
 /* Prevent body scroll when modal is open */

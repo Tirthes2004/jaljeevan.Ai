@@ -339,7 +339,7 @@ def application_dashboard(request):
         
         # Get applications for officer's district
         applications = SubsidyApplication.objects.filter(
-            status='SUBMITTED',
+            status__in=['SUBMITTED', 'UNDER_REVIEW'],
             district=officer_district
         )
         
@@ -373,14 +373,33 @@ def application_dashboard(request):
 # OFFICER PORTAL - APPLICATION ACTIONS
 # ============================================
 
-@officer_login_required
-def approve_application(request, appId):
+# ============================================
+# OFFICER PORTAL - APPLICATION ACTIONS
+# ============================================
+
+@csrf_exempt
+@require_POST
+def approve_application(request):
     """Officers - Approve an application"""
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'message': 'POST required'}, status=400)
+    
+    # Check if officer is logged in
+    if not request.session.get('is_officer'):
+        return JsonResponse({
+            'success': False,
+            'message': 'You must be logged in as an officer'
+        }, status=403)
+    
+    # Get application_id from POST data (not URL parameter)
+    application_id = request.POST.get('application_id')
+    
+    if not application_id:
+        return JsonResponse({
+            'success': False,
+            'message': 'Application ID is required'
+        }, status=400)
     
     try:
-        application = SubsidyApplication.objects.get(application_id=appId)
+        application = SubsidyApplication.objects.get(application_id=application_id)
         application.status = 'APPROVED'
         application.save()
         
@@ -393,16 +412,40 @@ def approve_application(request, appId):
             'success': False,
             'message': 'Application not found'
         }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
 
 
-@officer_login_required
-def reject_application(request,appId):
+@csrf_exempt
+@require_POST
+def reject_application(request):
     """Officers - Reject an application"""
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'message': 'POST required'}, status=400)
     
+    # Check if officer is logged in
+    if not request.session.get('is_officer'):
+        return JsonResponse({
+            'success': False,
+            'message': 'You must be logged in as an officer'
+        }, status=403)
+    
+    # Get data from POST body
     application_id = request.POST.get('application_id')
     reason = request.POST.get('reason', '')
+    
+    if not application_id:
+        return JsonResponse({
+            'success': False,
+            'message': 'Application ID is required'
+        }, status=400)
+    
+    if not reason:
+        return JsonResponse({
+            'success': False,
+            'message': 'Rejection reason is required'
+        }, status=400)
     
     try:
         application = SubsidyApplication.objects.get(application_id=application_id)
@@ -419,4 +462,50 @@ def reject_application(request,appId):
             'success': False,
             'message': 'Application not found'
         }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
 
+
+@csrf_exempt
+@require_POST
+def under_review_application(request):
+    """Officers - Mark application as under review"""
+    
+    # Check if officer is logged in
+    if not request.session.get('is_officer'):
+        return JsonResponse({
+            'success': False,
+            'message': 'You must be logged in as an officer'
+        }, status=403)
+    
+    # Get application_id from POST data
+    application_id = request.POST.get('application_id')
+    
+    if not application_id:
+        return JsonResponse({
+            'success': False,
+            'message': 'Application ID is required'
+        }, status=400)
+    
+    try:
+        application = SubsidyApplication.objects.get(application_id=application_id)
+        application.status = 'UNDER_REVIEW'  # or whatever status you use
+        application.save()
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Application marked as under review!'
+        })
+    except SubsidyApplication.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'Application not found'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=500)
