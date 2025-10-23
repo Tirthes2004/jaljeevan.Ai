@@ -70,23 +70,18 @@
     }
 
     function switchAuthModal(targetModalId) {
-        // Get current open modal
-        const currentModal = document.querySelector('.auth-modal[style*="display: flex"]');
+        // Get current open modal using more reliable method
+        const currentModal = document.querySelector('.auth-modal[style*="display: flex"], .auth-modal[aria-hidden="false"]');
         
-        if (currentModal) {
-            // Fade out current modal
-            currentModal.style.opacity = '0';
+        if (currentModal && currentModal.id !== targetModalId) {
+            // Close current modal and open target modal
+            closeModal(currentModal.id);
             
+            // Small delay to ensure smooth transition
             setTimeout(() => {
-                // Close current modal
-                closeModal(currentModal.id);
-                
-                // Open target modal
-                setTimeout(() => {
-                    openModal(targetModalId);
-                }, 100);
-            }, 200);
-        } else {
+                openModal(targetModalId);
+            }, 350);
+        } else if (!currentModal) {
             // No modal open, just open target
             openModal(targetModalId);
         }
@@ -280,29 +275,33 @@
     // Create modal
     const modal = document.createElement('div');
     modal.innerHTML = `
-        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-                    background: rgba(0,0,0,0.8); z-index: 99999; display: flex; 
-                    align-items: center; justify-content: center; padding: 20px;">
-            <div style="background: white; padding: 30px; border-radius: 15px; 
-                        max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
-                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="margin: 0; color: #667eea; font-size: 24px;">
-                        <i class="fas fa-file-alt"></i> Application: ${appId}
-                    </h3>
-                    <button onclick="this.closest('div[role=dialog]').remove()" 
-                            style="border: none; background: none; font-size: 28px; 
-                                   cursor: pointer; color: #999; transition: color 0.3s;"
-                            onmouseover="this.style.color='#dc3545'" 
-                            onmouseout="this.style.color='#999'">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </div>
-                <div style="padding: 20px; background: #f8f9fa; border-radius: 10px;">
-                    ${detailsContent}
+         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                        background: rgba(0,0,0,0.9); z-index: 99999; display: flex; 
+                        align-items: center; justify-content: center; padding: 20px;
+                        backdrop-filter: blur(4px);">
+                <div style="background: linear-gradient(135deg, #0a1929 0%, #0d2337 50%, #143d66 100%); 
+                            padding: 30px; border-radius: 15px; border: 1px solid #2196f3;
+                            max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
+                            box-shadow: 0 20px 60px rgba(0,0,0,0.5); color: #e6f7ff;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+                                border-bottom: 1px solid rgba(33, 150, 243, 0.3); padding-bottom: 15px;">
+                        <h3 style="margin: 0; color: #00e5ff; font-size: 24px; font-family: 'Orbitron', sans-serif;">
+                            <i class="fas fa-file-alt"></i> Application: ${appId}
+                        </h3>
+                        <button onclick="this.closest('div[style*=\\'position: fixed\\']').remove()" 
+                                style="border: none; background: rgba(0, 229, 255, 0.2); font-size: 28px; 
+                                       cursor: pointer; color: #00e5ff; transition: all 0.3s; width: 40px; height: 40px;
+                                       border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                                onmouseover="this.style.background='rgba(0, 229, 255, 0.4)'; this.style.color='#ffffff'" 
+                                onmouseout="this.style.background='rgba(0, 229, 255, 0.2)'; this.style.color='#00e5ff'">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div style="padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(33, 150, 243, 0.2);">
+                        ${detailsContent}
+                    </div>
                 </div>
             </div>
-        </div>
     `;
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
