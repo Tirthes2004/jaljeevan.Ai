@@ -479,6 +479,160 @@ function getCookie(name) {
             });
         });
     }
+    // ============================================
+// APPLICATION FILTERING FUNCTIONALITY
+// ============================================
+
+function filterApplications(filterType) {
+    currentFilter = filterType;
+    
+    // Update active state of stat cards
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    
+    // Activate the clicked stat card
+    event.currentTarget.classList.add('active');
+    
+    // Update table title based on filter
+    const tableTitle = document.querySelector('.table-header h3');
+    const applicationsContainer = document.getElementById('applications-container');
+    const emptyState = document.querySelector('.empty-state');
+    
+    switch(filterType) {
+        case 'pending':
+            tableTitle.innerHTML = '<i class="fas fa-list"></i> Submitted Applications';
+            // Show all pending applications
+            if (applicationsContainer) {
+                applicationsContainer.style.display = 'block';
+                document.querySelectorAll('.application-card').forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
+            if (emptyState) emptyState.style.display = 'none';
+            break;
+            
+        case 'approved':
+            tableTitle.innerHTML = '<i class="fas fa-check-circle"></i> Approved Applications (This Month)';
+            // Fetch and show approved applications
+            fetchApprovedApplications();
+            break;
+            
+        case 'rejected':
+            tableTitle.innerHTML = '<i class="fas fa-times-circle"></i> Rejected Applications (This Month)';
+            // Fetch and show rejected applications
+            fetchRejectedApplications();
+            break;
+    }
+}
+
+async function fetchApprovedApplications() {
+    try {
+        const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        const response = await fetch('/officer/get-approved-applications/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        });
+        
+        const data = await response.json();
+        displayFilteredApplications(data.applications, 'approved');
+    } catch (error) {
+        console.error('Error fetching approved applications:', error);
+        showEmptyState('approved');
+    }
+}
+
+async function fetchRejectedApplications() {
+    try {
+        const csrfToken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        const response = await fetch('/officer/get-rejected-applications/', {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        });
+        
+        const data = await response.json();
+        displayFilteredApplications(data.applications, 'rejected');
+    } catch (error) {
+        console.error('Error fetching rejected applications:', error);
+        showEmptyState('rejected');
+    }
+}
+
+function displayFilteredApplications(applications, filterType) {
+    const applicationsContainer = document.getElementById('applications-container');
+    const emptyState = document.querySelector('.empty-state');
+    
+    if (!applications || applications.length === 0) {
+        showEmptyState(filterType);
+        return;
+    }
+    
+    // Hide the original applications container
+    if (applicationsContainer) {
+        applicationsContainer.style.display = 'none';
+    }
+    
+    // Create or update filtered applications container
+    let filteredContainer = document.getElementById('filtered-applications-container');
+    if (!filteredContainer) {
+        filteredContainer = document.createElement('div');
+        filteredContainer.id = 'filtered-applications-container';
+        document.querySelector('.applications-table').appendChild(filteredContainer);
+    }
+    
+    // Clear existing content
+    filteredContainer.innerHTML = '';
+    
+    // Add filtered applications
+    applications.forEach(app => {
+        const appCard = createApplicationCard(app, filterType);
+        filteredContainer.appendChild(appCard);
+    });
+    
+    if (emptyState) emptyState.style.display = 'none';
+}
+
+function showEmptyState(filterType) {
+    const applicationsContainer = document.getElementById('applications-container');
+    const filteredContainer = document.getElementById('filtered-applications-container');
+    const emptyState = document.querySelector('.empty-state');
+    
+    if (applicationsContainer) applicationsContainer.style.display = 'none';
+    if (filteredContainer) filteredContainer.style.display = 'none';
+    
+    if (emptyState) {
+        emptyState.style.display = 'block';
+        const icon = filterType === 'approved' ? 'fa-check-circle' : 'fa-times-circle';
+        const title = filterType === 'approved' ? 'No Approved Applications This Month' : 'No Rejected Applications This Month';
+        const message = filterType === 'approved' 
+            ? 'There are no approved applications for your district this month.' 
+            : 'There are no rejected applications for your district this month.';
+        
+        emptyState.innerHTML = `
+            <i class="fas ${icon}"></i>
+            <h4>${title}</h4>
+            <p>${message}</p>
+        `;
+    }
+}
+
+// Initialize with pending applications active
+document.addEventListener('DOMContentLoaded', function() {
+    // Set pending stat card as active by default
+    const pendingStatCard = document.querySelector('.stat-card');
+    if (pendingStatCard) {
+        pendingStatCard.classList.add('active');
+    }
+});
+
+// Make function global
+window.filterApplications = filterApplications;
 
     // ============================================
     // INITIALIZATION
