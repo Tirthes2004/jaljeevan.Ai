@@ -83,46 +83,11 @@ def loginUser(request):
 
 
 
-# def logoutUser(request):
-#     if request.method == "POST":
-#         logout(request)
-#         return JsonResponse({'status': 'success', 'message': 'Successfully Logged Out!!!'})
-    
-#     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
-
-
 def logoutUser(request):
     if request.method == "POST":
-        # Save officer session data before clearing user data
-        officer_auth_id = request.session.get('officer_auth_id')
-        officer_backend = request.session.get('officer_backend')
-        officer_hash = request.session.get('officer_auth_hash')
-        
-        # Manually delete only user authentication keys
-        # These are Django's default auth session keys
-        keys_to_delete = ['_auth_user_id', '_auth_user_backend', '_auth_user_hash']
-        
-        for key in keys_to_delete:
-            if key in request.session:
-                del request.session[key]
-        
-        # Also delete any custom user-specific keys if you're using them
-        if 'user_auth_id' in request.session:
-            del request.session['user_auth_id']
-        if 'user_backend' in request.session:
-            del request.session['user_backend']
-        
-        # Restore officer session data
-        if officer_auth_id:
-            request.session['officer_auth_id'] = officer_auth_id
-        if officer_backend:
-            request.session['officer_backend'] = officer_backend
-        if officer_hash:
-            request.session['officer_auth_hash'] = officer_hash
-        
-        # Mark session as modified to ensure changes are saved
-        request.session.modified = True
-        
+        logout(request)
         return JsonResponse({'status': 'success', 'message': 'Successfully Logged Out!!!'})
     
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
