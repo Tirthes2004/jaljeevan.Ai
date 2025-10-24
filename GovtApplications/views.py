@@ -101,64 +101,59 @@ def track_applications(request):
 # OFFICER PORTAL - AUTHENTICATION
 # ============================================
 
-@csrf_exempt
 def loginOfficer(request):
-    """Officer Login - Fixed for plain text passwords"""
+    """Officer Login - Fixed version"""
     if request.method == 'GET':
         return redirect('/')
-    
+
     if request.method == 'POST':
+        officer_name = request.POST.get('officer_name')
+        govt_id = request.POST.get('govt_id')
+        password = request.POST.get('password')
+
+        # Validation
+        if not all([officer_name, govt_id, password]):
+            return JsonResponse({
+                'success': False,
+                'message': 'All fields are required!'
+            })
+
         try:
-            # Get form data
-            officer_name = request.POST.get('officer_name')
-            govt_id = request.POST.get('govt_id')
-            password = request.POST.get('password')
-            
-            # Debug log
-            print(f"Login attempt - Name: {officer_name}, ID: {govt_id}")
-            
-            # Validate all fields provided
-            if not all([officer_name, govt_id, password]):
-                return JsonResponse({
-                    'success': False,
-                    'message': 'All fields are required!'
-                })
-            
-            # Find officer by name and govt_id
-            try:
-                officer = Officer.objects.get(
-                    officer_name=officer_name,
-                    govt_id=govt_id
-                )
-            except Officer.DoesNotExist:
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Invalid credentials! Officer not found.'
-                })
-            
-            # Check password (plain text comparison since no hashing)
+            # Find officer
+            officer = Officer.objects.get(
+                officer_name=officer_name,
+                govt_id=govt_id
+            )
+
+            # Check password
             if officer.password == password:
-                # Create session
+                # Set session data
                 request.session['officer_id'] = officer.id
                 request.session['officer_name'] = officer.officer_name
                 request.session['officer_email'] = officer.officer_email
                 request.session['is_officer'] = True
                 
-                print(f"Login successful for: {officer.officer_name}")
-                
+                # CRITICAL: Save session immediately
+                request.session.modified = True
+
                 return JsonResponse({
                     'success': True,
                     'message': 'Successfully logged in!',
-                    'redirect_url': '/officer/'
+                    'redirect_url': '/officer/'  # Changed from redirectUrl
                 })
             else:
                 return JsonResponse({
                     'success': False,
-                    'message': 'Invalid password!'
+                    'message': 'Invalid credentials!'
                 })
-                
+
+        except Officer.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'message': 'Invalid credentials!'
+            })
         except Exception as e:
-            # Log the actual error
+            # Log the error for debugging
             import traceback
             print(f"Login error: {str(e)}")
             print(traceback.format_exc())
@@ -167,11 +162,12 @@ def loginOfficer(request):
                 'success': False,
                 'message': f'Server error: {str(e)}'
             }, status=500)
-    
+
     return JsonResponse({
         'success': False,
         'message': 'Invalid request method'
     }, status=405)
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -235,173 +231,35 @@ def registerOfficer(request):
         })
 
 def logoutOfficer(request):
-    """Officer Logout"""
-    if request.method == "POST":
-        # Clear session data
-        request.session.flush()
+    """Officer Logout - Only clear officer session keys"""
+    if request.method == 'POST':
+        # Remove ONLY officer-specific keys, don't touch user auth
+        request.session.pop('officer_id', None)
+        request.session.pop('officer_name', None)
+        request.session.pop('officer_email', None)
+        request.session.pop('is_officer', None)
+        
         return JsonResponse({
-            'success': True,
-            'message': 'Successfully logged out!',
-            'redirect_url': '/officer/'
+            'success': True, 
+            'message': 'Successfully logged out!', 
+            'redirectUrl': '/officer/'
         })
     
-    # For GET request (direct access)
-    request.session.flush()
+    # For GET request
+    request.session.pop('officer_id', None)
+    request.session.pop('officer_name', None)
+    request.session.pop('officer_email', None)
+    request.session.pop('is_officer', None)
+    
     return redirect('/')
+
+
 
 
 # ============================================
 # OFFICER PORTAL - DASHBOARD (Protected by JavaScript, not decorator)
 # ============================================
 
-# def application_dashboard(request):
-#     """
-#     Officers - View dashboard with applications in their district
-#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
-#     """
-    
-#     # Get officer from session (not from request.user)
-#     officer_email = request.session.get('officer_email')
-#     officer = Officer.objects.filter(officer_email=officer_email).first()
-    
-#     # Initialize empty data (for non-logged-in users)
-#     data = []
-    
-#     # Only populate data if officer is logged in
-#     if officer:
-#         officer_district = officer.assigned_district
-        
-#         # Get applications for officer's district
-#         applications = SubsidyApplication.objects.filter(
-#             status__in=['SUBMITTED', 'UNDER_REVIEW'],
-#             district=officer_district
-#         )
-        
-#         data = [{
-#             'application_id': app.application_id,
-#             'full_name': app.full_name,
-#             'email': app.email,
-#             'mobile': app.mobile,
-#             'aadhar_or_id': app.aadhaar_or_id,
-#             'district': app.district,
-#             'pincode': app.pincode,
-#             'property_address': app.property_address,
-#             'property_type': getattr(app, 'property_type', 'N/A'),
-#             'system_type': getattr(app, 'system_type', 'N/A'),
-#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
-#             'status': app.status,
-#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-#             'geo_latitude': app.geo_latitude,
-#             'geo_longitude': app.geo_longitude,
-#             'gps_accuracy_meters': app.gps_accuracy_meters,
-#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
-#         } for app in applications]
-    
-#     context = {
-#         'officer': officer,
-#         'data': data
-#     }
-#     return render(request, 'application_dashboard.html', context)
-
-
-
-# def approvedApplication_dashboard(request):
-#     """
-#     Officers - View dashboard with applications in their district
-#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
-#     """
-    
-#     # Get officer from session (not from request.user)
-#     officer_email = request.session.get('officer_email')
-#     officer = Officer.objects.filter(officer_email=officer_email).first()
-    
-#     # Initialize empty data (for non-logged-in users)
-#     data = []
-    
-#     # Only populate data if officer is logged in
-#     if officer:
-#         officer_district = officer.assigned_district
-        
-#         # Get applications for officer's district
-#         applications = SubsidyApplication.objects.filter(
-#             status__in=['APPROVED'],
-#             district=officer_district
-#         )
-        
-#         data = [{
-#             'application_id': app.application_id,
-#             'full_name': app.full_name,
-#             'email': app.email,
-#             'mobile': app.mobile,
-#             'aadhar_or_id': app.aadhaar_or_id,
-#             'district': app.district,
-#             'pincode': app.pincode,
-#             'property_address': app.property_address,
-#             'property_type': getattr(app, 'property_type', 'N/A'),
-#             'system_type': getattr(app, 'system_type', 'N/A'),
-#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
-#             'status': app.status,
-#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-#             'geo_latitude': app.geo_latitude,
-#             'geo_longitude': app.geo_longitude,
-#             'gps_accuracy_meters': app.gps_accuracy_meters,
-#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
-#         } for app in applications]
-    
-#     context = {
-#         'officer': officer,
-#         'data': data
-#     }
-#     return render(request, 'application_dashboard.html', context)
-
-# def rejectedApplication_dashboard(request):
-#     """
-#     Officers - View dashboard with applications in their district
-#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
-#     """
-    
-#     # Get officer from session (not from request.user)
-#     officer_email = request.session.get('officer_email')
-#     officer = Officer.objects.filter(officer_email=officer_email).first()
-    
-#     # Initialize empty data (for non-logged-in users)
-#     data = []
-    
-#     # Only populate data if officer is logged in
-#     if officer:
-#         officer_district = officer.assigned_district
-        
-#         # Get applications for officer's district
-#         applications = SubsidyApplication.objects.filter(
-#             status__in=['REJECTED'],
-#             district=officer_district
-#         )
-        
-#         data = [{
-#             'application_id': app.application_id,
-#             'full_name': app.full_name,
-#             'email': app.email,
-#             'mobile': app.mobile,
-#             'aadhar_or_id': app.aadhaar_or_id,
-#             'district': app.district,
-#             'pincode': app.pincode,
-#             'property_address': app.property_address,
-#             'property_type': getattr(app, 'property_type', 'N/A'),
-#             'system_type': getattr(app, 'system_type', 'N/A'),
-#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
-#             'status': app.status,
-#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-#             'geo_latitude': app.geo_latitude,
-#             'geo_longitude': app.geo_longitude,
-#             'gps_accuracy_meters': app.gps_accuracy_meters,
-#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
-#         } for app in applications]
-    
-#     context = {
-#         'officer': officer,
-#         'data': data
-#     }
-#     return render(request, 'application_dashboard.html', context)
 
 def application_dashboard(request):
     """
@@ -514,11 +372,6 @@ def application_dashboard(request):
     }
     
     return render(request, 'application_dashboard.html', context)
-
-# Remove these two functions - they're not needed anymore
-# def approvedApplication_dashboard(request):
-# def rejectedApplication_dashboard(request):
-
 
 # ============================================
 # OFFICER PORTAL - APPLICATION ACTIONS
