@@ -254,30 +254,193 @@ def logoutOfficer(request):
 # OFFICER PORTAL - DASHBOARD (Protected by JavaScript, not decorator)
 # ============================================
 
+# def application_dashboard(request):
+#     """
+#     Officers - View dashboard with applications in their district
+#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
+#     """
+    
+#     # Get officer from session (not from request.user)
+#     officer_email = request.session.get('officer_email')
+#     officer = Officer.objects.filter(officer_email=officer_email).first()
+    
+#     # Initialize empty data (for non-logged-in users)
+#     data = []
+    
+#     # Only populate data if officer is logged in
+#     if officer:
+#         officer_district = officer.assigned_district
+        
+#         # Get applications for officer's district
+#         applications = SubsidyApplication.objects.filter(
+#             status__in=['SUBMITTED', 'UNDER_REVIEW'],
+#             district=officer_district
+#         )
+        
+#         data = [{
+#             'application_id': app.application_id,
+#             'full_name': app.full_name,
+#             'email': app.email,
+#             'mobile': app.mobile,
+#             'aadhar_or_id': app.aadhaar_or_id,
+#             'district': app.district,
+#             'pincode': app.pincode,
+#             'property_address': app.property_address,
+#             'property_type': getattr(app, 'property_type', 'N/A'),
+#             'system_type': getattr(app, 'system_type', 'N/A'),
+#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
+#             'status': app.status,
+#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             'geo_latitude': app.geo_latitude,
+#             'geo_longitude': app.geo_longitude,
+#             'gps_accuracy_meters': app.gps_accuracy_meters,
+#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+#         } for app in applications]
+    
+#     context = {
+#         'officer': officer,
+#         'data': data
+#     }
+#     return render(request, 'application_dashboard.html', context)
+
+
+
+# def approvedApplication_dashboard(request):
+#     """
+#     Officers - View dashboard with applications in their district
+#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
+#     """
+    
+#     # Get officer from session (not from request.user)
+#     officer_email = request.session.get('officer_email')
+#     officer = Officer.objects.filter(officer_email=officer_email).first()
+    
+#     # Initialize empty data (for non-logged-in users)
+#     data = []
+    
+#     # Only populate data if officer is logged in
+#     if officer:
+#         officer_district = officer.assigned_district
+        
+#         # Get applications for officer's district
+#         applications = SubsidyApplication.objects.filter(
+#             status__in=['APPROVED'],
+#             district=officer_district
+#         )
+        
+#         data = [{
+#             'application_id': app.application_id,
+#             'full_name': app.full_name,
+#             'email': app.email,
+#             'mobile': app.mobile,
+#             'aadhar_or_id': app.aadhaar_or_id,
+#             'district': app.district,
+#             'pincode': app.pincode,
+#             'property_address': app.property_address,
+#             'property_type': getattr(app, 'property_type', 'N/A'),
+#             'system_type': getattr(app, 'system_type', 'N/A'),
+#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
+#             'status': app.status,
+#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             'geo_latitude': app.geo_latitude,
+#             'geo_longitude': app.geo_longitude,
+#             'gps_accuracy_meters': app.gps_accuracy_meters,
+#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+#         } for app in applications]
+    
+#     context = {
+#         'officer': officer,
+#         'data': data
+#     }
+#     return render(request, 'application_dashboard.html', context)
+
+# def rejectedApplication_dashboard(request):
+#     """
+#     Officers - View dashboard with applications in their district
+#     Page loads for everyone, but JavaScript auto-opens login modal if not logged in
+#     """
+    
+#     # Get officer from session (not from request.user)
+#     officer_email = request.session.get('officer_email')
+#     officer = Officer.objects.filter(officer_email=officer_email).first()
+    
+#     # Initialize empty data (for non-logged-in users)
+#     data = []
+    
+#     # Only populate data if officer is logged in
+#     if officer:
+#         officer_district = officer.assigned_district
+        
+#         # Get applications for officer's district
+#         applications = SubsidyApplication.objects.filter(
+#             status__in=['REJECTED'],
+#             district=officer_district
+#         )
+        
+#         data = [{
+#             'application_id': app.application_id,
+#             'full_name': app.full_name,
+#             'email': app.email,
+#             'mobile': app.mobile,
+#             'aadhar_or_id': app.aadhaar_or_id,
+#             'district': app.district,
+#             'pincode': app.pincode,
+#             'property_address': app.property_address,
+#             'property_type': getattr(app, 'property_type', 'N/A'),
+#             'system_type': getattr(app, 'system_type', 'N/A'),
+#             'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
+#             'status': app.status,
+#             'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+#             'geo_latitude': app.geo_latitude,
+#             'geo_longitude': app.geo_longitude,
+#             'gps_accuracy_meters': app.gps_accuracy_meters,
+#             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+#         } for app in applications]
+    
+#     context = {
+#         'officer': officer,
+#         'data': data
+#     }
+#     return render(request, 'application_dashboard.html', context)
+
 def application_dashboard(request):
     """
-    Officers - View dashboard with applications in their district
-    Page loads for everyone, but JavaScript auto-opens login modal if not logged in
+    Officers - View dashboard with ALL applications in their district
+    Separated by status: pending, approved, rejected
     """
-    
-    # Get officer from session (not from request.user)
+    # Get officer from session
     officer_email = request.session.get('officer_email')
     officer = Officer.objects.filter(officer_email=officer_email).first()
     
-    # Initialize empty data (for non-logged-in users)
-    data = []
+    # Initialize empty data
+    pending_data = []
+    approved_data = []
+    rejected_data = []
     
     # Only populate data if officer is logged in
     if officer:
         officer_district = officer.assigned_district
         
-        # Get applications for officer's district
-        applications = SubsidyApplication.objects.filter(
+        # Get PENDING applications (SUBMITTED + UNDER_REVIEW)
+        pending_applications = SubsidyApplication.objects.filter(
             status__in=['SUBMITTED', 'UNDER_REVIEW'],
             district=officer_district
-        )
+        ).order_by('-created_at')
         
-        data = [{
+        # Get APPROVED applications
+        approved_applications = SubsidyApplication.objects.filter(
+            status='APPROVED',
+            district=officer_district
+        ).order_by('-created_at')
+        
+        # Get REJECTED applications
+        rejected_applications = SubsidyApplication.objects.filter(
+            status='REJECTED',
+            district=officer_district
+        ).order_by('-created_at')
+        
+        # Format pending data
+        pending_data = [{
             'application_id': app.application_id,
             'full_name': app.full_name,
             'email': app.email,
@@ -295,13 +458,67 @@ def application_dashboard(request):
             'geo_longitude': app.geo_longitude,
             'gps_accuracy_meters': app.gps_accuracy_meters,
             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
-        } for app in applications]
+        } for app in pending_applications]
+        
+        # Format approved data
+        approved_data = [{
+            'application_id': app.application_id,
+            'full_name': app.full_name,
+            'email': app.email,
+            'mobile': app.mobile,
+            'aadhar_or_id': app.aadhaar_or_id,
+            'district': app.district,
+            'pincode': app.pincode,
+            'property_address': app.property_address,
+            'property_type': getattr(app, 'property_type', 'N/A'),
+            'system_type': getattr(app, 'system_type', 'N/A'),
+            'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
+            'status': app.status,
+            'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'geo_latitude': app.geo_latitude,
+            'geo_longitude': app.geo_longitude,
+            'gps_accuracy_meters': app.gps_accuracy_meters,
+            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+        } for app in approved_applications]
+        
+        # Format rejected data
+        rejected_data = [{
+            'application_id': app.application_id,
+            'full_name': app.full_name,
+            'email': app.email,
+            'mobile': app.mobile,
+            'aadhar_or_id': app.aadhaar_or_id,
+            'district': app.district,
+            'pincode': app.pincode,
+            'property_address': app.property_address,
+            'property_type': getattr(app, 'property_type', 'N/A'),
+            'system_type': getattr(app, 'system_type', 'N/A'),
+            'estimated_cost': str(getattr(app, 'estimated_cost', '0')),
+            'status': app.status,
+            'created_at': app.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'geo_latitude': app.geo_latitude,
+            'geo_longitude': app.geo_longitude,
+            'gps_accuracy_meters': app.gps_accuracy_meters,
+            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None,
+            'rejection_reason': app.rejection_reason if hasattr(app, 'rejection_reason') else None
+        } for app in rejected_applications]
     
     context = {
         'officer': officer,
-        'data': data
+        'pending_data': pending_data,
+        'approved_data': approved_data,
+        'rejected_data': rejected_data,
+        'pending_count': len(pending_data),
+        'approved_count': len(approved_data),
+        'rejected_count': len(rejected_data)
     }
+    
     return render(request, 'application_dashboard.html', context)
+
+# Remove these two functions - they're not needed anymore
+# def approvedApplication_dashboard(request):
+# def rejectedApplication_dashboard(request):
+
 
 # ============================================
 # OFFICER PORTAL - APPLICATION ACTIONS

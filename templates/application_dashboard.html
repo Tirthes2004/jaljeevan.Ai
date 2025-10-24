@@ -8,7 +8,7 @@
     <title>Officer Dashboard - JalJeevan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/officerAuth.css' %}">
     <style>
         :root {
@@ -104,11 +104,18 @@
             border: 1px solid rgba(33, 150, 243, 0.3);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-card.active {
+            border: 2px solid var(--accent-teal);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+            transform: translateY(-5px);
         }
 
         .stat-icon {
@@ -172,36 +179,6 @@
             color: var(--text-primary);
         }
 
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
-            color: var(--primary-dark);
-            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
-        }
-
-        .filter-btn:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            border: 1px solid rgba(33, 150, 243, 0.3);
-        }
-
-        .filter-btn:not(.active):hover {
-            background: rgba(33, 150, 243, 0.2);
-        }
-
         .application-card {
             background: rgba(20, 61, 102, 0.5);
             padding: 20px;
@@ -237,9 +214,24 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
+        }
+
+        .app-status.pending {
             background: var(--warning-color);
             color: var(--primary-dark);
             box-shadow: 0 0 10px rgba(255, 171, 0, 0.5);
+        }
+
+        .app-status.approved {
+            background: var(--success-color);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 200, 83, 0.5);
+        }
+
+        .app-status.rejected {
+            background: var(--danger-color);
+            color: white;
+            box-shadow: 0 0 10px rgba(255, 82, 82, 0.5);
         }
 
         .app-details {
@@ -321,6 +313,17 @@
             box-shadow: 0 5px 15px rgba(255, 82, 82, 0.5);
         }
 
+        .btn-under-review {
+            background: linear-gradient(45deg, #00b0ff, #00e5ff);
+            color: var(--primary-dark);
+            box-shadow: 0 0 10px rgba(0, 176, 255, 0.3);
+        }
+
+        .btn-under-review:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 176, 255, 0.5);
+        }
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -347,18 +350,6 @@
             border: 1px solid rgba(0, 229, 255, 0.3);
         }
 
-        .btn-under-review {
-            background: linear-gradient(45deg, #00b0ff, #00e5ff);
-            color: var(--primary-dark);
-            box-shadow: 0 0 10px rgba(0, 176, 255, 0.3);
-        }
-
-        .btn-under-review:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 176, 255, 0.5);
-        }
-
-        /* Logout button styling */
         .btn-outline-danger {
             border-color: var(--danger-color);
             color: var(--danger-color);
@@ -379,22 +370,22 @@
             color: var(--primary-dark);
         }
 
-       
-     .stat-card.active {
-    border: 2px solid var(--accent-teal);
-    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-    transform: translateY(-5px);
-}
+        /* Section visibility control */
+        .application-section {
+            display: none;
+        }
 
-      
+        .application-section.active {
+            display: block;
+        }
     </style>
 </head>
 
 <body>
     {% csrf_token %}
+
     <!-- Officer Registration Modal -->
-    <div id="officer-signup-modal" class="auth-modal" role="dialog" aria-labelledby="officer-signup-title"
-        aria-hidden="true">
+    <div id="officer-signup-modal" class="auth-modal" role="dialog" aria-labelledby="officer-signup-title" aria-hidden="true">
         <div class="modal-backdrop" onclick="closeModal('officer-signup-modal')"></div>
         <div class="modal-container">
             <div class="modal-card">
@@ -407,15 +398,13 @@
                     <p>Register as a government officer to manage applications</p>
                 </div>
 
-                <form class="auth-form" id="officer-signup-form" method="POST" action="{% url 'officer:register' %}"
-                    novalidate>
+                <form class="auth-form" id="officer-signup-form" method="POST" action="{% url 'officer:register' %}" novalidate>
                     {% csrf_token %}
 
                     <div class="form-group">
                         <label for="officer-name" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="text" name="officer_name" id="officer-name" class="form-control"
-                                placeholder="Enter full name" required autocomplete="name" maxlength="50">
+                            <input type="text" name="officer_name" id="officer-name" class="form-control" placeholder="Enter full name" required autocomplete="name" maxlength="50">
                             <i class="fas fa-user-tie input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -423,9 +412,7 @@
                     <div class="form-group">
                         <label for="govt-id" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="text" name="govt_id" id="govt-id" class="form-control"
-                                placeholder="Enter government ID (10 characters)" required autocomplete="off"
-                                maxlength="10">
+                            <input type="text" name="govt_id" id="govt-id" class="form-control" placeholder="Enter government ID (10 characters)" required autocomplete="off" maxlength="10">
                             <i class="fas fa-id-card input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -433,8 +420,7 @@
                     <div class="form-group">
                         <label for="officer-email" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="email" name="officer_email" id="officer-email" class="form-control"
-                                placeholder="Enter official email" required autocomplete="email">
+                            <input type="email" name="officer_email" id="officer-email" class="form-control" placeholder="Enter official email" required autocomplete="email">
                             <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -442,9 +428,7 @@
                     <div class="form-group">
                         <label for="officer-phone" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="tel" name="officer_phone" id="officer-phone" class="form-control"
-                                placeholder="Enter 10-digit phone number" required autocomplete="tel"
-                                pattern="[0-9]{10}" maxlength="10">
+                            <input type="tel" name="officer_phone" id="officer-phone" class="form-control" placeholder="Enter 10-digit phone number" required autocomplete="tel" pattern="[0-9]{10}" maxlength="10">
                             <i class="fas fa-phone input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -452,8 +436,7 @@
                     <div class="form-group">
                         <label for="assigned-district" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="text" name="assigned_district" id="assigned-district" class="form-control"
-                                placeholder="Enter assigned district" required autocomplete="off" maxlength="100">
+                            <input type="text" name="assigned_district" id="assigned-district" class="form-control" placeholder="Enter assigned district" required autocomplete="off" maxlength="100">
                             <i class="fas fa-map-marker-alt input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -461,8 +444,7 @@
                     <div class="form-group">
                         <label for="officer-password" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="password" name="password" id="officer-password" class="form-control"
-                                placeholder="Create password" required autocomplete="new-password">
+                            <input type="password" name="password" id="officer-password" class="form-control" placeholder="Create password" required autocomplete="new-password">
                             <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -470,9 +452,7 @@
                     <div class="form-group">
                         <label for="officer-confirm-password" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="password" name="confirm_password" id="officer-confirm-password"
-                                class="form-control" placeholder="Confirm password" required
-                                autocomplete="new-password">
+                            <input type="password" name="confirm_password" id="officer-confirm-password" class="form-control" placeholder="Confirm password" required autocomplete="new-password">
                             <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -492,8 +472,7 @@
     </div>
 
     <!-- Officer Login Modal -->
-    <div id="officer-login-modal" class="auth-modal" role="dialog" aria-labelledby="officer-login-title"
-        aria-hidden="true">
+    <div id="officer-login-modal" class="auth-modal" role="dialog" aria-labelledby="officer-login-title" aria-hidden="true">
         <div class="modal-backdrop" onclick="closeModal('officer-login-modal')"></div>
         <div class="modal-container">
             <div class="modal-card">
@@ -506,15 +485,13 @@
                     <p>Access the application management dashboard</p>
                 </div>
 
-                <form class="auth-form" id="officer-login-form" method="POST" action="{% url 'officer:login' %}"
-                    novalidate>
+                <form class="auth-form" id="officer-login-form" method="POST" action="{% url 'officer:login' %}" novalidate>
                     {% csrf_token %}
 
                     <div class="form-group">
                         <label for="officer-login-name" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="text" name="officer_name" id="officer-login-name" class="form-control"
-                                placeholder="Enter your name" required autocomplete="name">
+                            <input type="text" name="officer_name" id="officer-login-name" class="form-control" placeholder="Enter your name" required autocomplete="name">
                             <i class="fas fa-user-tie input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -522,8 +499,7 @@
                     <div class="form-group">
                         <label for="officer-login-govt-id" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="text" name="govt_id" id="officer-login-govt-id" class="form-control"
-                                placeholder="Enter government ID" required autocomplete="off">
+                            <input type="text" name="govt_id" id="officer-login-govt-id" class="form-control" placeholder="Enter government ID" required autocomplete="off">
                             <i class="fas fa-id-card input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -531,8 +507,7 @@
                     <div class="form-group">
                         <label for="officer-login-password" class="form-label"></label>
                         <div class="input-wrapper">
-                            <input type="password" name="password" id="officer-login-password" class="form-control"
-                                placeholder="Enter password" required autocomplete="current-password">
+                            <input type="password" name="password" id="officer-login-password" class="form-control" placeholder="Enter password" required autocomplete="current-password">
                             <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                         </div>
                     </div>
@@ -554,8 +529,7 @@
 
                 <div class="auth-switch">
                     Not registered yet?
-                    <a href="#" onclick="switchAuthModal('officer-signup-modal')" class="auth-link">Register as
-                        Officer</a>
+                    <a href="#" onclick="switchAuthModal('officer-signup-modal')" class="auth-link">Register as Officer</a>
                 </div>
             </div>
         </div>
@@ -583,8 +557,7 @@
             <div class="officer-info">
                 <p><strong>Guest</strong></p>
                 <p><small>Please login to continue</small></p>
-                <button onclick="openModal('officer-login-modal')" class="btn btn-sm btn-outline-primary mt-2"
-                    type="button">
+                <button onclick="openModal('officer-login-modal')" class="btn btn-sm btn-outline-primary mt-2" type="button">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
             </div>
@@ -593,212 +566,352 @@
 
         <!-- Stats Cards -->
         <div class="stats-cards">
-            <div class="stat-card">
-                <div class="stat-icon pending" onclick="filterApplications('pending')">
+            <div class="stat-card active" data-filter="pending" onclick="filterApplications('pending')">
+                <div class="stat-icon pending">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>{{ data|length }}</h3>
+                    <h3>{{ pending_count|default:0 }}</h3>
                     <p>Pending Applications</p>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon approved" onclick="filterApplications('approved')">
+            <div class="stat-card" data-filter="approved" onclick="filterApplications('approved')">
+                <div class="stat-icon approved">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>0</h3>
+                    <h3>{{ approved_count|default:0 }}</h3>
                     <p>Approved This Month</p>
                 </div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon rejected" onclick="filterApplications('rejected')">
+            <div class="stat-card" data-filter="rejected" onclick="filterApplications('rejected')">
+                <div class="stat-icon rejected">
                     <i class="fas fa-times-circle"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>0</h3>
+                    <h3>{{ rejected_count|default:0 }}</h3>
                     <p>Rejected This Month</p>
                 </div>
             </div>
         </div>
 
-        <!-- Applications Table -->
-        <div class="applications-table">
+        <!-- PENDING APPLICATIONS SECTION -->
+        <div class="applications-table application-section active" id="pending-section">
             <div class="table-header">
-                <h3><i class="fas fa-list"></i> Submitted Applications</h3>
-                <div class="filter-buttons">
-                    <button class="filter-btn active onclick="filterApplications('pending')"">All</button>
-                    <button class="filter-btn" onclick="filterApplications('new')">New</button>
-                    <button class="filter-btn"  onclick="filterApplications('urgent')">Urgent</button>
-                </div>
+                <h3><i class="fas fa-clock"></i> Pending Applications</h3>
             </div>
-            
-            {% if data %}
-                <div id="applications-container" data-status="pending">
-                     {% for app in data %}
-            <div class="application-card">
-                <div class="app-header">
-                    <div>
-                        <div class="app-id">
-                            <i class="fas fa-file-alt"></i> {{ app.application_id }}
+
+            {% if pending_data %}
+                {% for app in pending_data %}
+                <div class="application-card">
+                    <div class="app-header">
+                        <div>
+                            <div class="app-id">
+                                <i class="fas fa-file-alt"></i> {{ app.application_id }}
+                            </div>
+                            <div class="mt-2">
+                                {% if app.geo_latitude and app.geo_longitude %}
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    GPS Verified (±{{ app.gps_accuracy_meters|floatformat:0 }}m)
+                                </span>
+                                {% else %}
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker"></i>
+                                    Manual Location
+                                </span>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="mt-2">
-                            {% if app.geo_latitude and app.geo_longitude %}
-                            <span class="location-badge">
-                                <i class="fas fa-map-marker-alt"></i>
-                                GPS Verified (±{{ app.gps_accuracy_meters|floatformat:0 }}m)
-                            </span>
-                            {% else %}
-                            <span class="location-badge">
-                                <i class="fas fa-map-marker"></i>
-                                Manual Location
-                            </span>
-                            {% endif %}
+                        <span class="app-status pending">
+                            <i class="fas fa-paper-plane"></i> {{ app.status }}
+                        </span>
+                    </div>
+
+                    <div class="app-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <div><strong>{{ app.full_name }}</strong></div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ app.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>{{ app.mobile }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-id-card"></i>
+                            <span>{{ app.aadhar_or_id }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ app.district }}, {{ app.pincode }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="far fa-clock"></i>
+                            <span>{{ app.created_at }}</span>
                         </div>
                     </div>
-                    <span class="app-status">
-                        <i class="fas fa-paper-plane"></i> SUBMITTED
-                    </span>
+
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <i class="fas fa-home"></i>
+                        <span>{{ app.property_address }}</span>
+                    </div>
+
+                    <div class="app-actions">
+                        <button class="btn-action btn-view" onclick="viewApplication('{{ app.application_id }}')">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+
+                        {% if app.calculation_pdf_url %}
+                        <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view">
+                            <i class="fas fa-file-pdf"></i> View PDF
+                        </a>
+                        {% endif %}
+
+                        {% if app.status != 'UNDER_REVIEW' %}
+                        <button class="btn-action btn-under-review" onclick="underReviewApplication('{{ app.application_id }}')">
+                            <i class="fas fa-eye"></i> Under Review
+                        </button>
+                        {% endif %}
+
+                        <button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
+                            <i class="fas fa-check"></i> Approve
+                        </button>
+
+                        <button class="btn-action btn-reject" onclick="rejectApplication('{{ app.application_id }}')">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </div>
+
+                    <!-- Hidden details for modal -->
+                    <div id="applicationDetails_{{ app.application_id }}" style="display: none;">
+                        <h4 style="color: #667eea; margin-bottom: 15px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
+                            <i class="fas fa-info-circle"></i> Full Application Details
+                        </h4>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <p><strong><i class="fas fa-user"></i> Applicant Name:</strong><br>{{ app.full_name }}</p>
+                            </div>
+                            <div>
+                                <p><strong><i class="fas fa-envelope"></i> Email:</strong><br>{{ app.email }}</p>
+                            </div>
+                            <div>
+                                <p><strong><i class="fas fa-phone"></i> Mobile Number:</strong><br>{{ app.mobile }}</p>
+                            </div>
+                            <div>
+                                <p><strong><i class="fas fa-id-card"></i> Aadhar/ID:</strong><br>{{ app.aadhar_or_id }}</p>
+                            </div>
+                            <div>
+                                <p><strong><i class="fas fa-map-marker-alt"></i> District:</strong><br>{{ app.district }}</p>
+                            </div>
+                            <div>
+                                <p><strong><i class="fas fa-map-pin"></i> Pincode:</strong><br>{{ app.pincode }}</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <p><strong><i class="fas fa-home"></i> Property Address:</strong><br>{{ app.property_address }}</p>
+                        </div>
+
+                        {% if app.calculation_pdf_url %}
+                        <div style="margin-top: 15px;">
+                            <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view" style="display: inline-flex;">
+                                <i class="fas fa-file-pdf"></i> View Calculation PDF
+                            </a>
+                        </div>
+                        {% endif %}
+                        
+                        {% if app.geo_latitude and app.geo_longitude %}
+                        <div style="margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 5px;">
+                            <p><strong><i class="fas fa-map-marked-alt"></i> GPS Coordinates:</strong><br>
+                            Latitude: {{ app.geo_latitude }}, Longitude: {{ app.geo_longitude }}</p>
+                            <p><strong><i class="fas fa-crosshairs"></i> GPS Accuracy:</strong> ±{{ app.gps_accuracy_meters|floatformat:0 }} meters</p>
+                        </div>
+                        {% endif %}
+                        
+                        <div style="margin-top: 15px;">
+                            <p><strong><i class="far fa-clock"></i> Submitted At:</strong><br>{{ app.created_at }}</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="app-details">
-                    <div class="detail-item">
-                        <i class="fas fa-user"></i>
-                        <div><strong>{{ app.full_name }}</strong></div>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>{{ app.email }}</span>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-phone"></i>
-                        <span>{{ app.mobile }}</span>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-id-card"></i>
-                        <span>{{ app.aadhar_or_id }}</span>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>{{ app.district }}, {{ app.pincode }}</span>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="far fa-clock"></i>
-                        <span>{{ app.created_at }}</span>
-                    </div>
-                </div>
-
-                <div class="detail-item" style="margin-bottom: 15px;">
-                    <i class="fas fa-home"></i>
-                    <span>{{ app.property_address }}</span>
-                </div>
-
-                <div class="app-actions">
-                    <button class="btn-action btn-view" onclick="viewApplication('{{ app.application_id }}')">
-                        <i class="fas fa-eye"></i> View Details
-                    </button>
-
-                    <div style="margin-top: 15px;">
-    {% if app.calculation_pdf_url %}
-        <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view" style="display: inline-flex;">
-            <i class="fas fa-file-pdf"></i> View Calculation PDF
-        </a>
-    {% else %}
-        <p style="color: #999; font-style: italic;">
-            <i class="fas fa-info-circle"></i> No calculation PDF available
-        </p>
-    {% endif %}
-</div>
-
-{% if app.status != 'UNDER_REVIEW' %}
-    <button class="btn-action btn-under-review" onclick="underReviewApplication('{{ app.application_id }}')">
-        <i class="fas fa-check"></i> Under Review
-    </button>
-{% endif %}
-<button class="btn-action btn-approve" onclick="approveApplication('{{ app.application_id }}')">
-    <i class="fas fa-check"></i> Approve
-</button>
-
-
-
-                    <button class="btn-action btn-reject"  onclick="rejectApplication('{{ app.application_id }}')">
-                        <i class="fas fa-times"></i> Reject
-                    </button>
-                </div>
-            </div>
-
-            <!-- Hidden details for modal -->
-            <div id="applicationDetails_{{ app.application_id }}" style="display: none;">
-                <h4 style="color: #667eea; margin-bottom: 15px; border-bottom: 2px solid #667eea; padding-bottom: 10px;">
-                    <i class="fas fa-info-circle"></i> Full Application Details
-                </h4>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div>
-                        <p><strong><i class="fas fa-user"></i> Applicant Name:</strong><br>{{ app.full_name }}</p>
-                    </div>
-                    <div>
-                        <p><strong><i class="fas fa-envelope"></i> Email:</strong><br>{{ app.email }}</p>
-                    </div>
-                    <div>
-                        <p><strong><i class="fas fa-phone"></i> Mobile Number:</strong><br>{{ app.mobile }}</p>
-                    </div>
-                    <div>
-                        <p><strong><i class="fas fa-id-card"></i> Aadhar/ID:</strong><br>{{ app.aadhar_or_id }}</p>
-                    </div>
-                    <div>
-                        <p><strong><i class="fas fa-map-marker-alt"></i> District:</strong><br>{{ app.district }}</p>
-                    </div>
-                    <div>
-                        <p><strong><i class="fas fa-map-pin"></i> Pincode:</strong><br>{{ app.pincode }}</p>
-                    </div>
-                    
-                </div>
-                
-                <div style="margin-top: 15px;">
-                    <p><strong><i class="fas fa-home"></i> Property Address:</strong><br>{{ app.property_address }}</p>
-                </div>
-
-                {% if app.calculation_pdf_url %}
-                <div style="margin-top: 15px;">
-                    <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view" style="display: inline-flex;">
-                        <i class="fas fa-file-pdf"></i> View Calculation PDF
-                    </a>
-                </div>
-                {% endif %}
-                
-                {% if app.geo_latitude and app.geo_longitude %}
-                <div style="margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 5px;">
-                    <p><strong><i class="fas fa-map-marked-alt"></i> GPS Coordinates:</strong><br>
-                    Latitude: {{ app.geo_latitude }}, Longitude: {{ app.geo_longitude }}</p>
-                    <p><strong><i class="fas fa-crosshairs"></i> GPS Accuracy:</strong> ±{{ app.gps_accuracy_meters|floatformat:0 }} meters</p>
-                </div>
-                {% endif %}
-                
-                <div style="margin-top: 15px;">
-                    <p><strong><i class="far fa-clock"></i> Submitted At:</strong><br>{{ app.created_at }}</p>
-                </div>
-                
-                
-            </div>
-
-            {% endfor %}
-            </div>
+                {% endfor %}
             {% else %}
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
                 <h4>No Pending Applications</h4>
-                <p>There are no submitted applications for your district at this time.</p>
+                <p>There are no pending applications for your district at this time.</p>
             </div>
             {% endif %}
-        
+        </div>
+
+        <!-- APPROVED APPLICATIONS SECTION -->
+        <div class="applications-table application-section" id="approved-section">
+            <div class="table-header">
+                <h3><i class="fas fa-check-circle"></i> Approved Applications</h3>
+            </div>
+
+            {% if approved_data %}
+                {% for app in approved_data %}
+                <div class="application-card">
+                    <div class="app-header">
+                        <div>
+                            <div class="app-id">
+                                <i class="fas fa-file-alt"></i> {{ app.application_id }}
+                            </div>
+                            <div class="mt-2">
+                                {% if app.geo_latitude and app.geo_longitude %}
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    GPS Verified (±{{ app.gps_accuracy_meters|floatformat:0 }}m)
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="app-status approved">
+                            <i class="fas fa-check-circle"></i> APPROVED
+                        </span>
+                    </div>
+
+                    <div class="app-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <div><strong>{{ app.full_name }}</strong></div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ app.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>{{ app.mobile }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ app.district }}, {{ app.pincode }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="far fa-clock"></i>
+                            <span>{{ app.created_at }}</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <i class="fas fa-home"></i>
+                        <span>{{ app.property_address }}</span>
+                    </div>
+
+                    <div class="app-actions">
+                        <button class="btn-action btn-view" onclick="viewApplication('{{ app.application_id }}')">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+
+                        {% if app.calculation_pdf_url %}
+                        <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view">
+                            <i class="fas fa-file-pdf"></i> View PDF
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle"></i>
+                <h4>No Approved Applications</h4>
+                <p>There are no approved applications for your district this month.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- REJECTED APPLICATIONS SECTION -->
+        <div class="applications-table application-section" id="rejected-section">
+            <div class="table-header">
+                <h3><i class="fas fa-times-circle"></i> Rejected Applications</h3>
+            </div>
+
+            {% if rejected_data %}
+                {% for app in rejected_data %}
+                <div class="application-card">
+                    <div class="app-header">
+                        <div>
+                            <div class="app-id">
+                                <i class="fas fa-file-alt"></i> {{ app.application_id }}
+                            </div>
+                            <div class="mt-2">
+                                {% if app.geo_latitude and app.geo_longitude %}
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    GPS Verified (±{{ app.gps_accuracy_meters|floatformat:0 }}m)
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="app-status rejected">
+                            <i class="fas fa-times-circle"></i> REJECTED
+                        </span>
+                    </div>
+
+                    <div class="app-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <div><strong>{{ app.full_name }}</strong></div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>{{ app.email }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>{{ app.mobile }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ app.district }}, {{ app.pincode }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="far fa-clock"></i>
+                            <span>{{ app.created_at }}</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <i class="fas fa-home"></i>
+                        <span>{{ app.property_address }}</span>
+                    </div>
+
+                    {% if app.rejection_reason %}
+                    <div class="detail-item" style="margin-bottom: 15px; color: var(--danger-color);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><strong>Reason:</strong> {{ app.rejection_reason }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="app-actions">
+                        <button class="btn-action btn-view" onclick="viewApplication('{{ app.application_id }}')">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+
+                        {% if app.calculation_pdf_url %}
+                        <a href="{{ app.calculation_pdf_url }}" target="_blank" class="btn-action btn-view">
+                            <i class="fas fa-file-pdf"></i> View PDF
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-times-circle"></i>
+                <h4>No Rejected Applications</h4>
+                <p>There are no rejected applications for your district this month.</p>
+            </div>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Load officerAuth.js -->
@@ -807,9 +920,9 @@
     <!-- Auto-open login modal if not logged in -->
     <script>
         (function() {
-            var isOfficerLoggedIn = {% if request.session.is_officer %}true{% else %}false{% endif %};
+            var isOfficerLoggedIn = "{{ request.session.is_officer|yesno:'true,false' }}";
             
-            if (!isOfficerLoggedIn) {
+            if (isOfficerLoggedIn !== 'true') {
                 setTimeout(function() {
                     if (typeof openModal === 'function') {
                         openModal('officer-login-modal');
@@ -849,90 +962,35 @@
             });
         }
     </script>
+
     <!-- Application Filtering Script -->
-<script>
-let currentFilter = 'pending';
-
-function filterApplications(filterType) {
-    currentFilter = filterType;
-    
-    // Update active state of stat cards
-    document.querySelectorAll('.stat-card').forEach(card => {
-        card.classList.remove('active');
-    });
-    
-    // Activate the clicked stat card
-    event.currentTarget.classList.add('active');
-    
-    // Update table title based on filter
-    const tableTitle = document.querySelector('.table-header h3');
-    const emptyState = document.querySelector('.empty-state');
-    
-    switch(filterType) {
-        case 'pending':
-            tableTitle.innerHTML = '<i class="fas fa-list"></i> Submitted Applications';
-            // Show all pending applications (current behavior)
-            document.querySelectorAll('.application-card').forEach(card => {
-                card.style.display = 'block';
+    <script>
+        function filterApplications(filterType) {
+            // Remove active class from all stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.classList.remove('active');
             });
-            break;
             
-        case 'approved':
-            tableTitle.innerHTML = '<i class="fas fa-check-circle"></i> Approved Applications (This Month)';
-            // Hide all cards initially
-            document.querySelectorAll('.application-card').forEach(card => {
-                card.style.display = 'none';
-            });
-            // In a real implementation, you would fetch approved applications from the server
-            // For now, we'll show a message
-            if (emptyState) {
-                emptyState.style.display = 'block';
-                emptyState.innerHTML = `
-                    <i class="fas fa-check-circle"></i>
-                    <h4>No Approved Applications This Month</h4>
-                    <p>There are no approved applications for your district this month.</p>
-                `;
+            // Add active class to clicked stat card
+            const activeCard = document.querySelector('.stat-card[data-filter="' + filterType + '"]');
+            if (activeCard) {
+                activeCard.classList.add('active');
             }
-            break;
             
-        case 'rejected':
-            tableTitle.innerHTML = '<i class="fas fa-times-circle"></i> Rejected Applications (This Month)';
-            // Hide all cards initially
-            document.querySelectorAll('.application-card').forEach(card => {
-                card.style.display = 'none';
+            // Hide all sections
+            document.querySelectorAll('.application-section').forEach(section => {
+                section.classList.remove('active');
             });
-            // In a real implementation, you would fetch rejected applications from the server
-            // For now, we'll show a message
-            if (emptyState) {
-                emptyState.style.display = 'block';
-                emptyState.innerHTML = `
-                    <i class="fas fa-times-circle"></i>
-                    <h4>No Rejected Applications This Month</h4>
-                    <p>There are no rejected applications for your district this month.</p>
-                `;
+            
+            // Show selected section
+            const targetSection = document.getElementById(filterType + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
             }
-            break;
-    }
-    
-    // If no applications and not pending filter, show empty state
-    if (filterType !== 'pending' && emptyState) {
-        emptyState.style.display = 'block';
-    } else if (filterType === 'pending' && emptyState) {
-        emptyState.style.display = 'none';
-    }
-}
+        }
+    </script>
 
-// Initialize with pending applications active
-document.addEventListener('DOMContentLoaded', function() {
-    // Set pending stat card as active by default
-    const pendingStatCard = document.querySelector('.stat-card[onclick="filterApplications(\'pending\')"]');
-    if (pendingStatCard) {
-        pendingStatCard.classList.add('active');
-    }
-});
-</script>
-
-    <!-- CRITICAL FIX: Force backdrop fix to work -->
+    <!-- Modal control functions -->
     <script>
         window.addEventListener('load', function() {
             window.closeModal = function(modalId) {
@@ -972,6 +1030,5 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         });
     </script>
-
 </body>
 </html>
