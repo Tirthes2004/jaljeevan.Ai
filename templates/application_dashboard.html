@@ -380,7 +380,11 @@
         }
 
        
-     
+     .stat-card.active {
+    border: 2px solid var(--accent-teal);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    transform: translateY(-5px);
+}
 
       
     </style>
@@ -590,7 +594,7 @@
         <!-- Stats Cards -->
         <div class="stats-cards">
             <div class="stat-card">
-                <div class="stat-icon pending">
+                <div class="stat-icon pending" onclick="filterApplications('pending')">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-content">
@@ -600,7 +604,7 @@
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon approved">
+                <div class="stat-icon approved" onclick="filterApplications('approved')">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-content">
@@ -610,7 +614,7 @@
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon rejected">
+                <div class="stat-icon rejected" onclick="filterApplications('rejected')">
                     <i class="fas fa-times-circle"></i>
                 </div>
                 <div class="stat-content">
@@ -625,14 +629,15 @@
             <div class="table-header">
                 <h3><i class="fas fa-list"></i> Submitted Applications</h3>
                 <div class="filter-buttons">
-                    <button class="filter-btn active">All</button>
-                    <button class="filter-btn">New</button>
-                    <button class="filter-btn">Urgent</button>
+                    <button class="filter-btn active onclick="filterApplications('pending')"">All</button>
+                    <button class="filter-btn" onclick="filterApplications('new')">New</button>
+                    <button class="filter-btn"  onclick="filterApplications('urgent')">Urgent</button>
                 </div>
             </div>
-
+            
             {% if data %}
-            {% for app in data %}
+                <div id="applications-container" data-status="pending">
+                     {% for app in data %}
             <div class="application-card">
                 <div class="app-header">
                     <div>
@@ -785,6 +790,7 @@
             </div>
 
             {% endfor %}
+            </div>
             {% else %}
             <div class="empty-state">
                 <i class="fas fa-inbox"></i>
@@ -792,7 +798,7 @@
                 <p>There are no submitted applications for your district at this time.</p>
             </div>
             {% endif %}
-        </div>
+        
     </div>
 
     <!-- Load officerAuth.js -->
@@ -843,6 +849,88 @@
             });
         }
     </script>
+    <!-- Application Filtering Script -->
+<script>
+let currentFilter = 'pending';
+
+function filterApplications(filterType) {
+    currentFilter = filterType;
+    
+    // Update active state of stat cards
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    
+    // Activate the clicked stat card
+    event.currentTarget.classList.add('active');
+    
+    // Update table title based on filter
+    const tableTitle = document.querySelector('.table-header h3');
+    const emptyState = document.querySelector('.empty-state');
+    
+    switch(filterType) {
+        case 'pending':
+            tableTitle.innerHTML = '<i class="fas fa-list"></i> Submitted Applications';
+            // Show all pending applications (current behavior)
+            document.querySelectorAll('.application-card').forEach(card => {
+                card.style.display = 'block';
+            });
+            break;
+            
+        case 'approved':
+            tableTitle.innerHTML = '<i class="fas fa-check-circle"></i> Approved Applications (This Month)';
+            // Hide all cards initially
+            document.querySelectorAll('.application-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            // In a real implementation, you would fetch approved applications from the server
+            // For now, we'll show a message
+            if (emptyState) {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <h4>No Approved Applications This Month</h4>
+                    <p>There are no approved applications for your district this month.</p>
+                `;
+            }
+            break;
+            
+        case 'rejected':
+            tableTitle.innerHTML = '<i class="fas fa-times-circle"></i> Rejected Applications (This Month)';
+            // Hide all cards initially
+            document.querySelectorAll('.application-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            // In a real implementation, you would fetch rejected applications from the server
+            // For now, we'll show a message
+            if (emptyState) {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <i class="fas fa-times-circle"></i>
+                    <h4>No Rejected Applications This Month</h4>
+                    <p>There are no rejected applications for your district this month.</p>
+                `;
+            }
+            break;
+    }
+    
+    // If no applications and not pending filter, show empty state
+    if (filterType !== 'pending' && emptyState) {
+        emptyState.style.display = 'block';
+    } else if (filterType === 'pending' && emptyState) {
+        emptyState.style.display = 'none';
+    }
+}
+
+// Initialize with pending applications active
+document.addEventListener('DOMContentLoaded', function() {
+    // Set pending stat card as active by default
+    const pendingStatCard = document.querySelector('.stat-card[onclick="filterApplications(\'pending\')"]');
+    if (pendingStatCard) {
+        pendingStatCard.classList.add('active');
+    }
+});
+</script>
 
     <!-- CRITICAL FIX: Force backdrop fix to work -->
     <script>
