@@ -547,8 +547,9 @@
             </div>
             {% if request.session.is_officer %}
             <div class="officer-info">
-                <p><strong>{{ request.session.officer_email }}</strong></p>
                 <p><small>District Officer - {{ request.session.officer_name }}</small></p>
+                <p><strong>{{ request.session.officer_email }}</strong></p>
+                <p><small>District - {{ officer_district }}</small></p>
                 <button onclick="handleLogout(event)" class="btn btn-sm btn-outline-danger mt-2" type="button">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
