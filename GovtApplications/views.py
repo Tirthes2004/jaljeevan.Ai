@@ -104,7 +104,7 @@ def track_applications(request):
 def loginOfficer(request):
     """Officer Login - Fixed version"""
     if request.method == 'GET':
-        return redirect('/')
+        return redirect('/officer/')
 
     if request.method == 'POST':
         officer_name = request.POST.get('officer_name')
@@ -232,27 +232,29 @@ def registerOfficer(request):
         })
 
 def logoutOfficer(request):
-    """Officer Logout - Only clear officer session keys"""
+    """Officer Logout - Redirect back to dashboard (modal will auto-open)"""
     if request.method == 'POST':
-        # Remove ONLY officer-specific keys, don't touch user auth
         request.session.pop('officer_id', None)
         request.session.pop('officer_name', None)
         request.session.pop('officer_email', None)
+        request.session.pop('assigned_district', None)
         request.session.pop('is_officer', None)
         
         return JsonResponse({
-            'success': True, 
-            'message': 'Successfully logged out!', 
-            'redirectUrl': '/officer/'
+            'success': True,
+            'message': 'Successfully logged out!',
+            'redirect_url': '/officer/'  # Back to dashboard
         })
     
     # For GET request
     request.session.pop('officer_id', None)
     request.session.pop('officer_name', None)
     request.session.pop('officer_email', None)
+    request.session.pop('assigned_district', None)
     request.session.pop('is_officer', None)
     
-    return redirect('/')
+    return redirect('/officer/')  # Back to dashboard
+
 
 
 
@@ -370,7 +372,8 @@ def application_dashboard(request):
         'rejected_data': rejected_data,
         'pending_count': len(pending_data),
         'approved_count': len(approved_data),
-        'rejected_count': len(rejected_data)
+        'rejected_count': len(rejected_data),
+        'is_officer_logged_in': bool(officer)
     }
     
     return render(request, 'application_dashboard.html', context)
