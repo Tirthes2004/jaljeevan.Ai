@@ -131,6 +131,7 @@ def loginOfficer(request):
                 request.session['officer_id'] = officer.id
                 request.session['officer_name'] = officer.officer_name
                 request.session['officer_email'] = officer.officer_email
+                request.session['assigned_district'] = officer.assigned_district
                 request.session['is_officer'] = True
                 
                 # CRITICAL: Save session immediately
@@ -363,6 +364,7 @@ def application_dashboard(request):
     
     context = {
         'officer': officer,
+        'officer_district': officer.assigned_district if officer else None,
         'pending_data': pending_data,
         'approved_data': approved_data,
         'rejected_data': rejected_data,
