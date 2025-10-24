@@ -1,21 +1,24 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="description" content="AI-powered rainwater harvesting assessment tool for sustainable water management">
     <meta name="keywords" content="rainwater harvesting, water management, sustainability, AI assessment">
-    
+
     <title>{% block title %}JalJeevan.AI - Smart Rainwater Harvesting Assessment{% endblock %}</title>
-    
+
     <!-- External CDN Resources -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <!-- Django Static Files -->
     <!-- <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
@@ -27,37 +30,37 @@
     <link rel="stylesheet" href="../static/css/auth.css">
     {% comment %} <style>
         #trackModal {
-    z-index: 9999 !important;
-}
+            z-index: 9999 !important;
+        }
 
-#trackModal .modal-dialog {
-    margin: 50px auto !important;
-}
+        #trackModal .modal-dialog {
+            margin: 50px auto !important;
+        }
 
-#trackModal .modal-content {
-    background: white !important;
-    color: black !important;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.5) !important;
-}
+        #trackModal .modal-content {
+            background: white !important;
+            color: black !important;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5) !important;
+        }
 
-#trackModal .modal-body {
-    min-height: 300px !important;
-    padding: 30px !important;
-}
+        #trackModal .modal-body {
+            min-height: 300px !important;
+            padding: 30px !important;
+        }
 
-.modal-backdrop {
-    z-index: 9998 !important;
-    background: rgba(0,0,0,0.7) !important;
-}
-
+        .modal-backdrop {
+            z-index: 9998 !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
     </style> {% endcomment %}
     <!-- Page-specific CSS Block -->
     {% block css %}{% endblock %}
 </head>
+
 <body>
     <!-- Rain Animation Container -->
     <div class="rain-container"></div>
-    
+
     {% block navbar %}
     <!-- Navigation Bar Component -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
@@ -66,7 +69,7 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-        
+
         <div class="logo">
             <div class="logo-icon">
                 <i class="fas fa-droplet" aria-hidden="true"></i>
@@ -76,45 +79,45 @@
 
         <ul class="nav-links" role="menubar">
             <li role="none">
-                <a href="{% url 'pages:home' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                   Home
+                <a href="{% url 'pages:home' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    Home
                 </a>
             </li>
             <li role="none">
-                <a href="{% url 'calculator:calculator' %}" role="menuitem" 
-                   class="nav-link {% if 'calculator' in request.resolver_match.namespace %}active{% endif %}">
-                   Calculator
+                <a href="{% url 'calculator:calculator' %}" role="menuitem"
+                    class="nav-link {% if 'calculator' in request.resolver_match.namespace %}active{% endif %}">
+                    Calculator
                 </a>
             </li>
             <li role="none">
                 {% if user.is_authenticated %}
-                <a href="{% url 'pages:vendor_section' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
-                   Vendor
+                <a href="{% url 'pages:vendor_section' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
+                    Vendor
                 </a>
                 {% else %}
                 <a type="button" onclick="openModal('login-modal'); closeSidebar();">
-                Vendors
+                    Vendors
                 </a>
                 {% endif %}
             </li>
             <li role="none">
-                <a href="{% url 'pages:about' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-                   About
+                <a href="{% url 'pages:about' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                    About
                 </a>
             </li>
             <li role="none">
-                <a href="{% url 'pages:leaderboard' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-                   Leaderboard
+                <a href="{% url 'pages:leaderboard' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                    Leaderboard
                 </a>
             </li>
             <li role="none">
-                <a href="{% url 'pages:contact' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-                   Members
+                <a href="{% url 'pages:contact' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                    Members
                 </a>
             </li>
         </ul>
@@ -123,7 +126,7 @@
             <div class="nav-right">
                 <div class="language-selector">
                     <button class="language-btn" id="languageBtn" aria-haspopup="true" aria-expanded="false">
-                        <span id="currentLanguage">English</span> 
+                        <span id="currentLanguage">English</span>
                         <i class="fas fa-chevron-down" aria-hidden="true"></i>
                     </button>
                     <div class="language-dropdown" id="languageDropdown" role="menu">
@@ -146,29 +149,29 @@
                 </div>
             </div>
 
-            
+
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
-                    <span class="welcome-message">
-                        <i class="fas fa-user-circle" aria-hidden="true"></i>
-                        Welcome, {{ user.username }}!
-                    </span>
-                    <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger" id="logout-btn">
-                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                            Logout
-                        </button>
-                    </form>
+                <span class="welcome-message">
+                    <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    Welcome, {{ user.username }}!
+                </span>
+                <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" id="logout-btn">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        Logout
+                    </button>
+                </form>
                 {% else %}
-                    <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();" type="button">
-                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                        Login
-                    </button>
-                    <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();" type="button">
-                        <i class="fas fa-user-plus" aria-hidden="true"></i>
-                        Sign Up
-                    </button>
+                <button class="btn btn-login" onclick="openModal('login-modal'); closeSidebar();" type="button">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    Login
+                </button>
+                <button class="btn btn-signin" onclick="openModal('signup-modal'); closeSidebar();" type="button">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i>
+                    Sign Up
+                </button>
                 {% endif %}
             </div>
         </div>
@@ -183,7 +186,7 @@
                 <i class="fas fa-times" aria-hidden="true"></i>
             </button>
         </div>
-        
+
         <ul class="sidebar-links" role="menu">
             <li role="none">
                 <a href="{% url 'pages:home' %}" role="menuitem" class="sidebar-link">
@@ -199,20 +202,20 @@
             </li>
             <li role="none">
                 {% if user.is_authenticated %}
-                <a href="{% url 'pages:vendor_section' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
-                   Vendor
+                <a href="{% url 'pages:vendor_section' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'vendor' %}active{% endif %}">
+                    Vendor
                 </a>
                 {% else %}
                 <a type="button" onclick="openModal('login-modal'); closeSidebar();">
-                Vendors
+                    Vendors
                 </a>
                 {% endif %}
             </li>
             <li role="none">
-                <a href="{% url 'pages:leaderboard' %}" role="menuitem" 
-                   class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-                   Leaderboard
+                <a href="{% url 'pages:leaderboard' %}" role="menuitem"
+                    class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                    Leaderboard
                 </a>
             </li>
             <li role="none">
@@ -228,54 +231,55 @@
                 </a>
             </li>
         </ul>
-        
+
         <div class="sidebar-auth">
             {% if user.is_authenticated %}
-                <div class="user-profile">
-                    <i class="fas fa-user-circle" aria-hidden="true"></i>
-                    <span>Welcome, {{ user.username }}!</span>
-                </div>
-                <form method="post" action="{% url 'logoutUser' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger sidebar-logout-btn">
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                        Logout
-                    </button>
-                </form>
+            <div class="user-profile">
+                <i class="fas fa-user-circle" aria-hidden="true"></i>
+                <span>Welcome, {{ user.username }}!</span>
+            </div>
+            <form method="post" action="{% url 'logoutUser' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger sidebar-logout-btn">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    Logout
+                </button>
+            </form>
             {% else %}
-                <button class="btn btn-login sidebar-btn" onclick="openModal('login-modal'); closeSidebar();" type="button">
-                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
-                    Login
-                </button>
-                <button class="btn btn-signin sidebar-btn" onclick="openModal('signup-modal'); closeSidebar();" type="button">
-                    <i class="fas fa-user-plus" aria-hidden="true"></i>
-                    Sign Up
-                </button>
+            <button class="btn btn-login sidebar-btn" onclick="openModal('login-modal'); closeSidebar();" type="button">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                Login
+            </button>
+            <button class="btn btn-signin sidebar-btn" onclick="openModal('signup-modal'); closeSidebar();"
+                type="button">
+                <i class="fas fa-user-plus" aria-hidden="true"></i>
+                Sign Up
+            </button>
             {% endif %}
         </div>
-        
+
         <div class="language-selector">
-                <button class="language-btn" aria-haspopup="true" aria-expanded="false">
-                    English <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="language-dropdown" id="languageDropdown" role="menu">
-                        <a href="#" class="language-option" data-lang="en" data-name="English" role="menuitem">
-                            English
-                        </a>
-                        <a href="#" class="language-option" data-lang="hi" data-name="हिन्दी" role="menuitem">
-                            हिन्दी (Hindi)
-                        </a>
-                        <a href="#" class="language-option" data-lang="bn" data-name="বাংলা" role="menuitem">
-                            বাংলা (Bengali)
-                        </a>
-                        <a href="#" class="language-option" data-lang="ta" data-name="தமிழ்" role="menuitem">
-                            தமிழ் (Tamil)
-                        </a>
-                        <a href="#" class="language-option" data-lang="mr" data-name="मराठी" role="menuitem">
-                            मराठी (Marathi)
-                        </a>
-                    </div>
+            <button class="language-btn" aria-haspopup="true" aria-expanded="false">
+                English <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="language-dropdown" id="languageDropdown" role="menu">
+                <a href="#" class="language-option" data-lang="en" data-name="English" role="menuitem">
+                    English
+                </a>
+                <a href="#" class="language-option" data-lang="hi" data-name="हिन्दी" role="menuitem">
+                    हिन्दी (Hindi)
+                </a>
+                <a href="#" class="language-option" data-lang="bn" data-name="বাংলা" role="menuitem">
+                    বাংলা (Bengali)
+                </a>
+                <a href="#" class="language-option" data-lang="ta" data-name="தமிழ்" role="menuitem">
+                    தமிழ் (Tamil)
+                </a>
+                <a href="#" class="language-option" data-lang="mr" data-name="मराठी" role="menuitem">
+                    मराठी (Marathi)
+                </a>
             </div>
+        </div>
     </div>
 
     <!-- Sidebar Overlay -->
@@ -293,14 +297,14 @@
                         Assess Your <span class="highlight">Rainwater Harvesting</span> Potential
                     </h1>
                     <h2 class="hero-subheading">
-                        AI-Powered Analysis for Sustainable Water Management 
+                        AI-Powered Analysis for Sustainable Water Management
                     </h2>
                     <p class="hero-description">
-                        Our advanced application helps you evaluate the potential for rooftop rainwater 
-                        harvesting and artificial recharge at your location. Get personalized recommendations, 
+                        Our advanced application helps you evaluate the potential for rooftop rainwater
+                        harvesting and artificial recharge at your location. Get personalized recommendations,
                         dimension calculations, and cost estimates with just a few clicks.
                     </p>
-                     <div class="hero-buttons">
+                    <div class="hero-buttons">
                         <!-- First Row: Get Started and Learn More -->
                         <div class="hero-buttons-row">
                             <a href="{% url 'calculator:calculator' %}" class="btn-primary">
@@ -312,7 +316,7 @@
                                 <span class="g">Learn More</span>
                             </a>
                         </div>
-                        
+
                         <!-- Second Row: Apply Now and Track Application -->
                         <div class="hero-buttons-row">
                             {% if user.is_authenticated %}
@@ -320,63 +324,67 @@
                                 <span>Apply Now</span>
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
-                            <button onclick="openModal('track-modal'); openTrackModal();" class="btn-secondary" type="button">
-                                <i class="fas fa-search"></i> 
+                            <button onclick="openModal('track-modal'); openTrackModal();" class="btn-secondary"
+                                type="button">
+                                <i class="fas fa-search"></i>
                                 <span class="g">Track Application</span>
                             </button>
                             {% else %}
                             <button class="btn-third" onclick="openModal('login-modal'); closeSidebar();" type="button">
                                 <span>Apply Now</span>
                             </button>
+                            <button onclick="openModal('login-modal'); closeSidebar();" class="btn-secondary"
+                                type="button">
+                                <i class="fas fa-search"></i>
+                                <span class="g">Track Application</span>
+                            </button>
                             {% endif %}
                         </div>
                     </div>
                 </div>
-                
 
 
-                            <!-- Track Applications Modal -->
-<div id="track-modal" class="auth-modal" role="dialog" aria-labelledby="track-title" aria-hidden="true">
-    <div class="modal-backdrop" onclick="closeModal('track-modal')"></div>
-    <div class="modal-container" style="max-width: 900px;">
-        <div class="modal-card track-modal-card">
-            <div class="modal-close">
-                <i class="fas fa-times" aria-hidden="true" onclick="closeModal('track-modal')"></i>
-            </div>
-            
-            <div class="modal-header">
-                <h2 id="track-title"><i class="fas fa-search"></i> Track My Applications</h2>
-                <p>View status of all your subsidy applications</p>
-            </div>
-            
-            <!-- Loading State -->
-            <div id="trackLoadingDiv" class="text-center track-loading">
-                <i class="fas fa-spinner fa-spin fa-3x"></i>
-                <p>Loading applications...</p>
-            </div>
-            
-            <!-- Applications List -->
-            <div id="trackContentDiv" class="track-content">
-                <div id="applicationsListDiv"></div>
-            </div>
-            
-            <!-- Empty State -->
-            <div id="trackEmptyDiv" class="text-center track-empty">
-                <i class="fas fa-inbox fa-3x"></i>
-                <h4>No Applications Found</h4>
-                <p>You haven't submitted any applications yet.</p>
-            </div>
-        </div>
-    </div>
-</div>
-                
+
+                <!-- Track Applications Modal -->
+                <div id="track-modal" class="auth-modal" role="dialog" aria-labelledby="track-title" aria-hidden="true">
+                    <div class="modal-backdrop" onclick="closeModal('track-modal')"></div>
+                    <div class="modal-container" style="max-width: 900px;">
+                        <div class="modal-card track-modal-card">
+                            <div class="modal-close">
+                                <i class="fas fa-times" aria-hidden="true" onclick="closeModal('track-modal')"></i>
+                            </div>
+
+                            <div class="modal-header">
+                                <h2 id="track-title"><i class="fas fa-search"></i> Track My Applications</h2>
+                                <p>View status of all your subsidy applications</p>
+                            </div>
+
+                            <!-- Loading State -->
+                            <div id="trackLoadingDiv" class="text-center track-loading">
+                                <i class="fas fa-spinner fa-spin fa-3x"></i>
+                                <p>Loading applications...</p>
+                            </div>
+
+                            <!-- Applications List -->
+                            <div id="trackContentDiv" class="track-content">
+                                <div id="applicationsListDiv"></div>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div id="trackEmptyDiv" class="text-center track-empty">
+                                <i class="fas fa-inbox fa-3x"></i>
+                                <h4>No Applications Found</h4>
+                                <p>You haven't submitted any applications yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="hero-visual" aria-hidden="true">
                     <!-- Floating image container with ripple effect -->
                     <div class="floating-image-container">
-                        <img src="{% static 'assets/image_float.png' %}" 
-                             alt="Rainwater Harvesting Visualization" 
-                             class="floating-image"
-                             loading="lazy">
+                        <img src="{% static 'assets/image_float.png' %}" alt="Rainwater Harvesting Visualization"
+                            class="floating-image" loading="lazy">
                         <div class="ripple-container">
                             <div class="ripple ripple-1"></div>
                             <div class="ripple ripple-2"></div>
@@ -386,12 +394,12 @@
                 </div>
             </div>
         </section>
-        
 
 
 
 
-        
+
+
     </main>
     {% endblock %}
 
@@ -403,33 +411,31 @@
             <div class="modal-container">
                 <div class="modal-card">
                     <div class="modal-close">
-                            <i class="fas fa-times" aria-hidden="true" onclick="closeModal('signup-modal')"></i>
+                        <i class="fas fa-times" aria-hidden="true" onclick="closeModal('signup-modal')"></i>
                     </div>
-                    
+
                     <div class="modal-header">
                         <h2 id="signup-title">Create Account</h2>
                         <p>Join us to start your rainwater harvesting journey</p>
                     </div>
-                    
+
                     <form class="auth-form" id="signup-form" method="POST" action="{% url 'registerUser' %}" novalidate>
                         {% csrf_token %}
-                        
+
                         <div class="form-group">
                             <label for="signup-username" class="form-label"></label>
                             <div class="input-wrapper">
-                                <input type="text" name="username" id="signup-username" 
-                                       class="form-control" placeholder="Choose username" required
-                                       autocomplete="username">
+                                <input type="text" name="username" id="signup-username" class="form-control"
+                                    placeholder="Choose username" required autocomplete="username">
                                 <i class="fas fa-user input-icon" aria-hidden="true"></i>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="signup-email" class="form-label"></label>
                             <div class="input-wrapper">
-                                <input type="email" name="email" id="signup-email" 
-                                       class="form-control" placeholder="Enter email" required
-                                       autocomplete="email">
+                                <input type="email" name="email" id="signup-email" class="form-control"
+                                    placeholder="Enter email" required autocomplete="email">
                                 <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
                             </div>
                         </div>
@@ -439,36 +445,35 @@
                                 <div class="form-group">
                                     <label for="signup-password" class="form-label"></label>
                                     <div class="input-wrapper">
-                                        <input type="password" name="password" id="signup-password" 
-                                               class="form-control" placeholder="Create password" required
-                                               autocomplete="new-password">
+                                        <input type="password" name="password" id="signup-password" class="form-control"
+                                            placeholder="Create password" required autocomplete="new-password">
                                         <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                                     </div>
                                 </div>
-                                
+
                                 <div class="password-strength">
                                     <div class="strength-bar" id="bar-1"></div>
                                     <div class="strength-bar" id="bar-2"></div>
                                     <div class="strength-bar" id="bar-3"></div>
                                     <div class="strength-bar" id="bar-4"></div>
                                 </div>
-                                
+
                                 <div class="strength-text">
                                     <i class="strength-icon fas fa-lock" aria-hidden="true"></i>
                                     Password strength: <span id="strength-value">None</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="signup-confirm-password" class="form-label"></label>
                                     <div class="input-wrapper">
-                                        <input type="password" name="confirm_password" id="signup-confirm-password" 
-                                               class="form-control" placeholder="Confirm password" required
-                                               autocomplete="new-password">
+                                        <input type="password" name="confirm_password" id="signup-confirm-password"
+                                            class="form-control" placeholder="Confirm password" required
+                                            autocomplete="new-password">
                                         <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="strength-requirements">
                                 <h4>Password Requirements:</h4>
                                 <div class="requirement" id="req-length">
@@ -499,9 +504,9 @@
                             <i class="fas fa-user-plus" aria-hidden="true"></i>
                         </button>
                     </form>
-                    
+
                     <div class="auth-switch">
-                        Already have an account? 
+                        Already have an account?
                         <a href="#" onclick="switchAuthModal('login-modal')" class="auth-link">Sign In</a>
                     </div>
                 </div>
@@ -514,37 +519,35 @@
             <div class="modal-container">
                 <div class="modal-card">
                     <div class="modal-close">
-                            <i class="fas fa-times" aria-hidden="true" onclick="closeModal('login-modal')"></i>
+                        <i class="fas fa-times" aria-hidden="true" onclick="closeModal('login-modal')"></i>
                     </div>
-                    
+
                     <div class="modal-header">
                         <h2 id="login-title">Welcome Back</h2>
                         <p>Sign in to continue your rainwater harvesting journey</p>
                     </div>
-                    
+
                     <form class="auth-form" id="login-form" method="POST" action="{% url 'loginUser' %}" novalidate>
                         {% csrf_token %}
-                        
+
                         <div class="form-group">
                             <label for="login-username" class="form-label"></label>
                             <div class="input-wrapper">
-                                <input type="text" name="username" id="login-username" 
-                                       class="form-control" placeholder="Enter username" required
-                                       autocomplete="username">
+                                <input type="text" name="username" id="login-username" class="form-control"
+                                    placeholder="Enter username" required autocomplete="username">
                                 <i class="fas fa-user input-icon" aria-hidden="true"></i>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="login-password" class="form-label"></label>
                             <div class="input-wrapper">
-                                <input type="password" name="password" id="login-password" 
-                                       class="form-control" placeholder="Enter password" required
-                                       autocomplete="current-password">
+                                <input type="password" name="password" id="login-password" class="form-control"
+                                    placeholder="Enter password" required autocomplete="current-password">
                                 <i class="fas fa-lock input-icon" aria-hidden="true"></i>
                             </div>
                         </div>
-                        
+
                         <div class="form-options">
                             <label class="remember-me">
                                 <input type="checkbox" name="remember_me">
@@ -553,15 +556,15 @@
                             </label>
                             <a href="#" class="forgot-password">Forgot Password?</a>
                         </div>
-                        
+
                         <button type="submit" class="btn-auth">
                             <span>Sign In</span>
                             <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </button>
                     </form>
-                    
+
                     <div class="auth-switch">
-                        Don't have an account? 
+                        Don't have an account?
                         <a href="#" onclick="switchAuthModal('signup-modal')" class="auth-link">Sign Up</a>
                     </div>
                 </div>
@@ -571,17 +574,18 @@
 
     <!-- Error/Success Messages -->
     {% if messages %}
-        <div class="messages-container">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}" role="alert">
-                    <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}" aria-hidden="true"></i>
-                    <span>{{ message }}</span>
-                    <button type="button" class="alert-close" onclick="this.parentElement.remove()" aria-label="Close message">
-                        <i class="fas fa-times" aria-hidden="true"></i>
-                    </button>
-                </div>
-            {% endfor %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"
+                aria-hidden="true"></i>
+            <span>{{ message }}</span>
+            <button type="button" class="alert-close" onclick="this.parentElement.remove()" aria-label="Close message">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
         </div>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <!-- Loading Overlay -->
@@ -597,7 +601,7 @@
     <script src="{% static 'js/sidebar.js' %}"></script>
     <script src="{% static 'js/auth.js' %}"></script>
     <script src="{% static 'js/home.js' %}"></script>
-    
+
     <!-- Page-specific JavaScript Block -->
     {% block js %}{% endblock %}
 
@@ -618,13 +622,13 @@
             }
             return cookieValue;
         }
-        
+
         const csrftoken = getCookie('csrftoken');
-        
+
         // Setup CSRF for all AJAX requests
         if (window.fetch) {
             const originalFetch = window.fetch;
-            window.fetch = function(url, options) {
+            window.fetch = function (url, options) {
                 options = options || {};
                 if (options.method && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(options.method.toUpperCase())) {
                     options.headers = options.headers || {};
@@ -638,446 +642,476 @@
 
 
 
-<!-- JalJeevan.AI Chatbot Modal -->
-<div id="chatbot-modal" class="chatbot-modal" style="display: none;">
-    <div class="chatbot-header">
-        <div class="chatbot-title">
-            <i class="fas fa-robot"></i>
-            <h4>JalJeevan.AI Assistant</h4>
-        </div>
-        <button class="chatbot-close" onclick="closeChatModal()" aria-label="Close chat">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    
-    <div class="chatbot-messages" id="chatbot-messages">
-        <div class="bot-message-container">
-            <div class="bot-avatar">
+    <!-- JalJeevan.AI Chatbot Modal -->
+    <div id="chatbot-modal" class="chatbot-modal" style="display: none;">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
                 <i class="fas fa-robot"></i>
+                <h4>JalJeevan.AI Assistant</h4>
             </div>
-            <div class="bot-message">
-                <div class="message-text">
-                    🌧️ Hi! I'm your rainwater harvesting expert. I can help you with:
-                    <br>• System calculations and sizing
-                    <br>• Installation guidance  
-                    <br>• Cost estimates and ROI
-                    <br>• Maintenance tips
-                    <br>• Government policies & subsidies
-                    <br><br>Ask me anything about rainwater harvesting!
-                </div>
-                <div class="message-time">Just now</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="chatbot-quick-actions">
-        <button class="quick-action-btn" onclick="sendQuickMessage('How much water can I harvest from my roof?')">
-            <i class="fas fa-calculator"></i> Calculate Harvest
-        </button>
-        <button class="quick-action-btn" onclick="sendQuickMessage('What tank size do I need?')">
-            <i class="fas fa-water"></i> Tank Size
-        </button>
-        <button class="quick-action-btn" onclick="sendQuickMessage('What are the installation costs?')">
-            <i class="fas fa-money-bill-wave"></i> Costs
-        </button>
-    </div>
-    
-    <div class="chatbot-input-container">
-        <div class="input-group">
-            <input type="text" id="chatbot-input" placeholder="Ask about rainwater harvesting..." 
-                   onkeypress="handleChatKeyPress(event)">
-            <button onclick="sendChatMessage()" class="send-button">
-                <i class="fas fa-paper-plane"></i>
+            <button class="chatbot-close" onclick="closeChatModal()" aria-label="Close chat">
+                <i class="fas fa-times"></i>
             </button>
         </div>
+
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="bot-message-container">
+                <div class="bot-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="bot-message">
+                    <div class="message-text">
+                        🌧️ Hi! I'm your rainwater harvesting expert. I can help you with:
+                        <br>• System calculations and sizing
+                        <br>• Installation guidance
+                        <br>• Cost estimates and ROI
+                        <br>• Maintenance tips
+                        <br>• Government policies & subsidies
+                        <br><br>Ask me anything about rainwater harvesting!
+                    </div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-quick-actions">
+            <button class="quick-action-btn" onclick="sendQuickMessage('How much water can I harvest from my roof?')">
+                <i class="fas fa-calculator"></i> Calculate Harvest
+            </button>
+            <button class="quick-action-btn" onclick="sendQuickMessage('What tank size do I need?')">
+                <i class="fas fa-water"></i> Tank Size
+            </button>
+            <button class="quick-action-btn" onclick="sendQuickMessage('What are the installation costs?')">
+                <i class="fas fa-money-bill-wave"></i> Costs
+            </button>
+        </div>
+
+        <div class="chatbot-input-container">
+            <div class="input-group">
+                <input type="text" id="chatbot-input" placeholder="Ask about rainwater harvesting..."
+                    onkeypress="handleChatKeyPress(event)">
+                <button onclick="sendChatMessage()" class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
     </div>
-</div>
 
-<!-- Floating Chat Button -->
-<button id="floating-chat-btn" onclick="openChatModal()" title="Chat with JalJeevan.AI Assistant">
-    <i class="fas fa-comments"></i>
-    <span class="chat-pulse"></span>
-</button>
+    <!-- Floating Chat Button -->
+    <button id="floating-chat-btn" onclick="openChatModal()" title="Chat with JalJeevan.AI Assistant">
+        <i class="fas fa-comments"></i>
+        <span class="chat-pulse"></span>
+    </button>
 
-<!-- Chatbot CSS -->
-<style>
-/* Floating Chat Button */
-#floating-chat-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 65px;
-    height: 65px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 50%;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#floating-chat-btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
-}
-
-.chat-pulse {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: rgba(102, 126, 234, 0.3);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.3); opacity: 0; }
-}
-
-/* Chatbot Modal */
-.chatbot-modal {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 380px;
-    height: 500px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Exo 2', sans-serif;
-    animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.chatbot-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 15px 15px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chatbot-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.chatbot-title h4 {
-    margin: 0;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.chatbot-close {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    transition: background-color 0.2s ease;
-}
-
-.chatbot-close:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.chatbot-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    background: #f8f9fa;
-    color:black;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-   
-}
-
-.bot-message-container, .user-message-container {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-}
-
-.user-message-container {
-    flex-direction: row-reverse;
-}
-
-.bot-avatar, .user-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-.bot-avatar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.user-avatar {
-    background: #6c757d;
-    color: white;
-}
-
-.bot-message, .user-message {
-    max-width: 85%;
-    padding: 12px 15px;
-    border-radius: 18px;
-    position: relative;
-}
-
-.bot-message {
-   background: white;
-    color: black;
-    border: 1px solid #e9ecef;
-    box-shadow: 0 5px 9px rgba(0, 0, 0, 0.7);
-}
-
-.user-message {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.message-text {
-    font-size: 14px;
-    line-height: 1.4;
-    margin-bottom: 5px;
-}
-
-.message-time {
-    font-size: 11px;
-    opacity: 0.7;
-}
-
-.chatbot-quick-actions {
-    padding: 10px 15px;
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    background: #f8f9fa;
-}
-
-.quick-action-btn {
-    background: white;
-    border: 1px solid #dee2e6;
-    border-radius: 20px;
-    padding: 8px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.quick-action-btn:hover {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
-
-.chatbot-input-container {
-    padding: 15px;
-    background: white;
-    border-radius: 0 0 15px 15px;
-}
-
-.input-group {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-#chatbot-input {
-    flex: 1;
-    border: 2px solid #e9ecef;
-    border-radius: 25px;
-    padding: 12px 18px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s ease;
-}
-
-#chatbot-input:focus {
-    border-color: #667eea;
-}
-
-.send-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.send-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-    .chatbot-modal {
-        width: calc(100vw - 40px);
-        height: calc(100vh - 60px);
-        bottom: 20px;
-        right: 20px;
-    }
-    
-    #floating-chat-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 55px;
-        height: 55px;
-    }
-}
-
-/* Typing Indicator */
-.typing-indicator {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 12px 15px;
-}
-
-.typing-dots {
-    display: flex;
-    gap: 3px;
-}
-
-.typing-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #667eea;
-    animation: typing 1.4s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typing {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-10px); }
-}
-</style>
-{% load django_browser_reload %}
-    {% django_browser_reload_script %}
-
-<!-- Chatbot JavaScript -->
-<script>
-let chatSessionId = localStorage.getItem('jaljeevan_chat_session') || generateSessionId();
-
-function generateSessionId() {
-    const sessionId = 'jaljeevan_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('jaljeevan_chat_session', sessionId);
-    return sessionId;
-}
-
-function openChatModal() {
-    document.getElementById('chatbot-modal').style.display = 'flex';
-    document.getElementById('floating-chat-btn').style.display = 'none';
-    document.getElementById('chatbot-input').focus();
-}
-
-function closeChatModal() {
-    document.getElementById('chatbot-modal').style.display = 'none';
-    document.getElementById('floating-chat-btn').style.display = 'flex';
-}
-
-function handleChatKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendChatMessage();
-    }
-}
-
-async function sendChatMessage() {
-    const input = document.getElementById('chatbot-input');
-    const message = input.value.trim();
-    if (!message) return;
-
-    // Add user message to chat
-    addMessageToChat(message, 'user');
-    input.value = '';
-
-    // Show typing indicator
-    showTypingIndicator();
-
-    try {
-        const response = await fetch('/chatbot/api/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCsrfToken(),
-            },
-            body: JSON.stringify({
-                message: message,
-                session_id: chatSessionId
-            })
-        });
-
-        const data = await response.json();
-        
-        // Remove typing indicator
-        removeTypingIndicator();
-
-        if (data.success) {
-            addMessageToChat(data.response, 'bot', data.sources);
-        } else {
-            addMessageToChat('Sorry, I encountered an error. Please try again.', 'bot');
+    <!-- Chatbot CSS -->
+    <style>
+        /* Floating Chat Button */
+        #floating-chat-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-    } catch (error) {
-        removeTypingIndicator();
-        addMessageToChat('Connection error. Please check your internet connection.', 'bot');
-    }
-}
+        #floating-chat-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
+        }
 
-function sendQuickMessage(message) {
-    document.getElementById('chatbot-input').value = message;
-    sendChatMessage();
-}
+        .chat-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.3);
+            animation: pulse 2s infinite;
+        }
 
-function addMessageToChat(text, sender, sources = []) {
-    const messagesContainer = document.getElementById('chatbot-messages');
-    const messageDiv = document.createElement('div');
-    
-    const now = new Date();
-    const time = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    
-    if (sender === 'user') {
-        messageDiv.className = 'user-message-container';
-        messageDiv.innerHTML = `
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* Chatbot Modal */
+        .chatbot-modal {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Exo 2', sans-serif;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chatbot-title h4 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+
+        .chatbot-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+        }
+
+        .bot-message-container,
+        .user-message-container {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .user-message-container {
+            flex-direction: row-reverse;
+        }
+
+        .bot-avatar,
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .bot-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .user-avatar {
+            background: #6c757d;
+            color: white;
+        }
+
+        .bot-message,
+        .user-message {
+            max-width: 85%;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .bot-message {
+            background: white;
+            color: black;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 9px rgba(0, 0, 0, 0.7);
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .chatbot-quick-actions {
+            padding: 10px 15px;
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            background: #f8f9fa;
+        }
+
+        .quick-action-btn {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quick-action-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .chatbot-input-container {
+            padding: 15px;
+            background: white;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #chatbot-input {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            padding: 12px 18px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        #chatbot-input:focus {
+            border-color: #667eea;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .chatbot-modal {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 60px);
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #floating-chat-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 15px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #667eea;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+    {% load django_browser_reload %}
+    {% django_browser_reload_script %}
+
+    <!-- Chatbot JavaScript -->
+    <script>
+        let chatSessionId = localStorage.getItem('jaljeevan_chat_session') || generateSessionId();
+
+        function generateSessionId() {
+            const sessionId = 'jaljeevan_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('jaljeevan_chat_session', sessionId);
+            return sessionId;
+        }
+
+        function openChatModal() {
+            document.getElementById('chatbot-modal').style.display = 'flex';
+            document.getElementById('floating-chat-btn').style.display = 'none';
+            document.getElementById('chatbot-input').focus();
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatbot-modal').style.display = 'none';
+            document.getElementById('floating-chat-btn').style.display = 'flex';
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Add user message to chat
+            addMessageToChat(message, 'user');
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            try {
+                const response = await fetch('/chatbot/api/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken(),
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: chatSessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                // Remove typing indicator
+                removeTypingIndicator();
+
+                if (data.success) {
+                    addMessageToChat(data.response, 'bot', data.sources);
+                } else {
+                    addMessageToChat('Sorry, I encountered an error. Please try again.', 'bot');
+                }
+
+            } catch (error) {
+                removeTypingIndicator();
+                addMessageToChat('Connection error. Please check your internet connection.', 'bot');
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('chatbot-input').value = message;
+            sendChatMessage();
+        }
+
+        function addMessageToChat(text, sender, sources = []) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageDiv = document.createElement('div');
+
+            const now = new Date();
+            const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            if (sender === 'user') {
+                messageDiv.className = 'user-message-container';
+                messageDiv.innerHTML = `
             <div class="user-avatar">
                 <i class="fas fa-user"></i>
             </div>
@@ -1086,14 +1120,14 @@ function addMessageToChat(text, sender, sources = []) {
                 <div class="message-time">${time}</div>
             </div>
         `;
-    } else {
-        let sourcesHtml = '';
-        if (sources && sources.length > 0) {
-            sourcesHtml = `<div style="margin-top: 8px; font-size: 11px; opacity: 0.8;">Sources: ${sources.map(s => `[${s}]`).join(', ')}</div>`;
-        }
-        
-        messageDiv.className = 'bot-message-container';
-        messageDiv.innerHTML = `
+            } else {
+                let sourcesHtml = '';
+                if (sources && sources.length > 0) {
+                    sourcesHtml = `<div style="margin-top: 8px; font-size: 11px; opacity: 0.8;">Sources: ${sources.map(s => `[${s}]`).join(', ')}</div>`;
+                }
+
+                messageDiv.className = 'bot-message-container';
+                messageDiv.innerHTML = `
             <div class="bot-avatar">
                 <i class="fas fa-robot"></i>
             </div>
@@ -1103,18 +1137,18 @@ function addMessageToChat(text, sender, sources = []) {
                 <div class="message-time">${time}</div>
             </div>
         `;
-    }
-    
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+            }
 
-function showTypingIndicator() {
-    const messagesContainer = document.getElementById('chatbot-messages');
-    const typingDiv = document.createElement('div');
-    typingDiv.id = 'typing-indicator';
-    typingDiv.className = 'bot-message-container';
-    typingDiv.innerHTML = `
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'bot-message-container';
+            typingDiv.innerHTML = `
         <div class="bot-avatar">
             <i class="fas fa-robot"></i>
         </div>
@@ -1128,121 +1162,121 @@ function showTypingIndicator() {
             </div>
         </div>
     `;
-    
-    messagesContainer.appendChild(typingDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
 
-function removeTypingIndicator() {
-    const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
-}
-
-function formatBotMessage(text) {
-    return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br>')
-        .replace(/•/g, '•');
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function getCsrfToken() {
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'csrftoken') {
-            return decodeURIComponent(value);
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
-    }
-    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-}
 
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && document.getElementById('chatbot-modal').style.display === 'flex') {
-        closeChatModal();
-    }
-});
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-<script>
-// Track Applications Modal
-// Track Applications Modal (No Bootstrap JS needed)
-async function openTrackModal() {
-    // Use your existing modal open function
-    const modal = document.getElementById('track-modal');
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    
-    // Show loading
-    document.getElementById('trackLoadingDiv').style.display = 'block';
-    document.getElementById('trackContentDiv').style.display = 'none';
-    document.getElementById('trackEmptyDiv').style.display = 'none';
-    
-    try {
-        const response = await fetch('/applications/track/');
-        const data = await response.json();
-        
-        document.getElementById('trackLoadingDiv').style.display = 'none';
-        
-        if (data.success && data.applications.length > 0) {
-            renderApplications(data.applications);
-            document.getElementById('trackContentDiv').style.display = 'block';
-        } else {
-            document.getElementById('trackEmptyDiv').style.display = 'block';
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
         }
-    } catch (error) {
-        document.getElementById('trackLoadingDiv').style.display = 'none';
-        document.getElementById('trackContentDiv').innerHTML = `
+
+        function formatBotMessage(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>')
+                .replace(/•/g, '•');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function getCsrfToken() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return decodeURIComponent(value);
+                }
+            }
+            return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && document.getElementById('chatbot-modal').style.display === 'flex') {
+                closeChatModal();
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        // Track Applications Modal
+        // Track Applications Modal (No Bootstrap JS needed)
+        async function openTrackModal() {
+            // Use your existing modal open function
+            const modal = document.getElementById('track-modal');
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            // Show loading
+            document.getElementById('trackLoadingDiv').style.display = 'block';
+            document.getElementById('trackContentDiv').style.display = 'none';
+            document.getElementById('trackEmptyDiv').style.display = 'none';
+
+            try {
+                const response = await fetch('/applications/track/');
+                const data = await response.json();
+
+                document.getElementById('trackLoadingDiv').style.display = 'none';
+
+                if (data.success && data.applications.length > 0) {
+                    renderApplications(data.applications);
+                    document.getElementById('trackContentDiv').style.display = 'block';
+                } else {
+                    document.getElementById('trackEmptyDiv').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('trackLoadingDiv').style.display = 'none';
+                document.getElementById('trackContentDiv').innerHTML = `
             <div style="padding: 20px; background: #f8d7da; border-radius: 10px; color: #721c24;">
                 <i class="fas fa-exclamation-circle"></i> Failed to load applications. Please try again.
             </div>
         `;
-        document.getElementById('trackContentDiv').style.display = 'block';
-    }
-}
-
-function renderApplications(applications) {
-    const container = document.getElementById('applicationsListDiv');
-    
-    let html = `<div class="application-count">Total Applications: ${applications.length}</div>`;
-    
-    applications.forEach(app => {
-        // Status configuration
-        const statusConfig = {
-            'SUBMITTED': { 
-                class: 'status-submitted',
-                icon: 'fa-paper-plane'
-            },
-            'UNDER_REVIEW': { 
-                class: 'status-under-review',
-                icon: 'fa-hourglass-half'
-            },
-            'APPROVED': { 
-                class: 'status-approved',
-                icon: 'fa-check-circle'
-            },
-            'REJECTED': { 
-                class: 'status-rejected',
-                icon: 'fa-times-circle'
+                document.getElementById('trackContentDiv').style.display = 'block';
             }
-        };
-        
-        const config = statusConfig[app.status] || statusConfig['SUBMITTED'];
-        
-        html += `
+        }
+
+        function renderApplications(applications) {
+            const container = document.getElementById('applicationsListDiv');
+
+            let html = `<div class="application-count">Total Applications: ${applications.length}</div>`;
+
+            applications.forEach(app => {
+                // Status configuration
+                const statusConfig = {
+                    'SUBMITTED': {
+                        class: 'status-submitted',
+                        icon: 'fa-paper-plane'
+                    },
+                    'UNDER_REVIEW': {
+                        class: 'status-under-review',
+                        icon: 'fa-hourglass-half'
+                    },
+                    'APPROVED': {
+                        class: 'status-approved',
+                        icon: 'fa-check-circle'
+                    },
+                    'REJECTED': {
+                        class: 'status-rejected',
+                        icon: 'fa-times-circle'
+                    }
+                };
+
+                const config = statusConfig[app.status] || statusConfig['SUBMITTED'];
+
+                html += `
             <div class="application-item">
                 <!-- Status Badge - Top Right -->
                 <span class="status-badge ${config.class}">
@@ -1294,87 +1328,88 @@ function renderApplications(applications) {
                 ` : ''}
             </div>
         `;
-    });
-    
-    container.innerHTML = html;
-}
+            });
+
+            container.innerHTML = html;
+        }
 
 
-function closeTrackModal() {
-    const modal = document.getElementById('trackModal');
-    modal.style.display = 'none';
-    modal.classList.remove('show');
-    document.body.classList.remove('modal-open');
-    
-    const backdrop = document.getElementById('trackBackdrop');
-    if (backdrop) backdrop.remove();
-}
+        function closeTrackModal() {
+            const modal = document.getElementById('trackModal');
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
 
-
-
-function getStatusClass(status) {
-    const classes = {
-        'SUBMITTED': 'bg-warning text-dark',
-        'UNDER_REVIEW': 'bg-info text-white',
-        'APPROVED': 'bg-success text-white',
-        'REJECTED': 'bg-danger text-white'
-    };
-    return classes[status] || 'bg-secondary text-white';
-}
-
-function getStatusIcon(status) {
-    const icons = {
-        'SUBMITTED': 'fas fa-paper-plane',
-        'UNDER_REVIEW': 'fas fa-hourglass-half',
-        'APPROVED': 'fas fa-check-circle',
-        'REJECTED': 'fas fa-times-circle'
-    };
-    return icons[status] || 'fas fa-question-circle';
-}
-
-// Close modal on backdrop click
-document.addEventListener('click', function(e) {
-    if (e.target && e.target.id === 'trackBackdrop') {
-        closeTrackModal();
-    }
-});
-
-
-// Add close modal function
-function closeTrackModal() {
-    const modal = document.getElementById('trackModal');
-    modal.style.display = 'none';
-    modal.classList.remove('show');
-    document.body.classList.remove('modal-open');
-    
-    const backdrop = document.getElementById('trackBackdrop');
-    if (backdrop) backdrop.remove();
-}
+            const backdrop = document.getElementById('trackBackdrop');
+            if (backdrop) backdrop.remove();
+        }
 
 
 
-function getStatusClass(status) {
-    const classes = {
-        'SUBMITTED': 'bg-warning text-dark',
-        'UNDER_REVIEW': 'bg-info text-white',
-        'APPROVED': 'bg-success text-white',
-        'REJECTED': 'bg-danger text-white'
-    };
-    return classes[status] || 'bg-secondary text-white';
-}
+        function getStatusClass(status) {
+            const classes = {
+                'SUBMITTED': 'bg-warning text-dark',
+                'UNDER_REVIEW': 'bg-info text-white',
+                'APPROVED': 'bg-success text-white',
+                'REJECTED': 'bg-danger text-white'
+            };
+            return classes[status] || 'bg-secondary text-white';
+        }
 
-function getStatusIcon(status) {
-    const icons = {
-        'SUBMITTED': 'fas fa-paper-plane',
-        'UNDER_REVIEW': 'fas fa-hourglass-half',
-        'APPROVED': 'fas fa-check-circle',
-        'REJECTED': 'fas fa-times-circle'
-    };
-    return icons[status] || 'fas fa-question-circle';
-}
-</script>
+        function getStatusIcon(status) {
+            const icons = {
+                'SUBMITTED': 'fas fa-paper-plane',
+                'UNDER_REVIEW': 'fas fa-hourglass-half',
+                'APPROVED': 'fas fa-check-circle',
+                'REJECTED': 'fas fa-times-circle'
+            };
+            return icons[status] || 'fas fa-question-circle';
+        }
 
-<script src="{% static 'js/translator.js' %}"></script>
+        // Close modal on backdrop click
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.id === 'trackBackdrop') {
+                closeTrackModal();
+            }
+        });
+
+
+        // Add close modal function
+        function closeTrackModal() {
+            const modal = document.getElementById('trackModal');
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+
+            const backdrop = document.getElementById('trackBackdrop');
+            if (backdrop) backdrop.remove();
+        }
+
+
+
+        function getStatusClass(status) {
+            const classes = {
+                'SUBMITTED': 'bg-warning text-dark',
+                'UNDER_REVIEW': 'bg-info text-white',
+                'APPROVED': 'bg-success text-white',
+                'REJECTED': 'bg-danger text-white'
+            };
+            return classes[status] || 'bg-secondary text-white';
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                'SUBMITTED': 'fas fa-paper-plane',
+                'UNDER_REVIEW': 'fas fa-hourglass-half',
+                'APPROVED': 'fas fa-check-circle',
+                'REJECTED': 'fas fa-times-circle'
+            };
+            return icons[status] || 'fas fa-question-circle';
+        }
+    </script>
+
+    <script src="{% static 'js/translator.js' %}"></script>
 
 </body>
+
 </html>
