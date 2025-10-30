@@ -85,3 +85,27 @@ def logoutUser(request):
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profileView(request):
+    """Return user profile data as JSON"""
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'success': False,
+            'message': 'User not authenticated'
+        }, status=401)
+    
+    # Format the date user joined
+    date_joined = request.user.date_joined.strftime('%B %d, %Y') if hasattr(request.user, 'date_joined') else 'N/A'
+    
+    return JsonResponse({
+        'success': True,
+        'username': request.user.username,
+        'email': request.user.email,
+        'date_joined': date_joined,
+        'first_name': request.user.first_name if hasattr(request.user, 'first_name') else '',
+        'last_name': request.user.last_name if hasattr(request.user, 'last_name') else '',
+    })
