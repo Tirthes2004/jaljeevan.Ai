@@ -76,12 +76,6 @@ def loginUser(request):
             'message': 'Credential Mismatched!!!'
         })
 
-# def logoutUser(request):
-#     logout(request)
-#     messages.success(request, "Successfully Logged Out!!!")
-#     return redirect('home')  # Redirect to home (calculator's demo_view)
-
-
 
 def logoutUser(request):
     if request.method == "POST":
@@ -89,3 +83,5 @@ def logoutUser(request):
         return JsonResponse({'status': 'success', 'message': 'Successfully Logged Out!!!'})
     
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
