@@ -19,6 +19,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 
     <!-- Django Static Files -->
     <!-- <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
@@ -154,7 +155,8 @@
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
                 <span class="welcome-message user-profile" onclick="openProfileModal()" style="cursor: pointer;">
-                    <i class="fas fa-user-circle" aria-hidden="true" style="font-size:30px; position:relative; top:5px;"></i>
+                    <i class="fas fa-user-circle" aria-hidden="true"
+                        style="font-size:30px; position:relative; top:5px;"></i>
                 </span>
                 <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
                     {% csrf_token %}
@@ -406,84 +408,184 @@
 
 
     <!-- Profile View Modal -->
-<div id="profile-modal" class="auth-modal" role="dialog" aria-labelledby="profile-title" aria-hidden="true">
-    <div class="modal-backdrop" onclick="closeModal('profile-modal')"></div>
-    <div class="modal-container">
-        <div class="modal-card">
-            <div class="modal-close">
-                <i class="fas fa-times" aria-hidden="true" onclick="closeModal('profile-modal')"></i>
-            </div>
-            
-            <div class="modal-header">
-                <h2 id="profile-title" style="position:relative; left:20px;">User Profile</h2>
-                <p style="position:relative; left:20px;">View and manage your account details</p>
-            </div>
-            
-            <div class="auth-form" id="profile-content">
-                <!-- Profile Picture Section -->
-                <div class="form-group" style="text-align: center; margin-bottom: 25px;">
-                    <div class="profile-picture-wrapper" style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #4264fcff 0%, #2997f1ff 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);">
-                        <i class="fas fa-user" style="font-size: 50px; color: white; position:absolute; left:17px; top:22px;" aria-hidden="true"></i>
-                    </div>
+    <div id="profile-modal" class="auth-modal" role="dialog" aria-labelledby="profile-title" aria-hidden="true">
+        <div class="modal-backdrop" onclick="closeModal('profile-modal')"></div>
+        <div class="modal-container">
+            <div class="modal-card">
+                <div class="modal-close">
+                    <i class="fas fa-times" aria-hidden="true" onclick="closeModal('profile-modal')"></i>
                 </div>
 
-                <!-- Username -->
-                <div class="form-group">
-                    <div> Username</div>
-                    <label class="form-label" style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px; ">
+                <div class="modal-header">
+                    <h2 id="profile-title" style="position:relative; left:20px;">User Profile</h2>
+                    <p style="position:relative; left:20px;">View and manage your account details</p>
+                </div>
+
+                <div class="auth-form" id="profile-content">
+                    <!-- Profile Picture Section
+                    <div class="form-group" style="text-align: center; margin-bottom: 25px;">
+                        <div class="profile-picture-wrapper"
+                            style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #4264fcff 0%, #2997f1ff 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);">
+                            <i class="fas fa-user"
+                                style="font-size: 50px; color: white; position:absolute; left:17px; top:22px;"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div> -->
+
+                    <!-- Profile Picture Section -->
+                    <div class="form-group" style="text-align: center; margin-bottom: 25px;">
+                        <div class="profile-picture-wrapper"
+                            style="position: relative; width: 100px; height: 100px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #4264fcff 0%, #2997f1ff 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); cursor: pointer; overflow: hidden;"
+                            onclick="document.getElementById('profile-photo-input').click()">
+
+                            <!-- Profile Photo Image (shows uploaded photo or icon) -->
+                            <img id="profile-photo-preview" src="" alt="Profile Photo"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+
+                            <!-- Default Icon (shows when no photo) -->
+                            <i id="default-profile-icon" class="fas fa-user" style="font-size: 50px; color: white;"
+                                aria-hidden="true"></i>
+
+                            <!-- Camera overlay on hover -->
+                            <div
+                                style="position: absolute; bottom: 0; right: 0; background: #667eea; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                                <i class="fas fa-camera" style="font-size: 14px; color: white;"></i>
+                            </div>
+                        </div>
+
+                        <!-- Hidden file input -->
+                        <input type="file" id="profile-photo-input" accept="image/*"
+                            onchange="handleProfilePhotoSelect(this)" style="display: none;">
+
                         
-                    </label>
-                    <div class="input-wrapper">
-                        <input type="text" id="profile-username" class="form-control" readonly style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
-                        <i class="fas fa-user input-icon" aria-hidden="true" style="position:absolute; top:43px;"></i>
                     </div>
-                </div>
-                
-                <!-- Email -->
-                <div class="form-group">
-                    <div> Email Address </div>
-                    <label class="form-label" style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px;">
-                        
-                    </label>
-                    <div class="input-wrapper">
-                        <input type="email" id="profile-email" class="form-control" readonly style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
-                        <i class="fas fa-envelope input-icon" aria-hidden="true" style="position:absolute; top:43px;"></i>
-                    </div>
-                </div>
 
-                <!-- Account Info -->
-                <div class="form-group">
-                    <div> Member Since </div>
-                    <label class="form-label" style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px;">
-                         
-                    </label>
-                    <div class="input-wrapper">
-                        <input type="text" id="profile-joined" class="form-control" readonly style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
-                        <i class="fas fa-calendar-alt input-icon" aria-hidden="true" style="position:absolute; top:43px;"></i>
-                    </div>
-                </div>
+                    <!-- Image Crop Modal -->
+                    
 
-                <!-- Action Buttons -->
-                <div style="display: flex; gap: 10px; margin-top: 25px;">
-                    <button type="button" class="btn-auth" onclick="editProfile()" style="flex: 1;">
-                        <span>Edit Profile</span>
-                        <i class="fas fa-edit" aria-hidden="true"></i>
-                    </button>
-                    
-                   
-                    <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
-                    {% csrf_token %}
-                    
-                    <button type="submit" class="btn-auth" onclick="handleLogoutFromProfile()" style="flex: 1; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        <span>Logout</span>
-                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                    </button>
-                </form>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <div> Username</div>
+                        <label class="form-label"
+                            style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px; ">
+
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="profile-username" class="form-control" readonly
+                                style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
+                            <i class="fas fa-user input-icon" aria-hidden="true"
+                                style="position:absolute; top:43px;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <div> Email Address </div>
+                        <label class="form-label"
+                            style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px;">
+
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="email" id="profile-email" class="form-control" readonly
+                                style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
+                            <i class="fas fa-envelope input-icon" aria-hidden="true"
+                                style="position:absolute; top:43px;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Account Info -->
+                    <div class="form-group">
+                        <div> Member Since </div>
+                        <label class="form-label"
+                            style="color: #667eea; font-weight: 600; display: block; margin-bottom: 8px;">
+
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" id="profile-joined" class="form-control" readonly
+                                style="background: rgba(102, 126, 234, 0.1); cursor: not-allowed;">
+                            <i class="fas fa-calendar-alt input-icon" aria-hidden="true"
+                                style="position:absolute; top:43px;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 10px; margin-top: 25px;">
+                        <button type="button" class="btn-auth" onclick="editProfile()" style="flex: 1;">
+                            <span>Edit Profile</span>
+                            <i class="fas fa-edit" aria-hidden="true"></i>
+                        </button>
+
+
+                        <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn-auth" onclick="handleLogoutFromProfile()"
+                                style="flex: 1; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <span>Logout</span>
+                                <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div id="crop-modal" class="auth-modal" role="dialog" aria-labelledby="crop-title"
+                        aria-hidden="true" style="display: none;">
+                        <div class="modal-backdrop" onclick="closeCropModal()"></div>
+                        <div class="modal-container">
+                            <div class="modal-card" style="max-width: 600px;">
+                                <div class="modal-close">
+                                    <i class="fas fa-times" aria-hidden="true" onclick="closeCropModal()"></i>
+                                </div>
+
+                                <div class="modal-header">
+                                    <h2 id="crop-title" style="position:relative; left:20px;">Crop Your Profile Photo
+                                    </h2>
+                                    <p style="position:relative; left:20px;">Adjust the selection to crop your image</p>
+                                </div>
+
+                                <div class="auth-form" style="padding: 20px;">
+                                    <!-- Image container for cropping -->
+                                    <div style="max-height: 400px; overflow: hidden; margin-bottom: 20px;">
+                                        <img id="crop-image" src="" alt="Image to crop"
+                                            style="max-width: 100%; display: block;">
+                                    </div>
+
+                                    <!-- Crop controls -->
+                                    <div
+                                        style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                                        <button type="button" onclick="rotateCropImage(-90)" class="btn"
+                                            style="padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-undo"></i> Rotate Left
+                                        </button>
+                                        <button type="button" onclick="rotateCropImage(90)" class="btn"
+                                            style="padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-redo"></i> Rotate Right
+                                        </button>
+                                        <button type="button" onclick="resetCrop()" class="btn"
+                                            style="padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-sync"></i> Reset
+                                        </button>
+                                    </div>
+
+                                    <!-- Action buttons -->
+                                    <div style="display: flex; gap: 10px; justify-content: center;">
+                                        <button type="button" onclick="closeCropModal()" class="btn"
+                                            style="padding: 12px 30px; background: #ccc; color: #333; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                        <button type="button" onclick="applyCropAndUpload()" class="btn-auth"
+                                            style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                                            <i class="fas fa-check"></i> Apply & Upload
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
     <!-- Authentication Modals Container -->
     <div class="auth-modals-container">
@@ -1111,6 +1213,8 @@
     {% django_browser_reload_script %}
 
     <!-- Chatbot JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
     <script>
         let chatSessionId = localStorage.getItem('jaljeevan_chat_session') || generateSessionId();
 
@@ -1489,79 +1593,245 @@
             return icons[status] || 'fas fa-question-circle';
         }
 
-            // Function to open profile modal and load user data
-function openProfileModal() {
-    // Fetch user profile data
-    fetch('/auth/profile/', {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type': 'application/json',
-        },
-        credentials: 'same-origin'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Populate profile modal with user data
-            document.getElementById('profile-username').value = data.username;
-            document.getElementById('profile-email').value = data.email;
-            document.getElementById('profile-joined').value = data.date_joined;
-            
-            // Open the modal
-            openModal('profile-modal');
-        } else {
-            // User not authenticated, redirect to login
-            openModal('login-modal');
+        // Function to open profile modal and load user data
+        // function openProfileModal() {
+        //     // Fetch user profile data
+        //     fetch('/auth/profile/', {
+        //         method: 'GET',
+        //         headers: {
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //             'Content-Type': 'application/json',
+        //         },
+        //         credentials: 'same-origin'
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.success) {
+        //                 // Populate profile modal with user data
+        //                 document.getElementById('profile-username').value = data.username;
+        //                 document.getElementById('profile-email').value = data.email;
+        //                 document.getElementById('profile-joined').value = data.date_joined;
+
+        //                 // Open the modal
+        //                 openModal('profile-modal');
+        //             } else {
+        //                 // User not authenticated, redirect to login
+        //                 openModal('login-modal');
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Error fetching profile:', error);
+        //             alert('Failed to load profile. Please try again.');
+        //         });
+        // }
+
+        // // Function to handle logout from profile modal
+        // function handleLogoutFromProfile() {
+        //     if (!confirm('Are you sure you want to logout?')) {
+        //         return;
+        //     }
+
+        //     // Get CSRF token
+        //     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        //     fetch('/logout/', {
+        //         method: 'POST',
+        //         headers: {
+        //             'X-CSRFToken': csrfToken,
+        //             'X-Requested-With': 'XMLHttpRequest',
+        //         },
+        //         credentials: 'same-origin'
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.success) {
+        //                 closeModal('profile-modal');
+        //                 window.location.href = data.redirect_url || '/';
+        //             } else {
+        //                 alert('Logout failed: ' + data.message);
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Logout error:', error);
+        //             // Fallback: redirect to home
+        //             window.location.href = '/';
+        //         });
+        // }
+
+        // // Function to edit profile (you can customize this)
+        // function editProfile() {
+        //     alert('Edit profile feature coming soon!');
+        //     // You can redirect to an edit page or open an edit modal
+        //     // window.location.href = '/edit-profile/';
+        // }
+
+        // Open profile modal and load user data
+        function openProfileModal() {
+            fetch('/auth/profile/', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Populate profile modal with user data
+                        document.getElementById('profile-username').value = data.username;
+                        document.getElementById('profile-email').value = data.email;
+                        document.getElementById('profile-joined').value = data.date_joined;
+
+                        // Display profile photo if available
+                        const profileImg = document.getElementById('profile-photo-preview');
+                        const defaultIcon = document.getElementById('default-profile-icon');
+
+                        if (data.profile_photo) {
+                            profileImg.src = data.profile_photo;
+                            profileImg.style.display = 'block';
+                            defaultIcon.style.display = 'none';
+                        } else {
+                            profileImg.style.display = 'none';
+                            defaultIcon.style.display = 'block';
+                        }
+
+                        // Open the modal
+                        openModal('profile-modal');
+                    } else {
+                        // User not authenticated, redirect to login
+                        openModal('login-modal');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching profile:', error);
+                    alert('Failed to load profile. Please try again.');
+                });
         }
-    })
-    .catch(error => {
-        console.error('Error fetching profile:', error);
-        alert('Failed to load profile. Please try again.');
-    });
-}
 
-// Function to handle logout from profile modal
-function handleLogoutFromProfile() {
-    if (!confirm('Are you sure you want to logout?')) {
-        return;
-    }
-    
-    // Get CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
-    fetch('/logout/', {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken,
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        credentials: 'same-origin'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            closeModal('profile-modal');
-            window.location.href = data.redirect_url || '/';
-        } else {
-            alert('Logout failed: ' + data.message);
+        // Handle profile photo selection and upload
+        function handleProfilePhotoSelect(input) {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                input.value = '';
+                return;
+            }
+
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Only JPEG, PNG, GIF, and WebP images are allowed');
+                input.value = '';
+                return;
+            }
+
+            // Show preview immediately
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const profileImg = document.getElementById('profile-photo-preview');
+                const defaultIcon = document.getElementById('default-profile-icon');
+
+                profileImg.src = e.target.result;
+                profileImg.style.display = 'block';
+                defaultIcon.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            // Upload photo
+            uploadProfilePhoto(file);
         }
-    })
-    .catch(error => {
-        console.error('Logout error:', error);
-        // Fallback: redirect to home
-        window.location.href = '/';
-    });
-}
 
-// Function to edit profile (you can customize this)
-function editProfile() {
-    alert('Edit profile feature coming soon!');
-    // You can redirect to an edit page or open an edit modal
-    // window.location.href = '/edit-profile/';
-}
+        // Upload profile photo to server
+        function uploadProfilePhoto(file) {
+            const formData = new FormData();
+            formData.append('profile_photo', file);
 
+            // Show loading state (optional)
+            const wrapper = document.querySelector('.profile-picture-wrapper');
+            wrapper.style.opacity = '0.6';
+            wrapper.style.pointerEvents = 'none';
+
+            fetch('/auth/profile/upload-photo/', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                credentials: 'same-origin',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset loading state
+                    wrapper.style.opacity = '1';
+                    wrapper.style.pointerEvents = 'auto';
+
+                    if (data.success) {
+                        // Update preview with saved photo URL
+                        document.getElementById('profile-photo-preview').src = data.photo_url;
+                        alert('Profile photo updated successfully!');
+                    } else {
+                        alert('Failed to upload photo: ' + data.error);
+                        // Revert to previous state
+                        openProfileModal();
+                    }
+                })
+                .catch(error => {
+                    // Reset loading state
+                    wrapper.style.opacity = '1';
+                    wrapper.style.pointerEvents = 'auto';
+
+                    console.error('Error uploading photo:', error);
+                    alert('Failed to upload photo. Please try again.');
+                    // Revert to previous state
+                    openProfileModal();
+                });
+        }
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Function to handle logout from profile modal
+        function handleLogoutFromProfile() {
+            if (!confirm('Are you sure you want to logout?')) {
+                return false;
+            }
+            return true; // Allow form submission
+        }
+
+        // Function to edit profile
+        function editProfile() {
+            alert('Edit profile feature coming soon!');
+        }
         
+
+       
+        
+
+
+
+
+
     </script>
 
     <script src="{% static 'js/translator.js' %}"></script>
