@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Registration - JalJeevan.AI</title>
+     <!-- Add Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-             :root {
+                   :root {
             --primary-dark: #0a1929;
             --primary-medium: #0d2337;
             --primary-light: #143d66;
@@ -14,6 +16,8 @@
             --text-primary: #e6f7ff;
             --text-secondary: #b3e0ff;
             --glow-color: rgba(33, 150, 243, 0.6);
+            --premium-gold: #FFD700;
+            --premium-glow: rgba(255, 215, 0, 0.6);
         }
 
         * {
@@ -306,6 +310,132 @@
             border-left: 3px solid var(--accent-teal);
         }
 
+        /* Premium Vendor Section */
+        .premium-vendor-section {
+            border: 2px dashed var(--premium-gold);
+            border-radius: 8px;
+            padding: 25px;
+            background: rgba(255, 215, 0, 0.05);
+            margin-bottom: 25px;
+            animation: premiumPulseBorder 3s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes premiumPulseBorder {
+            0% { border-color: rgba(255, 215, 0, 0.5); }
+            50% { border-color: rgba(255, 215, 0, 0.9); }
+            100% { border-color: rgba(255, 215, 0, 0.5); }
+        }
+
+        .premium-vendor-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--premium-gold), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .premium-title {
+            font-weight: 600;
+            color: var(--premium-gold);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .premium-benefits {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid var(--premium-gold);
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            padding: 5px 0;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-item i {
+            color: var(--premium-gold);
+            font-size: 0.9rem;
+            width: 16px;
+        }
+
+        .benefit-item span {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .pricing-info {
+            text-align: center;
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--premium-gold);
+            margin: 5px 0;
+        }
+
+        .price-note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .premium-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .premium-checkbox:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .premium-checkbox input[type="checkbox"] {
+            transform: scale(1.3);
+            accent-color: var(--premium-gold);
+        }
+
+        .premium-checkbox label {
+            margin: 0;
+            font-weight: 600;
+            color: var(--premium-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
         .btn-submit {
             width: 100%;
             background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
@@ -487,6 +617,10 @@
                 padding: 20px;
             }
             
+            .premium-vendor-section {
+                padding: 20px;
+            }
+            
             .cloud-rain-icon {
                 font-size: 3rem;
             }
@@ -646,7 +780,52 @@
                     <p class="help-text">Format: 22ABCDE1234F1Z5 (15 characters)</p>
                 </div>
             </div>
-            
+              <!-- Premium Vendor Section -->
+            <div class="premium-vendor-section">
+                <div class="premium-title">
+                    <i class="fas fa-crown"></i> Premium Vendor Program
+                </div>
+                
+                <div class="premium-benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Priority listing in search results</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Verified badge on your profile</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Featured in premium vendor section</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Direct customer referrals</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Business promotion on our platform</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Early access to premium projects</span>
+                    </div>
+                </div>
+
+                <div class="pricing-info">
+                    <div class="price">₹299/year</div>
+                    <div class="price-note">₹200 - per implementation </div>
+                </div>
+
+                <div class="premium-checkbox">
+                    <input type="checkbox" id="premiumVendor" name="premium_vendor" value="true">
+                    <label for="premiumVendor">Register as Premium Vendor</label>
+                </div>
+                <p class="help-text" style="text-align: center; margin-top: 10px;">
+                    You'll be contacted for premium registration payment after basic verification
+                </p>
+            </div>
             <button type="submit" class="btn-submit">Register as Vendor</button>
         </form>
     </div>
@@ -737,10 +916,21 @@
             }
         });
 
+         // Premium vendor confirmation
+            const premiumCheckbox = document.getElementById('premiumVendor');
+            if (premiumCheckbox.checked) {
+                const confirmed = confirm('You have selected Premium Vendor registration (₹299/year). You will be contacted for payment after basic verification. Continue?');
+                if (!confirmed) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+        
          // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             createRaindrops();
         });
     </script>
+     <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
 </body>
 </html>
