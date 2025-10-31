@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Registration - JalJeevan.AI</title>
     <style>
-                    :root {
+             :root {
             --primary-dark: #0a1929;
             --primary-medium: #0d2337;
             --primary-light: #143d66;
@@ -132,8 +132,9 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
+            gap: 8px;
         }
 
         .rain-drops span {
@@ -141,17 +142,25 @@
             width: 2px;
             height: 8px;
             background: var(--accent-teal);
-            margin: 2px 0;
             animation: rainDrops 1.5s ease-in-out infinite;
             opacity: 0.7;
         }
 
+        /* Updated for 5 raindrops with different delays */
+        .rain-drops span:nth-child(1) {
+            animation-delay: 0s;
+        }
         .rain-drops span:nth-child(2) {
             animation-delay: 0.2s;
         }
-
         .rain-drops span:nth-child(3) {
             animation-delay: 0.4s;
+        }
+        .rain-drops span:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .rain-drops span:nth-child(5) {
+            animation-delay: 0.8s;
         }
 
         @keyframes float {
@@ -494,6 +503,8 @@
             <div class="cloud-rain-icon">
                 ☁️
                 <div class="rain-drops">
+                    <span></span>
+                    <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
