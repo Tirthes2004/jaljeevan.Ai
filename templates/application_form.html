@@ -770,6 +770,67 @@
     </div>
 </div>
 
+  <!-- Implementation Image Upload -->
+            <div class="section-header">
+                <i class="fas fa-camera"></i>
+                <h4 class="mb-0">Implementation Image</h4>
+            </div>
+            <div class="form-section">
+                <label class="form-label">Upload Image of Implementation *</label>
+                <p class="text-muted small">Upload clear photos of your rainwater harvesting system installation</p>
+                
+                <div class="file-input-container" id="implementation_image_container">
+                    <input type="file" name="implementation_image" id="implementation_image" class="custom-file-input" accept=".jpg,.jpeg,.png" required>
+                    <label for="implementation_image" class="custom-file-label">
+                        <i class="fas fa-file-upload"></i> Choose Image File
+                        <span class="file-type-badge">JPG, PNG Only</span>
+                    </label>
+                    
+                    <!-- File name display area -->
+                    <div class="file-display-area" id="implementation_image_display">
+                        <span class="file-name" id="implementation_image_fileNameDisplay">
+                            <i class="fas fa-file"></i>
+                            <span class="file-name-text">No file chosen</span>
+                        </span>
+                        <button type="button" class="file-clear-btn" id="implementation_image_fileClearBtn" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="file-input-hint">Maximum file size: 5MB • Supported formats: JPG, JPEG, PNG</div>
+                </div>
+            </div>
+
+            <!-- Authorized Bill Upload -->
+            <div class="section-header">
+                <i class="fas fa-receipt"></i>
+                <h4 class="mb-0">Authorized Bill</h4>
+            </div>
+            <div class="form-section">
+                <label class="form-label">Upload Authorized Bill *</label>
+                <p class="text-muted small">Upload the bill/receipt from authorized vendor for the installation</p>
+                
+                <div class="file-input-container" id="authorized_bill_container">
+                    <input type="file" name="bill" id="authorized_bill" class="custom-file-input" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <label for="authorized_bill" class="custom-file-label">
+                        <i class="fas fa-file-upload"></i> Choose File
+                        <span class="file-type-badge">JPG, PNG, PDF</span>
+                    </label>
+                    
+                    <!-- File name display area -->
+                    <div class="file-display-area" id="authorized_bill_display">
+                        <span class="file-name" id="authorized_bill_fileNameDisplay">
+                            <i class="fas fa-file"></i>
+                            <span class="file-name-text">No file chosen</span>
+                        </span>
+                        <button type="button" class="file-clear-btn" id="authorized_bill_fileClearBtn" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="file-input-hint">Maximum file size: 10MB • Supported formats: JPG, JPEG, PNG, PDF</div>
+                </div>
+            </div>
 
             <!-- Consent -->
             <div class="form-section">
@@ -884,58 +945,56 @@ document.getElementById('fileClearBtn').addEventListener('click', function(e) {
     resetFileDisplay();
 });
 
-// Function to reset file display
-function resetFileDisplay() {
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const fileClearBtn = document.getElementById('fileClearBtn');
-    const fileDisplayArea = document.querySelector('.file-display-area');
-    
-    document.querySelector('.file-name-text').textContent = 'No file chosen';
-    fileNameDisplay.setAttribute('data-file-type', 'other');
-    
-    const fileIcon = fileNameDisplay.querySelector('i');
-    fileIcon.className = 'fas fa-file';
-    
-    fileClearBtn.style.display = 'none';
-    fileDisplayArea.classList.remove('has-file');
-    
-    // Remove file size element
-    const existingSize = fileNameDisplay.querySelector('.file-size');
-    if (existingSize) {
-        existingSize.remove();
-    }
-}
 
-// Helper function to determine file type
-function getFileType(fileName) {
-    const extension = fileName.split('.').pop().toLowerCase();
-    
-    if (extension === 'pdf') return 'pdf';
-    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
-    if (['doc', 'docx', 'txt', 'rtf'].includes(extension)) return 'document';
-    return 'other';
-}
+        // Function to reset file display for a specific input
+        function resetFileDisplay(fileNameDisplay, fileClearBtn, fileDisplayArea) {
+            fileNameDisplay.querySelector('.file-name-text').textContent = 'No file chosen';
+            fileNameDisplay.setAttribute('data-file-type', 'other');
+            
+            const fileIcon = fileNameDisplay.querySelector('i');
+            fileIcon.className = 'fas fa-file';
+            
+            fileClearBtn.style.display = 'none';
+            fileDisplayArea.classList.remove('has-file');
+            
+            // Remove file size element
+            const existingSize = fileNameDisplay.querySelector('.file-size');
+            if (existingSize) {
+                existingSize.remove();
+            }
+        }
 
-// Helper function to get appropriate file icon
-function getFileIcon(fileType) {
-    switch (fileType) {
-        case 'pdf': return 'fas fa-file-pdf';
-        case 'image': return 'fas fa-file-image';
-        case 'document': return 'fas fa-file-word';
-        default: return 'fas fa-file';
-    }
-}
+        // Helper function to determine file type
+        function getFileType(fileName) {
+            const extension = fileName.split('.').pop().toLowerCase();
+            
+            if (extension === 'pdf') return 'pdf';
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
+            if (['doc', 'docx', 'txt', 'rtf'].includes(extension)) return 'document';
+            return 'other';
+        }
 
-// Helper function to format file size
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
+
+ // Helper function to get appropriate file icon
+        function getFileIcon(fileType) {
+            switch (fileType) {
+                case 'pdf': return 'fas fa-file-pdf';
+                case 'image': return 'fas fa-file-image';
+                case 'document': return 'fas fa-file-word';
+                default: return 'fas fa-file';
+            }
+        }
+
+  // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
 // Add click event to file display area to trigger file input
 document.querySelector('.file-display-area').addEventListener('click', function(e) {
     if (!e.target.closest('.file-clear-btn')) {
@@ -1095,5 +1154,210 @@ document.querySelector('.file-display-area').addEventListener('click', function(
             });
         });
     </script>
+        <script>
+        // Helper function to determine file type
+        function getFileType(fileName) {
+            const extension = fileName.split('.').pop().toLowerCase();
+            
+            if (extension === 'pdf') return 'pdf';
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
+            if (['doc', 'docx', 'txt', 'rtf'].includes(extension)) return 'document';
+            return 'other';
+        }
+
+        // Helper function to get appropriate file icon
+        function getFileIcon(fileType) {
+            switch (fileType) {
+                case 'pdf': return 'fas fa-file-pdf';
+                case 'image': return 'fas fa-file-image';
+                case 'document': return 'fas fa-file-word';
+                default: return 'fas fa-file';
+            }
+        }
+
+        // Helper function to format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Function to reset file display for a specific input
+        function resetFileDisplay(fileNameDisplay, fileClearBtn, fileDisplayArea) {
+            fileNameDisplay.querySelector('.file-name-text').textContent = 'No file chosen';
+            fileNameDisplay.setAttribute('data-file-type', 'other');
+            
+            const fileIcon = fileNameDisplay.querySelector('i');
+            fileIcon.className = 'fas fa-file';
+            
+            fileClearBtn.style.display = 'none';
+            fileDisplayArea.classList.remove('has-file');
+            
+            // Remove file size element
+            const existingSize = fileNameDisplay.querySelector('.file-size');
+            if (existingSize) {
+                existingSize.remove();
+            }
+        }
+
+        // Setup file input functionality
+        function setupFileInput(inputId) {
+            const fileInput = document.getElementById(inputId);
+            const fileNameDisplay = document.getElementById(inputId + '_fileNameDisplay');
+            const fileClearBtn = document.getElementById(inputId + '_fileClearBtn');
+            const fileDisplayArea = document.getElementById(inputId + '_display');
+
+            if (!fileInput || !fileNameDisplay || !fileClearBtn || !fileDisplayArea) {
+                console.error('Missing elements for file input:', inputId);
+                return;
+            }
+
+            // File input change event
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Update file name display
+                    fileNameDisplay.querySelector('.file-name-text').textContent = file.name;
+                    
+                    // Set file type for icon
+                    const fileType = getFileType(file.name);
+                    fileNameDisplay.setAttribute('data-file-type', fileType);
+                    
+                    // Update icon based on file type
+                    const fileIcon = fileNameDisplay.querySelector('i');
+                    fileIcon.className = getFileIcon(fileType);
+                    
+                    // Show clear button and add active state
+                    fileClearBtn.style.display = 'flex';
+                    fileDisplayArea.classList.add('has-file');
+                    
+                    // Add file size information
+                    const fileSize = formatFileSize(file.size);
+                    const sizeElement = document.createElement('span');
+                    sizeElement.className = 'file-size';
+                    sizeElement.textContent = ` • ${fileSize}`;
+                    sizeElement.style.color = 'var(--text-secondary)';
+                    sizeElement.style.fontSize = '12px';
+                    sizeElement.style.marginLeft = '8px';
+                    
+                    // Remove existing size element if any
+                    const existingSize = fileNameDisplay.querySelector('.file-size');
+                    if (existingSize) {
+                        existingSize.remove();
+                    }
+                    
+                    fileNameDisplay.appendChild(sizeElement);
+                    
+                } else {
+                    // Reset to default state
+                    resetFileDisplay(fileNameDisplay, fileClearBtn, fileDisplayArea);
+                }
+            });
+
+            // Clear file button functionality
+            fileClearBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                fileInput.value = '';
+                resetFileDisplay(fileNameDisplay, fileClearBtn, fileDisplayArea);
+            });
+
+            // Click on display area to trigger file input
+            fileDisplayArea.addEventListener('click', function(e) {
+                if (!e.target.closest('.file-clear-btn')) {
+                    fileInput.click();
+                }
+            });
+        }
+
+        // Initialize all file inputs
+        function initializeFileInputs() {
+            const fileInputs = [
+                'calculation_pdf',
+                'implementation_image', 
+                'authorized_bill'
+            ];
+            
+            fileInputs.forEach(inputId => {
+                setupFileInput(inputId);
+            });
+        }
+
+        // Form Submission
+        document.getElementById('applicationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(e.target);
+            
+            // Set consent as boolean
+            formData.set('consent_given', document.getElementById('consent').checked);
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Show success
+                document.getElementById('successAppId').textContent = 'APP' + Date.now();
+                document.getElementById('successBox').style.display = 'block';
+                document.getElementById('applicationForm').style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('applicationForm').reset();
+            document.getElementById('applicationForm').style.display = 'block';
+            document.getElementById('successBox').style.display = 'none';
+            
+            // Reset all file displays
+            const fileInputs = [
+                'calculation_pdf',
+                'implementation_image', 
+                'authorized_bill'
+            ];
+            
+            fileInputs.forEach(inputId => {
+                const fileNameDisplay = document.getElementById(inputId + '_fileNameDisplay');
+                const fileClearBtn = document.getElementById(inputId + '_fileClearBtn');
+                const fileDisplayArea = document.getElementById(inputId + '_display');
+                
+                if (fileNameDisplay && fileClearBtn && fileDisplayArea) {
+                    resetFileDisplay(fileNameDisplay, fileClearBtn, fileDisplayArea);
+                }
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFileInputs();
+            
+            // Add hover effects to form controls
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>

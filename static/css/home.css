@@ -699,3 +699,51 @@ html {
     border-radius: 8px;
     border: 1px solid rgba(33, 150, 243, 0.2);
 }
+/* Premium upgrade icon in navbar */
+    .premium-upgrade {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .premium-upgrade i {
+        font-size: 24px;
+        transition: transform 0.3s ease;
+    }
+    
+    .premium-upgrade i:hover {
+        transform: scale(1.2);
+    }
+    
+    /* Premium badge on profile */
+    .user-profile {
+        position: relative;
+    }
+    
+    .premium-badge {
+        background: white;
+        border-radius: 50%;
+        padding: 2px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    /* Premium benefits styling */
+    .premium-benefits {
+        margin-bottom: 20px;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 8px 0;
+    }
+    
+    .benefit-item i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    
+    .benefit-item span {
+        font-size: 16px;
+    }

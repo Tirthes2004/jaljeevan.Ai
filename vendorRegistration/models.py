@@ -12,6 +12,6 @@ class Vendor(models.Model):
     pincode = models.CharField(max_length=6, null=False, blank=False)
     PAN_Number = models.CharField(max_length=10, unique=True, null=True, blank=True)
     GSTIN_Number = models.CharField(max_length=10, unique=True, null=True, blank=True)
-
+    premium_vendor = models.BooleanField(default=False)
     def __str__(self):
         return self.shop_name
