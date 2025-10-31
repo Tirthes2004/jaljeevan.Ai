@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'vendorRegistration',
     'translations',
     'GovtApplications',
+    'premium',
 ]
 
 MIDDLEWARE = [

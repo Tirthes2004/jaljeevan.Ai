@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/v1/', include('calculator.api_urls')),  # Calculator API endpoints
     path('chatbot/', include('chatbot.urls')),  # Chatbot API
     path('auth/', include('accounts.urls')),  # Authentication
+    path('premium/', include('premium.urls')),  # Premium features
     path('favicon.ico', RedirectView.as_view(
         url=staticfiles_storage.url('images/favicon.ico')
     )),
