@@ -150,13 +150,21 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Add this to the navbar section -->
+                {% if user.is_authenticated and not user.is_premium %}
+                <div class="premium-upgrade" onclick="openUpgradeModal()">
+                    <i class="fas fa-crown" style="color: gold; cursor: pointer; position:relative;right:10px;" title="Upgrade to Premium "></i>
+                </div>
+                {% endif %}
 
             <div class="auth-buttons">
                 {% if user.is_authenticated %}
                 <span class="welcome-message user-profile" onclick="openProfileModal()" style="cursor: pointer;">
                     <i class="fas fa-user-circle" aria-hidden="true"
                         style="font-size:30px; position:relative; top:5px;"></i>
+                        {% if user.is_premium %}
+                        <i class="fas fa-crown premium-badge" style="color: gold; font-size: 16px; position: absolute; top: -5px; right: -5px;"></i>
+                        {% endif %}
                 </span>
                 <form method="post" action="{% url 'logoutUser' %}" style="display: inline;">
                     {% csrf_token %}
@@ -175,6 +183,8 @@
                     Sign Up
                 </button>
                 {% endif %}
+                
+                
             </div>
         </div>
     </nav>
@@ -587,6 +597,77 @@
                     </div>
 
 
+                    <!-- Add this modal after the profile modal -->
+<!-- Premium Upgrade Modal -->
+<div id="upgrade-modal" class="auth-modal" role="dialog" aria-labelledby="upgrade-title" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeModal('upgrade-modal')"></div>
+    <div class="modal-container">
+        <div class="modal-card">
+            <div class="modal-close">
+                <i class="fas fa-times" aria-hidden="true" onclick="closeModal('upgrade-modal')"></i>
+            </div>
+
+            <div class="modal-header">
+                <h2 id="upgrade-title" style="position:relative; left:20px;">
+                    <i class="fas fa-crown" style="color: gold;"></i> Upgrade to Premium
+                </h2>
+                <p style="position:relative; left:20px;">Unlock exclusive features and benefits</p>
+            </div>
+
+            <div class="auth-form" id="upgrade-content">
+                <div class="premium-benefits">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: #667eea;">Premium Benefits</h3>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Priority application processing</span>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Advanced AI analysis with detailed reports</span>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Access to premium vendor network</span>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Personalized consultation with experts</span>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Extended chatbot support hours</span>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <i class="fas fa-check-circle" style="color: #51cf66;"></i>
+                        <span>Ad-free experience</span>
+                    </div>
+                    
+                    <div class="pricing-section" style="text-align: center; margin: 25px 0;">
+                        <div class="price" style="font-size: 32px; font-weight: bold; color: #667eea;">
+                            ₹399<span style="font-size: 16px; color: #777;">/year</span>
+                        </div>
+                        <p style="color: #777; margin-top: 10px;">Only ~₹33 per month | Cancel anytime</p>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-auth" onclick="upgradeToPremium()" 
+                        style="background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #333; font-weight: bold;">
+                    <span>Upgrade Now</span>
+                    <i class="fas fa-crown" style="color: #333;"></i>
+                </button>
+                
+                <div id="upgrade-message" style="margin-top: 15px; text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <!-- Authentication Modals Container -->
     <div class="auth-modals-container">
         <!-- Sign Up Modal -->
@@ -822,7 +903,114 @@
             };
         }
     </script>
-
+<script>
+    // Open upgrade modal
+    function openUpgradeModal() {
+        openModal('upgrade-modal');
+    }
+    
+    function upgradeToPremium() {
+    const upgradeButton = document.querySelector('#upgrade-content .btn-auth');
+    const messageDiv = document.getElementById('upgrade-message');
+    
+    // Show loading state
+    upgradeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    upgradeButton.disabled = true;
+    messageDiv.innerHTML = '';
+    
+    // Make AJAX request to upgrade user - FIXED URL
+    fetch('/premium/subscribe/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.is_premium) {
+            // Success
+            messageDiv.innerHTML = `<div style="color: #51cf66; font-weight: bold;">
+                <i class="fas fa-check-circle"></i> Successfully upgraded to premium!
+            </div>`;
+            
+            // Update UI
+            updateUIAfterUpgrade();
+            
+            // Close modal after delay
+            setTimeout(() => {
+                closeModal('upgrade-modal');
+            }, 2000);
+        } else {
+            // Error
+            messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
+                <i class="fas fa-exclamation-circle"></i> Upgrade failed. Please try again.
+            </div>`;
+            
+            // Reset button
+            upgradeButton.innerHTML = '<span>Upgrade Now</span><i class="fas fa-crown" style="color: #333;"></i>';
+            upgradeButton.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error upgrading to premium:', error);
+        messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
+            <i class="fas fa-exclamation-circle"></i> Connection error. Please try again.
+        </div>`;
+        
+        // Reset button
+        upgradeButton.innerHTML = '<span>Upgrade Now - ₹399/year</span><i class="fas fa-crown" style="color: #333;"></i>';
+        upgradeButton.disabled = false;
+    });
+}
+    
+    // Update UI after successful upgrade
+    function updateUIAfterUpgrade() {
+        // Remove crown from navbar
+        const navbarCrown = document.querySelector('.premium-upgrade');
+        if (navbarCrown) {
+            navbarCrown.style.display = 'none';
+        }
+        
+        // Add crown to profile icon
+        const profileIcon = document.querySelector('.user-profile i.fa-user-circle');
+        if (profileIcon) {
+            // Check if crown already exists
+            if (!document.querySelector('.premium-badge')) {
+                const crown = document.createElement('i');
+                crown.className = 'fas fa-crown premium-badge';
+                crown.style.cssText = 'color: gold; font-size: 16px; position: absolute; top: -5px; right: 5px;';
+                
+                const profileContainer = document.querySelector('.user-profile');
+                profileContainer.style.position = 'relative';
+                profileContainer.appendChild(crown);
+            }
+        }
+    }
+    
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 
 
 
