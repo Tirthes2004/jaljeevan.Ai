@@ -3,12 +3,7 @@ from django.contrib import messages
 from .models import Vendor
 from django.http import JsonResponse
 from django.db.models import Q
-from .models import Vendor
-
-# vendorRegistration/views.py
-from django.http import JsonResponse
-from django.db.models import Q
-from .models import Vendor
+from premium.models import PremiumFeature  # ✅ Correct cross-app import
 
 # Create your views here.
 
@@ -127,10 +122,13 @@ def vendor_register(request):
 
 # ... your existing views ...
 
+
 def search_vendors(request):
     """
     API endpoint to search vendors by district or pincode
     Returns JSON response with vendor data
+    Premium users see premium vendors first, then regular vendors
+    Non-premium users see only regular vendors
     """
     query = request.GET.get('query', '').strip()
     
@@ -142,10 +140,30 @@ def search_vendors(request):
         })
     
     try:
-        # Search by district OR pincode (case-insensitive)
+        # Check if user is premium
+        user_is_premium = False
+        if request.user.is_authenticated:
+            try:
+                premium_feature = PremiumFeature.objects.get(user=request.user)
+                user_is_premium = premium_feature.is_premium
+            except PremiumFeature.DoesNotExist:
+                user_is_premium = False
+        
+        # Base query: Search by district OR pincode (case-insensitive)
         vendors = Vendor.objects.filter(
             Q(district__icontains=query) | Q(pincode__icontains=query)
-        ).values(
+        )
+        
+        # Filter and order based on user premium status
+        if user_is_premium:
+            # Premium users: Show all vendors, premium vendors first
+            vendors = vendors.order_by('-premium_vendor', 'shop_name')
+        else:
+            # Non-premium users: Exclude premium vendors
+            vendors = vendors.filter(premium_vendor=False).order_by('shop_name')
+        
+        # Convert to list of dictionaries
+        vendors_list = list(vendors.values(
             'id', 
             'shop_name', 
             'owner_name', 
@@ -153,15 +171,15 @@ def search_vendors(request):
             'whatsapp_number', 
             'service_type', 
             'district', 
-            'pincode'
-        )
-        
-        vendors_list = list(vendors)
+            'pincode',
+            'premium_vendor'  # Include this to show premium badge if needed
+        ))
         
         return JsonResponse({
             'success': True,
             'vendors': vendors_list,
-            'count': len(vendors_list)
+            'count': len(vendors_list),
+            'user_is_premium': user_is_premium
         })
         
     except Exception as e:
@@ -169,4 +187,5 @@ def search_vendors(request):
             'success': False,
             'error': str(e),
             'vendors': []
-        })
+        }, status=500)
+  
