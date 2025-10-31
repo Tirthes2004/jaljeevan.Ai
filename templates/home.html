@@ -904,12 +904,62 @@
         }
     </script>
 <script>
-    // Open upgrade modal
-    function openUpgradeModal() {
-        openModal('upgrade-modal');
-    }
+    // Premium upgrade modal specific function
+function openUpgradeModal() {
+    console.log('Opening upgrade modal...');
+    openModal('upgrade-modal');
+}
+// Premium status management - PREVENTS automatic premium on login/signup
+function updatePremiumUI(isPremium) {
+    const navbarCrown = document.querySelector('.premium-upgrade');
+    const profileCrown = document.querySelector('.user-profile .premium-badge');
     
-    function upgradeToPremium() {
+    if (isPremium) {
+        // Hide upgrade crown in navbar
+        if (navbarCrown) {
+            navbarCrown.style.display = 'none';
+        }
+        
+        // Add crown to profile icon if not already present
+        if (!profileCrown) {
+            const profileContainer = document.querySelector('.user-profile');
+            if (profileContainer) {
+                const crown = document.createElement('i');
+                crown.className = 'fas fa-crown premium-badge';
+                crown.style.cssText = 'color: gold; font-size: 16px; position: absolute; top: -5px; right: -5px;';
+                profileContainer.style.position = 'relative';
+                profileContainer.appendChild(crown);
+            }
+        }
+    } else {
+        // Show upgrade crown in navbar
+        if (navbarCrown) {
+            navbarCrown.style.display = 'block';
+        }
+        
+        // Remove crown from profile icon
+        if (profileCrown) {
+            profileCrown.remove();
+        }
+    }
+}
+
+// Check and set premium status on page load - ONLY from localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    // Only use localStorage, don't check backend automatically
+    const storedPremium = localStorage.getItem('user_is_premium');
+    
+    if (storedPremium === 'true') {
+        updatePremiumUI(true);
+    } else {
+        // Ensure user is NOT premium by default
+        updatePremiumUI(false);
+        localStorage.setItem('user_is_premium', 'false');
+    }
+});
+
+// Modified upgradeToPremium function - ONLY upgrades when explicitly called
+function upgradeToPremium() {
     const upgradeButton = document.querySelector('#upgrade-content .btn-auth');
     const messageDiv = document.getElementById('upgrade-message');
     
@@ -918,7 +968,7 @@
     upgradeButton.disabled = true;
     messageDiv.innerHTML = '';
     
-    // Make AJAX request to upgrade user - FIXED URL
+    // Make AJAX request to upgrade user
     fetch('/premium/subscribe/', {
         method: 'POST',
         headers: {
@@ -936,20 +986,23 @@
     })
     .then(data => {
         if (data.is_premium) {
-            // Success
+            // SUCCESS - Only now store premium status and update UI
+            localStorage.setItem('user_is_premium', 'true');
+            updatePremiumUI(true);
+            
             messageDiv.innerHTML = `<div style="color: #51cf66; font-weight: bold;">
                 <i class="fas fa-check-circle"></i> Successfully upgraded to premium!
             </div>`;
-            
-            // Update UI
-            updateUIAfterUpgrade();
             
             // Close modal after delay
             setTimeout(() => {
                 closeModal('upgrade-modal');
             }, 2000);
         } else {
-            // Error
+            // Error - User is NOT premium
+            localStorage.setItem('user_is_premium', 'false');
+            updatePremiumUI(false);
+            
             messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
                 <i class="fas fa-exclamation-circle"></i> Upgrade failed. Please try again.
             </div>`;
@@ -961,55 +1014,131 @@
     })
     .catch(error => {
         console.error('Error upgrading to premium:', error);
+        // On error, ensure user remains non-premium
+        localStorage.setItem('user_is_premium', 'false');
+        updatePremiumUI(false);
+        
         messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
             <i class="fas fa-exclamation-circle"></i> Connection error. Please try again.
         </div>`;
         
         // Reset button
-        upgradeButton.innerHTML = '<span>Upgrade Now - ₹399/year</span><i class="fas fa-crown" style="color: #333;"></i>';
+        upgradeButton.innerHTML = '<span>Upgrade Now</span><i class="fas fa-crown" style="color: #333;"></i>';
         upgradeButton.disabled = false;
     });
 }
-    
-    // Update UI after successful upgrade
-    function updateUIAfterUpgrade() {
-        // Remove crown from navbar
-        const navbarCrown = document.querySelector('.premium-upgrade');
-        if (navbarCrown) {
-            navbarCrown.style.display = 'none';
+
+// Function to manually check premium status (only call this when needed)
+function manuallyCheckPremiumStatus() {
+    fetch('/auth/check-premium/', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Only update if user is premium in backend AND we have it stored
+        if (data.is_premium && localStorage.getItem('user_is_premium') === 'true') {
+            updatePremiumUI(true);
+        } else {
+            // Otherwise, ensure non-premium state
+            localStorage.setItem('user_is_premium', 'false');
+            updatePremiumUI(false);
         }
-        
-        // Add crown to profile icon
-        const profileIcon = document.querySelector('.user-profile i.fa-user-circle');
-        if (profileIcon) {
-            // Check if crown already exists
-            if (!document.querySelector('.premium-badge')) {
-                const crown = document.createElement('i');
-                crown.className = 'fas fa-crown premium-badge';
-                crown.style.cssText = 'color: gold; font-size: 16px; position: absolute; top: -5px; right: 5px;';
-                
-                const profileContainer = document.querySelector('.user-profile');
-                profileContainer.style.position = 'relative';
-                profileContainer.appendChild(crown);
+    })
+    .catch(error => {
+        console.error('Error checking premium status:', error);
+        // On error, rely on localStorage
+        const storedPremium = localStorage.getItem('user_is_premium');
+        updatePremiumUI(storedPremium === 'true');
+    });
+}
+
+// Handle user logout - clear premium status
+function handleLogout() {
+    localStorage.removeItem('user_is_premium');
+    return true; // Allow form submission to proceed
+}
+
+// Update all logout forms to clear premium status
+document.addEventListener('DOMContentLoaded', function() {
+    // Update navbar logout form
+    const navbarLogoutForm = document.querySelector('.nav-right form[action*="logoutUser"]');
+    if (navbarLogoutForm) {
+        navbarLogoutForm.onsubmit = function() {
+            localStorage.removeItem('user_is_premium');
+            return true;
+        };
+    }
+    
+    // Update sidebar logout form
+    const sidebarLogoutForm = document.querySelector('.sidebar-auth form[action*="logoutUser"]');
+    if (sidebarLogoutForm) {
+        sidebarLogoutForm.onsubmit = function() {
+            localStorage.removeItem('user_is_premium');
+            return true;
+        };
+    }
+    
+    // Update profile modal logout form
+    const profileLogoutForm = document.querySelector('#profile-modal form[action*="logoutUser"]');
+    if (profileLogoutForm) {
+        profileLogoutForm.onsubmit = function() {
+            localStorage.removeItem('user_is_premium');
+            return true;
+        };
+    }
+    
+    // Ensure new users are not premium
+    {% if user.is_authenticated %}
+        // For newly logged in users, explicitly set as non-premium
+        const currentPremium = localStorage.getItem('user_is_premium');
+        if (currentPremium === null) {
+            localStorage.setItem('user_is_premium', 'false');
+            updatePremiumUI(false);
+        }
+    {% endif %}
+});
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
     }
-    
-    // Helper function to get CSRF token
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+    return cookieValue;
+}
+
+// Function to reset premium status (useful for testing)
+function resetPremiumStatus() {
+    localStorage.setItem('user_is_premium', 'false');
+    updatePremiumUI(false);
+    alert('Premium status reset to false');
+}
+// Prevent any automatic premium assignment
+window.addEventListener('load', function() {
+    // Double-check that new users are not premium
+    if (localStorage.getItem('user_is_premium') === null) {
+        localStorage.setItem('user_is_premium', 'false');
     }
+    
+    // If somehow user became premium without explicit upgrade, reset
+    const storedPremium = localStorage.getItem('user_is_premium');
+    if (storedPremium !== 'true') {
+        updatePremiumUI(false);
+    }
+});
+
 </script>
 
 
