@@ -33,7 +33,7 @@ def application_form(request):
     return render(request, 'application_form.html')
 
 @csrf_exempt
-@login_required  # Regular user authentication
+@require_http_methods(["POST"]) # Regular user authentication
 def submit_application(request):
     """Public users - Submit subsidy application"""
     if request.method != 'POST':
@@ -59,6 +59,8 @@ def submit_application(request):
             location_capture_mode=request.POST.get('location_capture_mode', 'manual'),
             manual_address_entry=request.POST.get('manual_address_entry', ''),
             calculation_pdf=request.FILES.get('calculation_pdf'),
+            bill_pdf=request.FILES.get('bill_pdf'),
+            implementation_photo=request.FILES.get('implementation_photo'),
             consent_given=request.POST.get('consent_given') == 'true'
         )
         
@@ -318,7 +320,10 @@ def application_dashboard(request):
             'geo_latitude': app.geo_latitude,
             'geo_longitude': app.geo_longitude,
             'gps_accuracy_meters': app.gps_accuracy_meters,
-            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None,
+            'bill_url': app.bill.url if app.bill else None,
+            'implementation_photo_url': app.implementation_photo.url if app.implementation_photo else None,
+                # Additional fields
         } for app in pending_applications]
         
         # Format approved data
@@ -339,7 +344,10 @@ def application_dashboard(request):
             'geo_latitude': app.geo_latitude,
             'geo_longitude': app.geo_longitude,
             'gps_accuracy_meters': app.gps_accuracy_meters,
-            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None
+            'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None,
+            'bill_url': app.bill.url if app.bill else None,
+            'implementation_photo_url': app.implementation_photo.url if app.implementation_photo else None,
+                # Additional fields
         } for app in approved_applications]
         
         # Format rejected data
@@ -361,6 +369,8 @@ def application_dashboard(request):
             'geo_longitude': app.geo_longitude,
             'gps_accuracy_meters': app.gps_accuracy_meters,
             'calculation_pdf_url': app.calculation_pdf.url if app.calculation_pdf else None,
+            'bill_url': app.bill.url if app.bill else None,
+            'implementation_photo_url': app.implementation_photo.url if app.implementation_photo else None,
             'rejection_reason': app.rejection_reason if hasattr(app, 'rejection_reason') else None
         } for app in rejected_applications]
     

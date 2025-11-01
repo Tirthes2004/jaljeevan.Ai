@@ -415,7 +415,7 @@ async function underReviewApplication(appId) {
             return;
         }
 
-        const response = await fetch('/officer/under-review/', {
+        const response = await fetch('/officer/mark-review/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

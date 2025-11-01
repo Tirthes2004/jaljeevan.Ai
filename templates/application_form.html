@@ -16,7 +16,6 @@
             --accent-teal: #00e5ff;
             --text-primary: #e6f7ff;
             --text-secondary: #b3e0ff;
-            --glow-color: rgba(33, 150, 243, 0.6);
         }
 
         body {
@@ -25,39 +24,6 @@
             color: var(--text-primary);
             min-height: 100vh;
             padding: 40px 0;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Rain animation */
-        .rain-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .rain-drop {
-            position: absolute;
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(to bottom, transparent, var(--accent-teal));
-            border-radius: 0 0 5px 5px;
-            opacity: 0.6;
-            animation: rain linear infinite;
-        }
-
-        @keyframes rain {
-            from {
-                transform: translateY(-100px);
-            }
-            to {
-                transform: translateY(calc(100vh + 100px));
-            }
         }
 
         .application-container {
@@ -68,8 +34,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 40px;
             border: 1px solid var(--accent-teal);
-            animation: fadeInUp 0.8s ease;
-            backdrop-filter: blur(10px);
         }
 
         .section-header {
@@ -81,12 +45,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            animation: slideInLeft 0.6s ease;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .section-header i {
-            font-size: 24px;
         }
 
         .form-section {
@@ -95,14 +53,6 @@
             background: rgba(20, 61, 102, 0.3);
             border-radius: 15px;
             border: 1px solid rgba(0, 229, 255, 0.2);
-            animation: fadeInUp 0.8s ease;
-            transition: all 0.3s ease;
-        }
-
-        .form-section:hover {
-            border-color: var(--accent-teal);
-            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.1);
-            transform: translateY(-2px);
         }
 
         .form-label {
@@ -117,7 +67,6 @@
             color: var(--text-primary);
             border-radius: 8px;
             padding: 12px 15px;
-            transition: all 0.3s ease;
         }
 
         .form-control:focus {
@@ -125,27 +74,6 @@
             border-color: var(--accent-teal);
             color: var(--text-primary);
             box-shadow: 0 0 0 0.2rem rgba(0, 229, 255, 0.25);
-            transform: scale(1.02);
-        }
-
-        .form-control::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-
-        /* Custom File Input Styling */
-        .file-input-container {
-            position: relative;
-            margin-top: 10px;
-        }
-
-        .custom-file-input {
-            width: 0.1px;
-            height: 0.1px;
-            opacity: 0;
-            overflow: hidden;
-            position: absolute;
-            z-index: -1;
         }
 
         .custom-file-label {
@@ -156,150 +84,13 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-            position: relative;
-            overflow: hidden;
         }
 
-        .custom-file-label::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .custom-file-label:hover::before {
-            left: 100%;
-        }
-
-        .custom-file-label:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
-        }
-
-        .custom-file-label:active {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        .custom-file-label i {
-            font-size: 18px;
-            transition: transform 0.3s ease;
-        }
-
-        .custom-file-label:hover i {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        .file-name {
-            margin-left: 15px;
-            color: var(--text-secondary);
-            font-style: italic;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-        }
-
-        .file-name.has-file {
-            color: var(--accent-teal);
-            font-weight: 600;
-        }
-
-        .file-input-hint {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-container:focus-within .file-input-hint {
-            color: var(--accent-teal);
-            opacity: 1;
-        }
-
-        /* File type indicator */
-        .file-type-badge {
-            background: rgba(0, 229, 255, 0.2);
-            color: var(--accent-teal);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            margin-left: 10px;
-            border: 1px solid var(--accent-teal);
-        }
-
-        .gps-status {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
+        .file-input {
             display: none;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .gps-status.success {
-            background: rgba(40, 167, 69, 0.2);
-            border: 1px solid #28a745;
-            color: #d4edda;
-            display: block;
-        }
-
-        .gps-status.error {
-            background: rgba(220, 53, 69, 0.2);
-            border: 1px solid #dc3545;
-            color: #f8d7da;
-            display: block;
-        }
-
-        .alert-custom {
-            display: none;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            animation: fadeInUp 0.5s ease;
-        }
-
-        .alert-custom.show {
-            display: block;
-        }
-
-        .success-box {
-            background: rgba(40, 167, 69, 0.2);
-            border: 2px solid #28a745;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            display: none;
-            animation: bounceIn 0.8s ease;
-        }
-
-        .success-box.show {
-            display: block;
-        }
-
-        .btn-gps {
-            background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
-            color: var(--primary-dark);
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-        }
-
-        .btn-gps:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
         }
 
         .btn-submit {
@@ -312,310 +103,38 @@
             font-weight: 600;
             width: 100%;
             margin-top: 20px;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
         }
 
         .btn-submit:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.5);
+            transform: translateY(-3px);
         }
 
         .btn-submit:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none !important;
         }
 
-        .my-applications {
-            margin-top: 40px;
-            padding: 30px;
-            background: rgba(20, 61, 102, 0.3);
+        .success-box {
+            background: rgba(40, 167, 69, 0.2);
+            border: 2px solid #28a745;
+            padding: 40px;
             border-radius: 15px;
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            animation: fadeInUp 0.8s ease;
+            text-align: center;
+            display: none;
         }
 
-        .app-card {
-            background: rgba(10, 25, 41, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid var(--accent-teal);
-            transition: all 0.3s ease;
-            animation: slideInRight 0.6s ease;
+        .success-box.show {
+            display: block;
         }
 
-        .app-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.2);
-        }
-
-        .status-badge {
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            animation: pulse 2s infinite;
-        }
-
-        .status-SUBMITTED { 
-            background: #fff3cd; 
-            color: #856404; 
-        }
-        .status-UNDER_REVIEW { 
-            background: #cce5ff; 
-            color: #004085; 
-        }
-        .status-APPROVED { 
-            background: #d4edda; 
-            color: #155724; 
-        }
-        .status-REJECTED { 
-            background: #f8d7da; 
-            color: #721c24; 
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-            70% {
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        /* Form check styling */
-        .form-check-input {
-            background-color: rgba(10, 25, 41, 0.8);
-            border: 1px solid var(--accent-blue);
-        }
-
-        .form-check-input:checked {
-            background-color: var(--accent-teal);
-            border-color: var(--accent-teal);
-        }
-
-        .form-check-label {
-            color: var(--text-secondary);
-        }
-
-        /* Text colors */
         .text-muted {
             color: var(--text-secondary) !important;
-            opacity: 0.8;
         }
-
-        /* Loading animation */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Back to home button */
-        .btn-home {
-            background: transparent;
-            color: var(--accent-teal);
-            border: 1px solid var(--accent-teal);
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        /* File Display Area Styling */
-.file-display-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-    padding: 12px 15px;
-    background: rgba(10, 25, 41, 0.6);
-    border: 1px solid var(--accent-blue);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.3s ease;
-}
-
-.file-display-area.has-file {
-    background: rgba(33, 150, 243, 0.1);
-    border-color: var(--accent-teal);
-    box-shadow: 0 2px 10px rgba(0, 229, 255, 0.2);
-}
-
-.file-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-secondary);
-    font-size: 14px;
-    flex: 1;
-}
-
-.file-name i {
-    color: var(--accent-teal);
-    font-size: 16px;
-}
-
-.file-name-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-.file-display-area.has-file .file-name-text {
-    color: var(--accent-teal);
-    font-weight: 600;
-}
-
-.file-clear-btn {
-    background: rgba(220, 53, 69, 0.2);
-    border: 1px solid #dc3545;
-    color: #ff6b6b;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 12px;
-}
-
-.file-clear-btn:hover {
-    background: rgba(220, 53, 69, 0.4);
-    transform: scale(1.1);
-}
-
-/* File type icons based on extension */
-.file-name[data-file-type="pdf"] i {
-    color: #f40f02;
-}
-
-.file-name[data-file-type="image"] i {
-    color: #4caf50;
-}
-
-.file-name[data-file-type="document"] i {
-    color: #2196f3;
-}
-
-.file-name[data-file-type="other"] i {
-    color: var(--accent-teal);
-}
-/* File validation states */
-.file-input-container.valid .file-display-area {
-    border-color: #28a745;
-    background: rgba(40, 167, 69, 0.1);
-}
-
-.file-input-container.invalid .file-display-area {
-    border-color: #dc3545;
-    background: rgba(220, 53, 69, 0.1);
-}
-
-/* File drag and drop area */
-.file-display-area.drag-over {
-    background: rgba(33, 150, 243, 0.2);
-    border-color: var(--accent-teal);
-    border-style: dashed;
-    transform: scale(1.02);
-}
-        .btn-home:hover {
-            background: rgba(0, 229, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Staggered animations for form sections */
-        .form-section:nth-child(1) { animation-delay: 0.1s; }
-        .form-section:nth-child(2) { animation-delay: 0.2s; }
-        .form-section:nth-child(3) { animation-delay: 0.3s; }
-        .form-section:nth-child(4) { animation-delay: 0.4s; }
-        .form-section:nth-child(5) { animation-delay: 0.5s; }
-        .form-section:nth-child(6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body>
-     <!-- Rain Animation Container -->
-    <div class="rain-container" id="rainContainer"></div>
     <div class="application-container">
         <!-- Header -->
         <div class="text-center mb-4">
@@ -623,35 +142,28 @@
             <p class="text-muted">Apply for Government Subsidy - JalJeevan Initiative</p>
         </div>
 
-        <!-- Success Message (Hidden by default) -->
+        <!-- Success Box -->
         <div id="successBox" class="success-box">
             <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
             <h3>Application Submitted Successfully!</h3>
             <p class="mb-3">Your Application ID: <strong id="successAppId"></strong></p>
-            <p>Status: <span class="status-badge status-SUBMITTED">SUBMITTED</span></p>
-            <button onclick="resetForm()" class="btn btn-primary mt-3">Submit Another Application</button>
-            <button onclick="window.location.href='{% url 'pages:home' %}'" class="btn btn-primary mt-3">
-                Back to home
-            </button>
-
+            <p>Status: <span class="badge bg-warning">SUBMITTED</span></p>
         </div>
 
-        <!-- Alert Box -->
-        <div id="alertBox" class="alert-custom"></div>
-
         <!-- Application Form -->
-        <form id="applicationForm" enctype="multipart/form-data">
+        <form id="applicationForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
             
             <!-- Personal Details -->
             <div class="section-header">
                 <i class="fas fa-user"></i>
-                <h4 class="mb-0">Personal Details (KYC)</h4>
+                <h4 class="mb-0">Personal Details</h4>
             </div>
             <div class="form-section">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Full Name *</label>
-                        <input type="text" name="full_name" class="form-control" placeholder="" required>
+                        <input type="text" name="full_name" class="form-control" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Mobile Number *</label>
@@ -666,7 +178,7 @@
                         <input type="text" name="aadhaar_or_id" class="form-control" pattern="[0-9]{12}" required>
                     </div>
                     <div class="col-12 mb-3">
-                        <label class="form-label">Residential Address *</label>
+                        <label class="form-label">Address *</label>
                         <textarea name="address" class="form-control" rows="2" required></textarea>
                     </div>
                 </div>
@@ -675,11 +187,11 @@
             <!-- Bank Details -->
             <div class="section-header">
                 <i class="fas fa-university"></i>
-                <h4 class="mb-0">Bank Details (For DBT)</h4>
+                <h4 class="mb-0">Bank Details</h4>
             </div>
             <div class="form-section">
                 <div class="row">
-                    <div class="col-md-12 mb-3">
+                    <div class="col-12 mb-3">
                         <label class="form-label">Account Holder Name *</label>
                         <input type="text" name="account_holder_name" class="form-control" required>
                     </div>
@@ -689,7 +201,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="form-label">IFSC Code *</label>
-                        <input type="text" name="ifsc_code" class="form-control" pattern="[A-Z]{4}0[A-Z0-9]{6}" placeholder="e.g., SBIN0001234" required>
+                        <input type="text" name="ifsc_code" class="form-control" pattern="[A-Z]{4}0[A-Z0-9]{6}" required>
                     </div>
                 </div>
             </div>
@@ -719,64 +231,63 @@
             <!-- Location Capture -->
             <div class="section-header">
                 <i class="fas fa-map-marker-alt"></i>
-                <h4 class="mb-0">Location Capture</h4>
+                <h4 class="mb-0">Location</h4>
             </div>
             <div class="form-section">
-                <button type="button" class="btn-gps" onclick="captureLocation()">
-                    <i class="fas fa-crosshairs"></i> Capture My GPS Location
+                <button type="button" class="btn btn-info btn-sm" onclick="captureLocation()">
+                    <i class="fas fa-crosshairs"></i> Capture GPS
                 </button>
-                
-                <div id="gpsStatus" class="gps-status"></div>
-                
                 <input type="hidden" name="geo_latitude" id="geo_latitude">
                 <input type="hidden" name="geo_longitude" id="geo_longitude">
                 <input type="hidden" name="gps_accuracy_meters" id="gps_accuracy">
                 <input type="hidden" name="location_capture_mode" id="location_mode" value="manual">
-                
-                <div class="mt-3">
-                    <label class="form-label">Manual Address Entry (Fallback)</label>
-                    <textarea name="manual_address_entry" class="form-control" rows="2" placeholder="If GPS fails, enter your location manually"></textarea>
-                </div>
             </div>
 
-            <!-- Technical Proposal -->
-<div class="section-header">
-    <i class="fas fa-file-pdf"></i>
-    <h4 class="mb-0">Technical Proposal</h4>
-</div>
-<div class="form-section">
-    <label class="form-label">Upload Calculation PDF *</label>
-    <p class="text-muted small">Upload the PDF downloaded from our Calculator</p>
-    
-    <div class="file-input-container">
-        <input type="file" name="calculation_pdf" id="calculation_pdf" class="custom-file-input" accept=".pdf" required>
-        <label for="calculation_pdf" class="custom-file-label">
-            <i class="fas fa-file-upload"></i> Choose PDF File
-            <span class="file-type-badge">PDF Only</span>
-        </label>
-        
-        <!-- File name display area -->
-        <div class="file-display-area">
-            <span class="file-name" id="fileNameDisplay">
-                <i class="fas fa-file"></i>
-                <span class="file-name-text">No file chosen</span>
-            </span>
-            <button type="button" class="file-clear-btn" id="fileClearBtn" style="display: none;">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="file-input-hint">Maximum file size: 10MB • Supported format: PDF</div>
-    </div>
-</div>
+            <!-- PDF Upload -->
+            <div class="section-header">
+                <i class="fas fa-file-pdf"></i>
+                <h4 class="mb-0">Calculation PDF</h4>
+            </div>
+            <div class="form-section">
+                <input type="file" name="calculation_pdf" id="calculation_pdf" class="file-input" accept=".pdf" required>
+                <label for="calculation_pdf" class="custom-file-label">
+                    <i class="fas fa-file-upload"></i> Choose PDF
+                </label>
+                <small id="calculation_pdf_name" style="color: #00c853; display: block; margin-top: 5px;"></small>
+            </div>
 
+            <!-- Implementation Image -->
+            <div class="section-header">
+                <i class="fas fa-camera"></i>
+                <h4 class="mb-0">Implementation Photo</h4>
+            </div>
+            <div class="form-section">
+                <input type="file" name="implementation_image" id="implementation_image" class="file-input" accept="image/*" required>
+                <label for="implementation_image" class="custom-file-label">
+                    <i class="fas fa-file-upload"></i> Choose Image
+                </label>
+                <small id="implementation_image_name" style="color: #00c853; display: block; margin-top: 5px;"></small>
+            </div>
+
+            <!-- Bill Upload -->
+            <div class="section-header">
+                <i class="fas fa-receipt"></i>
+                <h4 class="mb-0">Bill/Receipt</h4>
+            </div>
+            <div class="form-section">
+                <input type="file" name="bill" id="bill" class="file-input" accept=".pdf,image/*" required>
+                <label for="bill" class="custom-file-label">
+                    <i class="fas fa-file-upload"></i> Choose File
+                </label>
+                <small id="bill_name" style="color: #00c853; display: block; margin-top: 5px;"></small>
+            </div>
 
             <!-- Consent -->
             <div class="form-section">
                 <div class="form-check">
-                    <input type="checkbox" name="consent_given" class="form-check-input" id="consent" required>
+                    <input type="checkbox" name="consent_given" class="form-check-input" id="consent" value="true" required>
                     <label class="form-check-label" for="consent">
-                        I certify that all the information provided is true and correct. I consent to verification and inspection by authorities.
+                        I certify all information is true and consent to verification.
                     </label>
                 </div>
             </div>
@@ -786,313 +297,100 @@
                 <i class="fas fa-paper-plane"></i> Submit Application
             </button>
         </form>
-
-        <!-- My Applications Section -->
-        {% if applications %}
-        <div class="my-applications">
-            <h4 class="mb-4"><i class="fas fa-list"></i> My Previous Applications</h4>
-            {% for app in applications %}
-            <div class="app-card">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <h6 class="mb-1">{{ app.application_id }}</h6>
-                        <p class="mb-1 text-muted small">{{ app.full_name }} | {{ app.district }}</p>
-                        <p class="mb-0 text-muted small">{{ app.created_at|date:"d M Y, H:i" }}</p>
-                    </div>
-                    <span class="status-badge status-{{ app.status }}">{{ app.get_status_display }}</span>
-                </div>
-                {% if app.rejection_reason %}
-                <div class="mt-2 p-2 bg-light rounded">
-                    <small><strong>Reason:</strong> {{ app.rejection_reason }}</small>
-                </div>
-                {% endif %}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
     </div>
 
     <script>
-        // Create rain animation
-        function createRain() {
-            const rainContainer = document.getElementById('rainContainer');
-            const rainCount = 50;
-            
-            for (let i = 0; i < rainCount; i++) {
-                const drop = document.createElement('div');
-                drop.className = 'rain-drop';
-                drop.style.left = Math.random() * 100 + 'vw';
-                drop.style.animationDuration = (Math.random() * 2 + 1) + 's';
-                drop.style.animationDelay = Math.random() * 2 + 's';
-                drop.style.opacity = Math.random() * 0.6 + 0.2;
-                rainContainer.appendChild(drop);
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function updateFileName(inputId, displayId) {
+            const fileInput = document.getElementById(inputId);
+            const fileName = fileInput.files[0]?.name || '';
+            const displayEl = document.getElementById(displayId);
+            if (displayEl) {
+                displayEl.textContent = fileName ? '✅ ' + fileName : '';
             }
         }
-        // File input handling
-document.getElementById('calculation_pdf').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const fileClearBtn = document.getElementById('fileClearBtn');
-    const fileDisplayArea = document.querySelector('.file-display-area');
-    
-    if (file) {
-        // Update file name display
-        document.querySelector('.file-name-text').textContent = file.name;
-        
-        // Set file type for icon
-        const fileType = getFileType(file.name);
-        fileNameDisplay.setAttribute('data-file-type', fileType);
-        
-        // Update icon based on file type
-        const fileIcon = fileNameDisplay.querySelector('i');
-        fileIcon.className = getFileIcon(fileType);
-        
-        // Show clear button and add active state
-        fileClearBtn.style.display = 'flex';
-        fileDisplayArea.classList.add('has-file');
-        
-        // Add file size information
-        const fileSize = formatFileSize(file.size);
-        const sizeElement = document.createElement('span');
-        sizeElement.className = 'file-size';
-        sizeElement.textContent = ` • ${fileSize}`;
-        sizeElement.style.color = 'var(--text-secondary)';
-        sizeElement.style.fontSize = '12px';
-        sizeElement.style.marginLeft = '8px';
-        
-        // Remove existing size element if any
-        const existingSize = fileNameDisplay.querySelector('.file-size');
-        if (existingSize) {
-            existingSize.remove();
-        }
-        
-        fileNameDisplay.appendChild(sizeElement);
-        
-    } else {
-        // Reset to default state
-        resetFileDisplay();
-    }
-});
 
-// Clear file button functionality
-document.getElementById('fileClearBtn').addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const fileInput = document.getElementById('calculation_pdf');
-    fileInput.value = '';
-    resetFileDisplay();
-});
+        document.getElementById('calculation_pdf').addEventListener('change', function() {
+            updateFileName('calculation_pdf', 'calculation_pdf_name');
+        });
 
-// Function to reset file display
-function resetFileDisplay() {
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const fileClearBtn = document.getElementById('fileClearBtn');
-    const fileDisplayArea = document.querySelector('.file-display-area');
-    
-    document.querySelector('.file-name-text').textContent = 'No file chosen';
-    fileNameDisplay.setAttribute('data-file-type', 'other');
-    
-    const fileIcon = fileNameDisplay.querySelector('i');
-    fileIcon.className = 'fas fa-file';
-    
-    fileClearBtn.style.display = 'none';
-    fileDisplayArea.classList.remove('has-file');
-    
-    // Remove file size element
-    const existingSize = fileNameDisplay.querySelector('.file-size');
-    if (existingSize) {
-        existingSize.remove();
-    }
-}
+        document.getElementById('implementation_image').addEventListener('change', function() {
+            updateFileName('implementation_image', 'implementation_image_name');
+        });
 
-// Helper function to determine file type
-function getFileType(fileName) {
-    const extension = fileName.split('.').pop().toLowerCase();
-    
-    if (extension === 'pdf') return 'pdf';
-    if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(extension)) return 'image';
-    if (['doc', 'docx', 'txt', 'rtf'].includes(extension)) return 'document';
-    return 'other';
-}
+        document.getElementById('bill').addEventListener('change', function() {
+            updateFileName('bill', 'bill_name');
+        });
 
-// Helper function to get appropriate file icon
-function getFileIcon(fileType) {
-    switch (fileType) {
-        case 'pdf': return 'fas fa-file-pdf';
-        case 'image': return 'fas fa-file-image';
-        case 'document': return 'fas fa-file-word';
-        default: return 'fas fa-file';
-    }
-}
-
-// Helper function to format file size
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-// Add click event to file display area to trigger file input
-document.querySelector('.file-display-area').addEventListener('click', function(e) {
-    if (!e.target.closest('.file-clear-btn')) {
-        document.getElementById('calculation_pdf').click();
-    }
-});
-        // GPS Location Capture
         function captureLocation() {
-            const statusDiv = document.getElementById('gpsStatus');
-            statusDiv.className = 'gps-status';
-            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Capturing GPS location...';
-            statusDiv.style.display = 'block';
-
             if (!navigator.geolocation) {
-                showGPSError('Geolocation is not supported by your browser');
+                alert('Geolocation not supported');
                 return;
             }
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const accuracy = position.coords.accuracy;
-
-                    document.getElementById('geo_latitude').value = lat;
-                    document.getElementById('geo_longitude').value = lng;
-                    document.getElementById('gps_accuracy').value = accuracy;
+                    document.getElementById('geo_latitude').value = position.coords.latitude;
+                    document.getElementById('geo_longitude').value = position.coords.longitude;
+                    document.getElementById('gps_accuracy').value = position.coords.accuracy;
                     document.getElementById('location_mode').value = 'device';
-
-                    statusDiv.className = 'gps-status success';
-                    statusDiv.innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        <strong>Location Captured!</strong><br>
-                        Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}<br>
-                        Accuracy: ±${accuracy.toFixed(0)} meters
-                    `;
+                    alert('✅ Location captured!');
                 },
                 (error) => {
-                    showGPSError(error.message);
+                    alert('❌ GPS Error: ' + error.message);
                 }
             );
         }
 
-        function showGPSError(message) {
-            const statusDiv = document.getElementById('gpsStatus');
-            statusDiv.className = 'gps-status error';
-            statusDiv.innerHTML = `
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>GPS Error:</strong> ${message}<br>
-                Please use manual address entry below.
-            `;
-        }
-
-        // Form Submission
         document.getElementById('applicationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const submitBtn = document.getElementById('submitBtn');
             const formData = new FormData(e.target);
             
-            // Set consent as boolean
-            formData.set('consent_given', document.getElementById('consent').checked);
-
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
             try {
-                const response = await fetch('{% url "applications:submit" %}', {
+                const response = await fetch('/applications/api/submit/', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    // Show success
                     document.getElementById('successAppId').textContent = data.application_id;
                     document.getElementById('successBox').classList.add('show');
                     document.getElementById('applicationForm').style.display = 'none';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
-                    showAlert('error', data.error || 'Submission failed. Please try again.');
+                    alert('❌ Error: ' + data.error);
                 }
             } catch (error) {
-                showAlert('error', 'Network error. Please check your connection and try again.');
+                console.error('Error:', error);
+                alert('❌ Network error occurred');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
             }
-        });
-
-        function showAlert(type, message) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.className = `alert-custom alert-${type === 'error' ? 'danger' : 'success'} show`;
-            alertBox.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            setTimeout(() => {
-                alertBox.classList.remove('show');
-            }, 5000);
-        }
-
-        function resetForm() {
-            document.getElementById('applicationForm').reset();
-            document.getElementById('applicationForm').style.display = 'block';
-            document.getElementById('successBox').classList.remove('show');
-            document.getElementById('gpsStatus').style.display = 'none';
-            // Reset file display
-    resetFileDisplay();
-            window.location.reload(); // Reload to show new application in list
-        }
-        // Celebration effect
-        function celebrate() {
-            const container = document.querySelector('.application-container');
-            const confettiCount = 30;
-            
-            for (let i = 0; i < confettiCount; i++) {
-                const confetti = document.createElement('div');
-                confetti.innerHTML = '🎉';
-                confetti.style.position = 'absolute';
-                confetti.style.fontSize = '20px';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = '-30px';
-                confetti.style.animation = `fall ${Math.random() * 2 + 1}s linear forwards`;
-                container.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), 3000);
-            }
-        }
-
-        // Add fall animation for confetti
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                to {
-                    transform: translateY(100vh) rotate(360deg);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            createRain();
-            
-            // Add hover effects to form controls
-            const inputs = document.querySelectorAll('.form-control');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.style.transform = 'scale(1.02)';
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.style.transform = 'scale(1)';
-                });
-            });
         });
     </script>
 </body>

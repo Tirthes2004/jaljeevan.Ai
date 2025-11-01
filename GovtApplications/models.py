@@ -53,6 +53,9 @@ class SubsidyApplication(models.Model):
     
     # Technical proposal
     calculation_pdf = models.FileField(upload_to='govt_applications/calculations/')
+    bill = models.FileField(upload_to='govt_applications/bills/', null=True, blank=True)
+    implementation_photo = models.FileField(upload_to='govt_applications/implementation_photo/', null=True, blank=True)
+    
     
     # Consent
     consent_given = models.BooleanField(default=False)
