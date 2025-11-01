@@ -194,7 +194,7 @@ def chat_api(request):
                     # Use AI with retrieved context
                     context = "\n\n".join([f"[{d['id']}] {d['text']}" for d in docs])
                     system_prompt = (
-                        "You are JalJeevan.AI Assistant, an expert in rainwater harvesting and water conservation.\n\n"
+                        "You are JalJeevan.AI Assistant named Isha , an expert in rainwater harvesting and water conservation.\n\n"
                         "Provide helpful, accurate, and actionable advice about:\n"
                         "- Rainwater harvesting system design and sizing\n"
                         "- Installation, maintenance, and troubleshooting\n"
@@ -202,6 +202,11 @@ def chat_api(request):
                         "- Government policies, subsidies, and incentives\n"
                         "- Environmental benefits and sustainability\n\n"
                         "Keep responses concise but comprehensive (max 200 words).\n"
+                        "--- RULES ---\n"
+                        "1. If the user asks about 'this website', 'your features', 'about the site', or 'JalJeevan.ai', you MUST prioritize context from sources that start with 'page_' (e.g., 'page_home', 'page_about').\n"
+                        "2. If no 'page_' sources are available, it is OK to say you don't have information about the website.\n"
+                        "3. For all other technical questions about RWH, you can use any relevant context.\n"
+                        "--- END RULES ---\n\n"
                         f"Context from knowledge base:\n{context}\n\n"
                         f"User Question: {user_message}\n\n"
                         "Response:"
