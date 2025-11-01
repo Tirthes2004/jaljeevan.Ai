@@ -1191,7 +1191,59 @@ downloadResults() {
                 yPos += 5;
             }
             doc.text(`Generated: ${currentDate}`, 20, yPos);
+             // ✅ ADD SIGNIFICANT SPACING AFTER CALCULATION DETAILS
+    yPos += 20; // Increased from 10 to 20 for more spacing
+    
+    // ✅ ADD VISUAL SEPARATOR LINE
+    doc.setDrawColor(200, 200, 200);
+    doc.line(14, yPos - 5, 196, yPos - 5);
+    yPos += 10; // Additional space after the separator line
         }
+         // ============ SUCCESS MESSAGE ============
+        // Check if we need a new page for the success message
+        if (yPos > 250) {
+            doc.addPage();
+            yPos = 20;
+
+             // ✅ ADD EXTRA TOP SPACING ON NEW PAGE
+    yPos += 10;
+        }
+
+        // Add the success message with savings information
+        doc.setFillColor(220, 237, 200); // Light green background
+        doc.rect(14, yPos, 182, 25, 'F');
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(30, 60, 114); // Dark green text
+        doc.text("Yay! You're on your way to big savings!", 105, yPos + 6, { align: 'center' });
+        
+        yPos += 12;
+        
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(30, 60, 114);
+        
+        // Use actual savings data if available, otherwise use approximate calculation
+        const annualSavings = costData.annualSavings && costData.annualSavings > 0 
+            ? this.formatNumber(costData.annualSavings)
+            : '3000';
+            
+        
+        const savingsMessageLine1 = "After implementing our rainwater harvesting plan,";
+        const savingsMessageLine2 = `you could save approximately ₹3000 per year!`;
+        const noteMessage = "(Savings calculation varies based on your location and water rates)";
+        
+        // Draw the two lines of the message
+        doc.text(savingsMessageLine1, 105, yPos + 5, { align: 'center' });
+        doc.text(savingsMessageLine2, 90, yPos + 11, { align: 'center' });
+
+        yPos += 20; // Adjusted spacing for two lines
+
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'italic');
+        doc.text(noteMessage, 105, yPos + 5, { align: 'center' });
+
+        yPos += 15; // Final spacing after the section
 
         // ============ FOOTER ============
         const pageCount = doc.internal.getNumberOfPages();

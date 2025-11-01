@@ -151,7 +151,7 @@
                 </div>
             </div>
             <!-- Add this to the navbar section -->
-                {% if user.is_authenticated and not user.is_premium %}
+                {% if user.is_authenticated and not user.premiumfeature.is_premium %}
                 <div class="premium-upgrade" onclick="openUpgradeModal()">
                     <i class="fas fa-crown" style="color: gold; cursor: pointer; position:relative;right:10px;" title="Upgrade to Premium "></i>
                 </div>
@@ -162,7 +162,7 @@
                 <span class="welcome-message user-profile" onclick="openProfileModal()" style="cursor: pointer;">
                     <i class="fas fa-user-circle" aria-hidden="true"
                         style="font-size:30px; position:relative; top:5px;"></i>
-                        {% if user.is_premium %}
+                        {% if user.premiumfeature.is_premium %}
                         <i class="fas fa-crown premium-badge" style="color: gold; font-size: 16px; position: absolute; top: -5px; right: -5px;"></i>
                         {% endif %}
                 </span>
@@ -904,21 +904,85 @@
         }
     </script>
 <script>
-    // Open upgrade modal
-    function openUpgradeModal() {
-        openModal('upgrade-modal');
-    }
+
+
+
+
+// ===== PREMIUM UPGRADE FUNCTIONS =====
+function openUpgradeModal() {
+    console.log('Opening upgrade modal...');
+    openModal('upgrade-modal');
+}
+
+function updatePremiumUI(isPremium) {
+    console.log('Updating premium UI to:', isPremium);
     
-    function upgradeToPremium() {
+    const navbarCrown = document.querySelector('.premium-upgrade');
+    const profileCrown = document.querySelector('.user-profile .premium-badge');
+    
+    if (isPremium) {
+        // Hide upgrade crown in navbar
+        if (navbarCrown) {
+            navbarCrown.style.display = 'none';
+        }
+        
+        // Add crown to profile icon if not already present
+        const profileContainer = document.querySelector('.user-profile');
+        if (profileContainer && !profileCrown) {
+            const crown = document.createElement('i');
+            crown.className = 'fas fa-crown premium-badge';
+            crown.style.cssText = 'color: gold; font-size: 16px; position: absolute; top: -5px; right: -5px;';
+            profileContainer.style.position = 'relative';
+            profileContainer.appendChild(crown);
+        } else if (profileCrown) {
+            profileCrown.style.display = 'inline';
+        }
+    } else {
+        // Show upgrade crown in navbar
+        if (navbarCrown) {
+            navbarCrown.style.display = 'block';
+        }
+        
+        // Remove crown from profile icon
+        if (profileCrown) {
+            profileCrown.style.display = 'none';
+        }
+    }
+}
+
+// Initialize premium status on page load - relies on backend template context
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded - using backend premium status');
+    
+    // The premium status is already set by the backend in the template
+    // We don't need to make additional API calls
+    // The UI is initially set by the backend template conditions
+    
+    // For dynamic updates after upgrade, we'll rely on the backend response
+});
+
+// Main upgrade function - uses only backend database
+function upgradeToPremium() {
+    console.log('Starting premium upgrade process...');
+    
     const upgradeButton = document.querySelector('#upgrade-content .btn-auth');
     const messageDiv = document.getElementById('upgrade-message');
     
+    if (!upgradeButton) {
+        console.error('Upgrade button not found!');
+        return;
+    }
+    
     // Show loading state
+    const originalText = upgradeButton.innerHTML;
     upgradeButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     upgradeButton.disabled = true;
-    messageDiv.innerHTML = '';
     
-    // Make AJAX request to upgrade user - FIXED URL
+    if (messageDiv) {
+        messageDiv.innerHTML = '';
+    }
+    
+    // Make AJAX request to upgrade user in backend database
     fetch('/premium/subscribe/', {
         method: 'POST',
         headers: {
@@ -930,86 +994,147 @@
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
+        console.log('Upgrade response:', data);
+        
         if (data.is_premium) {
-            // Success
-            messageDiv.innerHTML = `<div style="color: #51cf66; font-weight: bold;">
-                <i class="fas fa-check-circle"></i> Successfully upgraded to premium!
-            </div>`;
+            // SUCCESS - User is now premium in backend database
+            updatePremiumUI(true);
             
-            // Update UI
-            updateUIAfterUpgrade();
+            if (messageDiv) {
+                messageDiv.innerHTML = `
+                    <div style="color: #51cf66; font-weight: bold; padding: 10px; background: #d4edda; border-radius: 5px;">
+                        <i class="fas fa-check-circle"></i> Successfully upgraded to premium!
+                    </div>
+                `;
+            }
             
             // Close modal after delay
             setTimeout(() => {
                 closeModal('upgrade-modal');
+                // Reset button for future use
+                upgradeButton.innerHTML = originalText;
+                upgradeButton.disabled = false;
+                
+                // Show success message that will persist after page refresh
+                showToast('Premium upgrade successful! Your account has been upgraded.', 'success');
             }, 2000);
-        } else {
-            // Error
-            messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
-                <i class="fas fa-exclamation-circle"></i> Upgrade failed. Please try again.
-            </div>`;
             
-            // Reset button
-            upgradeButton.innerHTML = '<span>Upgrade Now</span><i class="fas fa-crown" style="color: #333;"></i>';
-            upgradeButton.disabled = false;
+        } else {
+            // Upgrade failed in backend
+            throw new Error('Backend returned is_premium: false');
         }
     })
     .catch(error => {
         console.error('Error upgrading to premium:', error);
-        messageDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: bold;">
-            <i class="fas fa-exclamation-circle"></i> Connection error. Please try again.
-        </div>`;
+        
+        if (messageDiv) {
+            messageDiv.innerHTML = `
+                <div style="color: #ff6b6b; font-weight: bold; padding: 10px; background: #f8d7da; border-radius: 5px;">
+                    <i class="fas fa-exclamation-circle"></i> Upgrade failed. Please try again.
+                </div>
+            `;
+        }
         
         // Reset button
-        upgradeButton.innerHTML = '<span>Upgrade Now - ₹399/year</span><i class="fas fa-crown" style="color: #333;"></i>';
+        upgradeButton.innerHTML = originalText;
         upgradeButton.disabled = false;
     });
 }
-    
-    // Update UI after successful upgrade
-    function updateUIAfterUpgrade() {
-        // Remove crown from navbar
-        const navbarCrown = document.querySelector('.premium-upgrade');
-        if (navbarCrown) {
-            navbarCrown.style.display = 'none';
-        }
-        
-        // Add crown to profile icon
-        const profileIcon = document.querySelector('.user-profile i.fa-user-circle');
-        if (profileIcon) {
-            // Check if crown already exists
-            if (!document.querySelector('.premium-badge')) {
-                const crown = document.createElement('i');
-                crown.className = 'fas fa-crown premium-badge';
-                crown.style.cssText = 'color: gold; font-size: 16px; position: absolute; top: -5px; right: 5px;';
-                
-                const profileContainer = document.querySelector('.user-profile');
-                profileContainer.style.position = 'relative';
-                profileContainer.appendChild(crown);
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
     }
-    
-    // Helper function to get CSRF token
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+    return cookieValue;
+}
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        `;
+        document.body.appendChild(toastContainer);
     }
+    
+    const toast = document.createElement('div');
+    const bgColor = type === 'success' ? '#51cf66' : type === 'error' ? '#ff6b6b' : '#667eea';
+    toast.style.cssText = `
+        background: ${bgColor};
+        color: white;
+        padding: 12px 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease-out;
+    `;
+    
+    toast.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+        ${message}
+    `;
+    
+    toastContainer.appendChild(toast);
+    
+    // Remove toast after 5 seconds
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }, 5000);
+}
+
+// Add CSS for toast animations
+const toastStyles = document.createElement('style');
+toastStyles.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(toastStyles);
+
 </script>
 
 
