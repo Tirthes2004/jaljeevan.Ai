@@ -257,7 +257,7 @@ Use `.env.example` only as a template.
 ### 1. Clone the repository
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/Tirthes2004/jaljeevan.Ai.git
 cd jaljeevan.Ai
 ```
 
