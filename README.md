@@ -9,7 +9,7 @@
 [![Gemini](https://img.shields.io/badge/Google-Gemini%20API-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
 [![License](https://img.shields.io/badge/License-Add%20Your%20License-lightgrey)](#license)
 
-**Live application:** https://jaljeevan-ai.onrender.com
+**Live application:** https://jaljeevan-ai-4xfj.onrender.com
 
 ---
 
