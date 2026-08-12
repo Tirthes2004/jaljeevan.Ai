@@ -37,16 +37,18 @@ The project is designed as a web application rather than a separate mobile appli
 
 ## 🌐 Website Preview
 
-The image below is an **actual visual asset used by the current home page**.
+### Home & Login
 
 <p align="center">
-  <img src="static\assets\Home.png" width="48%">
-  <img src="static\assets\Login.png" width="48%">
+  <img src="static/assets/Home.png" width="48%" alt="Home Page">
+  <img src="static/assets/Login.png" width="48%" alt="Login Page">
 </p>
 
+### Chatbot & Calculator
+
 <p align="center">
-  <img src="static\assets\ChatBot.png" width="48%">
-  <img src="static\assets\Calculator.png" width="48%">
+  <img src="static/assets/ChatBot.png" width="48%" alt="Chatbot">
+  <img src="static/assets/Calculator.png" width="48%" alt="Calculator">
 </p>
 
 ---
