@@ -41,12 +41,12 @@ The image below is an **actual visual asset used by the current home page**.
 
 <p align="center">
   <img src="static\assets\Home.png" width="48%">
-  <img src="static\assets\Home.png" width="48%">
+  <img src="static\assets\Login.png" width="48%">
 </p>
 
 <p align="center">
-  <img src="static\assets\chatbot.png" width="48%">
-  <img src="static\assets\calculator.png" width="48%">
+  <img src="static\assets\ChatBot.png" width="48%">
+  <img src="static\assets\Calculator.png" width="48%">
 </p>
 
 ---
