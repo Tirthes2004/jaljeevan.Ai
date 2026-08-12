@@ -428,9 +428,6 @@ git push origin feature/your-feature-name
 
 ---
 
-## 👥 Contributors
-
-The current project materials identify the following group members:
 
 ## 👥 Contributors
 
