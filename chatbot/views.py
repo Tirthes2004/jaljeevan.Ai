@@ -18,71 +18,122 @@ DOCS_META_FILE = os.path.join(settings.BASE_DIR, "docs.json")
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 GEMINI_MODEL = "gemini-2.5-flash"
 
-# ✅ Initialize with error handling
+# ================================
+# CHATBOT INITIALIZATION
+# ================================
+
 index = None
 embed_model = None
 documents = []
 ids = []
 metas = []
 
-try:
-    print("🤖 Loading FAISS index...")
-    
-    # Check if files exist
-    if not os.path.exists(FAISS_INDEX_FILE) or not os.path.exists(DOCS_META_FILE):
-        print("⚠️ FAISS files not found. Chatbot will use basic responses.")
-        print(f"Expected files:")
-        print(f"  - {FAISS_INDEX_FILE}")
-        print(f"  - {DOCS_META_FILE}")
-    else:
+chatbot_initialized = False
+chatbot_initializing = False
+
+
+def initialize_chatbot():
+    """Load FAISS and SentenceTransformer only when chatbot is actually used."""
+    global index, embed_model, documents, ids, metas
+    global chatbot_initialized, chatbot_initializing
+
+    if chatbot_initialized:
+        return True
+
+    if chatbot_initializing:
+        return False
+
+    chatbot_initializing = True
+
+    try:
+        print("🤖 Initializing chatbot...")
+
+        if not os.path.exists(FAISS_INDEX_FILE):
+            print(f"⚠️ FAISS index not found: {FAISS_INDEX_FILE}")
+            return False
+
+        if not os.path.exists(DOCS_META_FILE):
+            print(f"⚠️ Documents metadata not found: {DOCS_META_FILE}")
+            return False
+
         import faiss
         from sentence_transformers import SentenceTransformer
-        
+
+        print("📚 Loading FAISS index...")
         index = faiss.read_index(FAISS_INDEX_FILE)
-        
+
+        print("📄 Loading documents...")
         with open(DOCS_META_FILE, "r", encoding="utf-8") as f:
             meta_data = json.load(f)
-            documents = meta_data["documents"]
-            ids = meta_data["ids"]  
-            metas = meta_data["metas"]
-        
-        embed_model = SentenceTransformer(EMBED_MODEL_NAME)
-        print("✅ Chatbot initialized with FAISS successfully!")
-        
-except Exception as e:
-    print(f"⚠️ Chatbot initialization warning: {e}")
-    print("💡 Chatbot will work with basic responses only")
 
+        documents = meta_data["documents"]
+        ids = meta_data["ids"]
+        metas = meta_data["metas"]
+
+        print("🧠 Loading embedding model...")
+        embed_model = SentenceTransformer(
+            EMBED_MODEL_NAME,
+            device="cpu"
+        )
+
+        chatbot_initialized = True
+        print("✅ Chatbot initialized successfully!")
+
+        return True
+
+    except Exception as e:
+        print(f"⚠️ Chatbot initialization warning: {e}")
+        index = None
+        embed_model = None
+        return False
+
+    finally:
+        chatbot_initializing = False
 # ================================
 # UTILITY FUNCTIONS
 # ================================
 
 def retrieve_documents(query: str, k: int = 4):
-    """Retrieve relevant documents using FAISS (if available)"""
-    if not embed_model or not index:
+    """Retrieve relevant documents using FAISS."""
+
+    # Load chatbot only when it is actually needed
+    if not initialize_chatbot():
         return []
-        
+
+    if embed_model is None or index is None:
+        return []
+
     try:
-        query_emb = embed_model.encode([query])
-        query_emb = np.array(query_emb, dtype="float32")
-        
+        query_emb = embed_model.encode(
+            [query],
+            convert_to_numpy=True
+        )
+
+        query_emb = np.asarray(
+            query_emb,
+            dtype="float32"
+        )
+
         distances, indices = index.search(query_emb, k)
+
         results = []
-        
+
         for idx in indices[0]:
             if idx == -1:
                 continue
+
             results.append({
                 "id": ids[idx],
                 "text": documents[idx],
                 "meta": metas[idx]
             })
-        
+
         return results
+
     except Exception as e:
         print(f"Document retrieval error: {e}")
         return []
-
+    
 def call_gemini_api(prompt: str) -> str:
     """Call Google Gemini API"""
     if not GEMINI_API_KEY or GEMINI_API_KEY == 'your-api-key-here':
