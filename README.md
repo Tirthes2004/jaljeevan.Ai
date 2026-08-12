@@ -435,7 +435,7 @@ JalJeevan.AI was developed collaboratively as a group project, with responsibili
 
 | Contributor     | Role & Contributions                                       |
 | --------------- | ---------------------------------------------------------- |
-| **Manish Shaw** | Chatbot development, chatbot deployment, and data handling |                                        |
+| **Manish Shaw** | Chatbot development, Project deployment, and data handling |                                        |
 | **Tirthes Samanta**     | Backend development                                        |
 | **Tapasi Garai**      | Backend development                                        |
 | **Sandip Sen**      | Frontend development                                       |
